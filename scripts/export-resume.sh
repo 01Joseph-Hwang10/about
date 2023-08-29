@@ -2,25 +2,10 @@
 
 set -e
 
-# Repository information
-OWNER="01Joseph-Hwang10"
-REPO="01joseph-hwang10.github.io"
-BRANCH="gh-pages"
-
 RESUME_TYPE=$1
 FILENAME="resume-$RESUME_TYPE.pdf"
 
-echo "Checking out gh-pages branch..."
-
-git config --local user.email "actions@github.com"
-git config --local user.name "Github Actions"
-git config pull.rebase false
-
-git fetch --all
-git checkout -f "$BRANCH"
-git pull
-
-echo "Exporting resume to $FILENAME..."
+echo "[$FILENAME] Exporting resume to $FILENAME..."
 
 rm -f "$FILENAME"
 
@@ -81,28 +66,21 @@ npx docs-to-pdf \
   --paperFormat="$_paperFormat" \
   --disableTOC
 
-echo "Removing first pages..."
-
-sudo apt-get install -y qpdf
+echo "[$FILENAME] Removing first pages..."
 
 qpdf --empty --pages "$_outputPDFFilename" 2-z -- "$FILENAME"
 
-echo "Move file to appropriate directory..."
+echo "[$FILENAME] Move file to appropriate directory..."
 
 # Path to the PDF file you want to upload
 FILEPATH="files/resume/$FILENAME"
 
 mv "$FILENAME" "$FILEPATH"
 
-# Commit and push changes
-COMMIT_MESSAGE="chore: update $FILENAME"
+echo "[$FILENAME] Staging changes..."
 
 git add "$FILEPATH"
-HUSKY=0 git commit -m "$COMMIT_MESSAGE"
-git pull
-git push origin "$BRANCH"
 
-echo "Cleaning up..."
+echo "[$FILENAME] Cleaning up..."
 
 rm "$_outputPDFFilename"
-rm "$FILEPATH"
