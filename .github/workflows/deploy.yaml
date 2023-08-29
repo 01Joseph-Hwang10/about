@@ -31,7 +31,7 @@ jobs:
         run: ./scripts/bump-version.sh
 
       - id: "merge-back-to-dev"
-        uses: 01Joseph-Hwang10/gh-actions@forward-merge@v2
+        uses: 01Joseph-Hwang10/gh-actions@forward-merge-v2
         with:
           from: main
           to: dev
