@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.4 (2023-08-29)
+
+
+### :mega: Other
+
+* add merge back to dev workflow ([bf63ebe](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/bf63ebe945a7173e222767f23ba69a6354c4cadb))
+
 ### 0.1.3 (2023-08-29)
 
 
