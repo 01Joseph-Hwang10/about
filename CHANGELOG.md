@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.7 (2023-08-29)
+
+
+### :bug: Bug Fix
+
+* wait for site update ([4d9bd6d](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/4d9bd6d1d6c5bc025f539ca824205348392f9364))
+
 ### 0.1.6 (2023-08-29)
 
 
