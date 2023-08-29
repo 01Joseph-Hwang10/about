@@ -2,6 +2,17 @@
 
 set -e
 
+echo "Checking out gh-pages branch..."
+
+git config --local user.email "actions@github.com"
+git config --local user.name "Github Actions"
+
+git fetch --unshallow
+git checkout -f "$BRANCH"
+git pull
+
+echo "Exporting resume to $FILENAME..."
+
 RESUME_TYPE=$1
 FILENAME="resume-$RESUME_TYPE.pdf"
 
@@ -54,8 +65,6 @@ li {
 }
 """
 
-echo "Exporting resume to $FILENAME..."
-
 npx docs-to-pdf \
   --initialDocURLs="$_initialDocURLs" \
   --contentSelector="$_contentSelector" \
@@ -72,7 +81,7 @@ sudo apt-get install -y qpdf
 
 qpdf --empty --pages "$_outputPDFFilename" 2-z -- "$FILENAME"
 
-echo "Uploading $FILENAME to GitHub..."
+echo "Move file to appropriate directory..."
 
 # Repository information
 OWNER="01Joseph-Hwang10"
@@ -80,37 +89,18 @@ REPO="01joseph-hwang10.github.io"
 BRANCH="gh-pages"
 
 # Path to the PDF file you want to upload
-PDF_PATH="$FILENAME"
+FILEPATH="files/resume/$FILENAME"
 
-# Commit message
+mv "$FILENAME" "$FILEPATH"
+
+# Commit and push changes
 COMMIT_MESSAGE="Update $FILENAME"
 
-# Upload PDF content as a blob
-BLOB_SHA=$(curl -X POST -H "Authorization: token $TOKEN" \
-  -d "{\"content\":\"$(base64 -w 0 $PDF_PATH)\"}" \
-  "https://api.github.com/repos/$OWNER/$REPO/git/blobs" | jq -r '.sha')
+git add "$FILEPATH"
+git commit -m "$COMMIT_MESSAGE"
+git push origin "$BRANCH"
 
-BASE_TREE=$(curl -H "Authorization: token $TOKEN" \
-  "https://api.github.com/repos/$OWNER/$REPO/git/refs/heads/$BRANCH" | jq -r '.object.sha')
-
-# Create a new tree with the blob
-TREE_SHA=$(curl -X POST -H "Authorization: token $TOKEN" \
-  -d "{\"base_tree\":\"$BASE_TREE\",
-  \"tree\":[{\"path\":\"$PDF_PATH\",\"mode\":\"100644\",\"type\":\"blob\",\"sha\":\"$BLOB_SHA\"}]}" \
-  "https://api.github.com/repos/$OWNER/$REPO/git/trees" | jq -r '.sha')
-
-PARENT=$(curl -H 'Authorization: token $TOKEN' \
-  "https://api.github.com/repos/$OWNER/$REPO/git/refs/heads/$BRANCH" | jq -r '.object.sha')
-
-# Create a new commit
-COMMIT_SHA=$(curl -X POST -H "Authorization: token $TOKEN" \
-  -d "{\"message\":\"$COMMIT_MESSAGE\",\"tree\":\"$TREE_SHA\",
-  \"parents\":[\"$PARENT\"]}" \
-  "https://api.github.com/repos/$OWNER/$REPO/git/commits" | jq -r '.sha')
-
-# Update the branch reference to point to the new commit
-curl -X PATCH -H "Authorization: token $TOKEN" \
-  -d "{\"sha\":\"$COMMIT_SHA\"}" \
-  "https://api.github.com/repos/$OWNER/$REPO/git/refs/heads/$BRANCH"
+echo "Cleaning up..."
 
 rm "$_outputPDFFilename"
+rm "$FILEPATH"

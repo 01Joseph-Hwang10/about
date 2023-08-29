@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.6 (2023-08-29)
+
+
+### :bug: Bug Fix
+
+* try fix git workflow ([21dd9ad](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/21dd9ad43de286a3963e4156e0f1541334910248))
+
 ### 0.1.5 (2023-08-29)
 
 
