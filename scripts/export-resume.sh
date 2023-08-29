@@ -2,6 +2,14 @@
 
 set -e
 
+# Repository information
+OWNER="01Joseph-Hwang10"
+REPO="01joseph-hwang10.github.io"
+BRANCH="gh-pages"
+
+RESUME_TYPE=$1
+FILENAME="resume-$RESUME_TYPE.pdf"
+
 echo "Checking out gh-pages branch..."
 
 git config --local user.email "actions@github.com"
@@ -12,9 +20,6 @@ git checkout -f "$BRANCH"
 git pull
 
 echo "Exporting resume to $FILENAME..."
-
-RESUME_TYPE=$1
-FILENAME="resume-$RESUME_TYPE.pdf"
 
 rm -f "$FILENAME"
 
@@ -82,11 +87,6 @@ sudo apt-get install -y qpdf
 qpdf --empty --pages "$_outputPDFFilename" 2-z -- "$FILENAME"
 
 echo "Move file to appropriate directory..."
-
-# Repository information
-OWNER="01Joseph-Hwang10"
-REPO="01joseph-hwang10.github.io"
-BRANCH="gh-pages"
 
 # Path to the PDF file you want to upload
 FILEPATH="files/resume/$FILENAME"
