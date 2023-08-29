@@ -126,7 +126,7 @@ jobs:
         shell: bash
         env:
           VARIANT: ${{ matrix.variants }}
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
           ./scripts/export-resume.sh $VARIANT
