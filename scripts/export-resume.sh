@@ -14,6 +14,7 @@ echo "Checking out gh-pages branch..."
 
 git config --local user.email "actions@github.com"
 git config --local user.name "Github Actions"
+git config pull.rebase false
 
 git fetch --all
 git checkout -f "$BRANCH"
