@@ -7,7 +7,7 @@ echo "Checking out gh-pages branch..."
 git config --local user.email "actions@github.com"
 git config --local user.name "Github Actions"
 
-git fetch --unshallow
+git fetch --all
 git checkout -f "$BRANCH"
 git pull
 
@@ -96,9 +96,9 @@ mv "$FILENAME" "$FILEPATH"
 # Commit and push changes
 COMMIT_MESSAGE="chore: update $FILENAME"
 
-git pull
 git add "$FILEPATH"
 HUSKY=0 git commit -m "$COMMIT_MESSAGE"
+git pull
 git push origin "$BRANCH"
 
 echo "Cleaning up..."
