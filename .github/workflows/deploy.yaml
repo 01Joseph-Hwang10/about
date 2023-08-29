@@ -31,9 +31,10 @@ jobs:
         run: ./scripts/bump-version.sh
 
       - id: "merge-back-to-dev"
-        uses: 01Joseph-Hwang10/gh-actions@forward-merge
+        uses: 01Joseph-Hwang10/gh-actions@forward-merge@v2
         with:
-          branch: dev
+          from: main
+          to: dev
 
       - name: Retrieve updated version
         shell: bash
