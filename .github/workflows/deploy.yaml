@@ -15,7 +15,7 @@ jobs:
     name: Bump version
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.bump_version.outputs.version }}
+      version: ${{ steps.version_retriever.outputs.version }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -37,6 +37,7 @@ jobs:
           to: dev
 
       - name: Retrieve updated version
+        id: version_retriever
         shell: bash
         run: |
           set -e
