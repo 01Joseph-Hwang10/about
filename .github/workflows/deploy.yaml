@@ -98,7 +98,8 @@ jobs:
           VERSION: ${{ needs.bump_version.outputs.version }}
         run: |
           set -e
-          node ./scripts/wait-for-site-update.js
+          echo "Checking if webpage has been updated to version $VERSION"
+          VERSION=$VERSION WEBPAGE_URL=$WEBPAGE_URL node ./scripts/wait-for-site-update.js
 
   export_resume:
     name: Export resume
