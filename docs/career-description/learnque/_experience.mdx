@@ -1,0 +1,104 @@
+import Tags from "@site/src/components/Tag/Tags";
+import values from "./values";
+
+#### 서비스 기획을 위한 심층 인터뷰 진행
+
+<Tags
+  metadata={["general", "project-management-agnostic"]}
+  tags={["service-planning", "communication", "@labis"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- 울산광역시 중구/북구/문수/성남/동구 청소년문화의집 등 울산 내의 많은 방과후 교육 기관을 방문해 데이터 수집함.
+  - 시장의 수요 파악을 위해 타겟인 프리랜서 강사 및 청소년문화센터 담당자와의 심층 인터뷰 진행함.
+- => 심층인터뷰를 통한 데이터 수집 과정을 통해 인터넷 서칭으로는 찾을 수 없는 실질적인 현장의 Pain Point를 파악할 수 있었음.
+- => 이후 [엑셀러레이팅 프로그램 유치에 큰 영향](#엑셀러레이팅-프로그램-유치를-위한-사업계획서-및-피치덱-작성)
+
+#### 엑셀러레이팅 프로그램 유치를 위한 사업계획서 및 피치덱 작성
+
+<Tags
+  metadata={["general", "project-management-agnostic"]}
+  tags={["project-management", "@labis"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- [심층 인터뷰를 통해 수집한 데이터](#서비스-기획을-위한-심층-인터뷰-진행)를 바탕으로 설득력 있는 사업계획서 및 피치덱을 작성함
+- => [2022 울산청년창업사관학교](https://start.kosmes.or.kr/yh_mai001_001.do) 엑셀러레이팅 프로그램 유치 성공
+- => [창업 300 밸류-UP](http://www.u300.kr/) 엑셀러레이팅 프로그램 유치 성공
+
+:::info
+
+아래 링크에서 위의 피치덱을 확인할 수 있습니다.
+
+https://drive.google.com/file/d/1HczhzUcrE3G31cn9tiu6fXh3vUofvIdq/view?usp=sharing
+
+:::
+
+#### Observer 패턴을 활용한 상태 관리
+
+<Tags
+  metadata={["general", "frontend-agnostic"]}
+  tags={["frontend", "improvement", "@labis"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- Redux에 과도하게 의존적인 코드로 복잡한 블록코드 UI 개발에 비효율이 발생함.
+- 이에 이벤트를 관리하는 `EventRegistry` 클래스를 구현하여, `EventRegistry.emit` 을 통해 이벤트를 발생시키고, `EventRegistry.on` 을 통해 이벤트를 구독하는 방식으로 상태 변경 사항을 관리하게끔 상태 관리 방식을 대거 수정함.
+- => 불필요한 Redux 사용을 줄이고 코드 유지보수가 효율화
+
+<details>
+<summary>EventRegistry</summary>
+<div markdown="1">
+
+```ts
+class _EventRegistry {
+  private events: Record<string, Event<any>> = {};
+
+  public on<T = any>(eventName: string, callback: Event<T>): string {
+    this.events[eventName] = callback;
+    return eventName;
+  }
+
+  public remove(eventName: string) {
+    delete this.events[eventName];
+  }
+
+  public removeAll() {
+    this.events = {};
+  }
+
+  public emit<T = any>(eventName: string, data?: T, strict?: boolean) {
+    const event = this.events[eventName];
+    if (event) {
+      event(data);
+      return;
+    }
+    if (strict) {
+      handleError(`Event ${eventName} not found`);
+    }
+  }
+}
+```
+
+</div>
+</details>
+
+##### See Also
+
+- [Observer Pattern @ dbcav3](https://github.com/01Joseph-Hwang10/dbcav3#observer-pattern)
+
+#### OOP를 활용한 블록 코드의 블록 정의 개발
+
+<Tags
+  metadata={["general", "frontend-agnostic"]}
+  tags={["frontend", "feature", "@labis"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- 각 블록정의는 `AbstractBlock`을 상속하고 `actionChain`이라는 메서드를 구현해야하며, 이 메서드는 상속과 참조를 통해 Redux Store로 연결되는 액션의 체인을 구성함.
+- => `AbstractBlock`을 종점으로 상태 관리에 있어 단순함을 유지하며, OOP에 기반해 블록 정의의 확장성을 높임.
+
+##### See Also
+
+- [Observer Pattern @ dbcav3](https://github.com/01Joseph-Hwang10/dbcav3#observer-pattern)
+- [Block Definition Source Code](https://github.com/01Joseph-Hwang10/dbcav3/tree/main/src/modules/block-definitions)

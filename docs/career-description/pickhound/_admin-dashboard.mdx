@@ -1,0 +1,51 @@
+import Tags from "@site/src/components/Tag/Tags";
+import values from "./values";
+
+#### OOP에 기반한 `Admin Dashboard` 코드 리팩터링
+
+<Tags
+  metadata={["general", "frontend-agnostic"]}
+  tags={["frontend", "improvement", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- OOP와 `React` 기본 혹을 활용해 불필요한 Redux 코드를 제거하고, 컴포넌트화를 통해 코드의 재사용성과 가독성을 높이는 등 클린코드 작성을 위해 노력함
+
+<div style={{ display: 'none' }}>
+##### See Also
+
+아래 링크에서 위와 관련한 블로그 포스트를 확인할 수 있습니다.
+
+Insert link here
+
+</div>
+
+#### Cafe24 API Auth Code 추출 자동화
+
+<Tags
+  metadata={["general", "frontend-agnostic"]}
+  tags={["automation", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- 실제 카페24 API를 활용해 개발을 진행하기 위해서는 카페24 API의 Authorization Code Flow 인증 과정을 거쳐야 함.
+- 이에 작업을 위해 매번 브라우저를 열고 로그인 후 auth code를 추출하는 과정을 반복해야 하는 불편함이 존재했음.
+- 이러한 비효율을 없애기 위해 Selenium을 활용해 로그인 및 auth code 추출 과정을 자동화함.
+- => 개발 생산성 크게 향상. 더 많은 Iteration을 가능하게 함.
+
+##### Related
+
+- [Admin Dashboard의 Auth Flow 테스트 효율화](#admin-dashboard의-auth-flow-테스트-효율화)
+
+#### `Admin Dashboard`의 Auth Flow 테스트 효율화
+
+<Tags
+  metadata={["general", "frontend-agnostic"]}
+  tags={["frontend", "improvement", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- [Cafe24 API Auth Code 추출 자동화](#cafe24-api-auth-code-추출-자동화)를 통해 개발 Iteration의 속도가 향상되었으나, auth code나 access token의 만료 등의 이유로 지속적으로 Auth Code 추출 스크립트를 실행해야 하는 불편함이 존재했음.
+- 또한 Auth Flow가 복잡했기 때문에 어느 부분에서 에러가 발생했는지 파악하기 어려웠음.
+- 이러한 문제를 해결하고자 `Admin Dashboard`의 Auth Flow를 테스트하기 위해 Cypress를 활용한 테스트 작성함.
+- => Iteration 속도 향상. 개발 생산성 향상.

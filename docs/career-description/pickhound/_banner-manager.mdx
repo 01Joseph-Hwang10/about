@@ -1,0 +1,33 @@
+import Tags from "@site/src/components/Tag/Tags";
+import values from "./values";
+
+#### StencilJS 도입을 통한 번들 크기 및 성능 최적화
+
+<Tags
+  metadata={["general", "frontend-agnostic"]}
+  tags={["devops", "optimization", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- Cafe24로 제작된 쇼핑몰은 이미 많은 Javascript를 사용하며, 여기에 타사의 플러그인 또한 여럿 설치해 사용했음
+  - => 큰 번들 사이즈는 엔드 유저의 UX 경험에 악영향을 미칠 수 있음을 인지함
+- 기존의 `React` 대신 `StencilJS`를 도입하여 Web Components API의 이점을 활용하며, 번들 사이즈를 60% 이상 줄임
+  - => 기능이 동일한 타사 추천 플러그인에 비해 60% 작은 번들 사이즈. (본사 35KB, 타사 85KB)
+
+##### Related
+
+- [다수의 IIFE 번들 빌드 프로세스 구성 및 CI/CD 자동화](#다수의-iife-번들-빌드-프로세스-구성-및-ci/cd-자동화)
+
+#### 다수의 IIFE 번들 빌드 프로세스 구성 및 CI/CD 자동화
+
+<Tags
+  metadata={["general", "frontend-agnostic"]}
+  tags={["devops", "automation", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- 카페24에 배포해 쇼핑몰에 삽입되어 실행되는 스크립트는 브라우저에서 바로 실행될 수 있는 VanillaJS로써, 페이지마다 하나의 IIFE 번들이 존재해야 하는 제약조건으로 기존 SPA의 번들링 프로세스를 그대로 사용할 수 없는 상황이었음.
+- StencilJS CLI와 Rollup, 배시 스크립트를 활용해 여러 개의 Entrypoint를 동시에 IIFE로 빌드하는 프로세스 구성함.
+  - Webpack과 비교해, Scope Hosting 기능, 단순한 번들러 설정 및 CLI 활용성 등을 고려하여 Rollup을 도입함.
+- Github Actions를 활용해 `Banner Manager`의 배포 자동화
+- => 복잡한 빌드 및 배포 과정의 인적 자원 소비 최소화

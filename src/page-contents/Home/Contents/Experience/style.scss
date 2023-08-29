@@ -1,0 +1,94 @@
+.experience-timeline {
+  --timeline-dot-size: 20px;
+  --timeline-icon-margin-left: -4px;
+
+  .rs-timeline-item-content {
+    margin-left: 1rem;
+  }
+
+  .rs-timeline-item-tail {
+    background-color: var(--ifm-color-secondary);
+  }
+
+  /* var(--mobile-width) */
+  @media screen and (min-width: 998px) {
+    --timeline-dot-size: 40px;
+    --timeline-icon-margin-left: -13px;
+    .rs-timeline-item-content {
+      margin-left: 0;
+    }
+  }
+
+  --timeline-icon-border-width: 2px;
+  --timeline-font-size: calc(
+    var(--timeline-dot-size) / 2 - var(--timeline-icon-border-width)
+  );
+
+  margin-left: calc(var(--timeline-dot-size) * (3 / 4));
+
+  /* var(--mobile-width) */
+  @media screen and (min-width: 998px) {
+    margin-left: 0;
+  }
+
+  .rs-timeline-item-custom-dot {
+    .rs-icon {
+      position: absolute;
+      background: var(--ifm-color-secondary);
+      top: 0;
+      left: calc(var(--timeline-dot-size) * -0.05);
+      border: var(--timeline-icon-border-width) solid var(--ifm-color-secondary);
+      width: var(--timeline-dot-size);
+      height: var(--timeline-dot-size);
+      border-radius: 50%;
+      font-size: var(--timeline-font-size);
+      color: var(--ifm-color-secondary-darkest);
+      margin-left: var(--timeline-icon-margin-left);
+      justify-content: center;
+      padding: 8px;
+    }
+  }
+
+  .rs-timeline-item-active {
+    .rs-timeline-item-custom-dot {
+      .rs-icon {
+        /* Refer to: src/style/gradients.ts */
+        background: linear-gradient(
+          134deg,
+          var(--ifm-color-primary-lighter) 0%,
+          var(--ifm-color-primary-darker) 100%
+        );
+        color: white;
+      }
+    }
+  }
+}
+
+.rs-timeline-item-content p {
+  margin: 0;
+}
+
+/* var(--mobile-width) */
+@media screen and (min-width: 998px) {
+  .experience-timeline .experience-timeline__item {
+    &:nth-child(odd) {
+      .experience-card-wrapper {
+        padding-left: 2rem;
+      }
+    }
+
+    &:nth-child(even) {
+      .experience-card-wrapper {
+        padding-right: 2rem;
+
+        .career-item {
+          .career-item__title,
+          .career-item__subtitle-wrapper,
+          .career-item__body {
+            flex-direction: row-reverse;
+          }
+        }
+      }
+    }
+  }
+}

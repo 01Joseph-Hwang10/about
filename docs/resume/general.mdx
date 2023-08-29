@@ -1,0 +1,81 @@
+---
+title: 이력서
+sidebar_position: 1
+toc_max_heading_level: 2
+description: "저의 주요 경력을 담은 이력서입니다."
+---
+
+import "./custom.scss";
+
+import FilterBoundary from "@site/src/components/Tag/Meta/FilterBoundary";
+import {
+  MetadataTagsSectionFilter,
+  RelatedFilter,
+  HrefFilter,
+} from "@site/src/components/Tag/Meta/FilterBoundary/filters";
+
+import Introduction from "./partials/_introduction.mdx";
+import Education from "./partials/_education.mdx";
+import Experience from "./partials/_experience.mdx";
+import MoreExperience from "./partials/_more-experience.mdx";
+import Skillsets from "./partials/_skillsets.mdx";
+import Achievements from "./partials/_achievements.mdx";
+
+<>{/* Learnque Experience */}</>
+
+import LearnQueExperience from "../career-description/learnque/_experience.mdx";
+
+<>{/* Pickhound Experience */}</>
+
+import Common from "../career-description/pickhound/_common.mdx";
+import BannerManager from "../career-description/pickhound/_banner-manager.mdx";
+import AdminDashboard from "../career-description/pickhound/_admin-dashboard.mdx";
+import RecommendationAPI from "../career-description/pickhound/_recommendation-api.mdx";
+import BanditEngine from "../career-description/pickhound/_bandit-engine.mdx";
+
+:::tip
+
+아래 링크에서 이력서를 PDF로 내려받을 수 있습니다.
+
+https://github.com/01Joseph-Hwang10/01Joseph-Hwang10.github.io/raw/master/static/files/resume/general.pdf
+
+:::
+
+# 황현규
+
+<Introduction />
+
+## 학력 사항
+
+<Education />
+
+## 경력 사항
+
+<Experience />
+
+## 업무 경험
+
+<MoreExperience />
+
+<FilterBoundary
+  filters={[
+    new MetadataTagsSectionFilter("backend-agnostic"),
+    new RelatedFilter(),
+    new HrefFilter(),
+  ]}
+>
+  <AdminDashboard />
+  <BannerManager />
+  <Common />
+  <LearnQueExperience />
+  <RecommendationAPI />
+  <BanditEngine />
+</FilterBoundary>
+
+## 스킬셋
+
+<Skillsets />
+
+## 수상 및 기타
+
+<Achievements />

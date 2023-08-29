@@ -1,0 +1,140 @@
+import Tags from "@site/src/components/Tag/Tags";
+import values from "./values";
+
+#### 모델 파라미터 압축을 통한 성능 향상
+
+<Tags
+  metadata={["general", "backend-agnostic"]}
+  tags={["backend", "optimization", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- Bandit Model의 파라미터가 너무 커 HTTP 413 에러를 반환하는 문제를 발견함.
+- 이에 `np.float32`, gzip 을 도입하고 파라미터를 압축, 압축해제하는 로직을 추가함.
+- => 모델 파라미터 크기 10배 축소
+- => 상품 추천 응답 시간 2배 증가
+
+#### 점진적인 코드베이스 이관을 통한 서비스 장애 방지
+
+<Tags
+  metadata={["general", "backend-agnostic"]}
+  tags={["backend", "improvement", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- Bandit 모델의 버전이 많아짐에 따라 각 모델 버전을 engines 폴더 아래에 디저트 이름을 붙여 모듈화함.
+- 이와 함께 엔드포인트 구조를 체계적으로 변경하는 과정에서 기존 엔드포인트를 제공하는 `blueprint` 가 사라지면 서비스에 장애가 발생함을 인지함.
+- 기존의 코드베이스와의 호환성을 유지하기 위해 기존 코드베이스에 존재하는 엔드포인트를 새로운 엔드포인트로 Redirect 하도록 구현함.
+- => 서비스 간의 업데이트 속도 차이로 인해 발생하는 서비스의 일시적인 장애 없이 코드베이스 이관할 수 있었음.
+
+#### 데코레이터 패턴을 활용한 AI 팀의 업무 효율화
+
+<Tags
+  metadata={["general", "backend-agnostic"]}
+  tags={["backend", "improvement", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- 데코레이터 패턴을 활용해 각 엔드포인트의 핸들러 함수를 데코레이터로 감싸 에러 핸들링, 인증 등의 공통된 로직을 분리함.
+- => 웹과 관련한 코드를 데코레이터를 통해 추상화하여 웹에 익숙하지 않은 AI 팀의 업무 효율화.
+- => 신입 AI 팀원도 별도의 웹 관련 교육 없이 바로 업무에 참여 가능한 수준.
+
+<details>
+<summary>Before</summary>
+<div markdown="1">
+
+```py
+@bp.route("/get-recommendations", methods=["POST", "OPTIONS"])
+def get_recommended_actions():
+    if request.method == 'OPTIONS':
+        response = jsonify('Preflight Response')
+        add_headers(response)
+        return response
+
+    if request.method == 'POST':
+        try:
+            authenticate_request(request)
+
+            payload = request.get_json()
+            context: MallContext = payload["mall_context"]
+            post_click_num: int = int(payload["post_click_num"])
+            product_to_ignore = int(payload["product_to_ignore"])
+            root_click_no: int = int(payload["root_click_no"])
+            actions = payload["actions"]
+            actions = [Action.from_json(action) for action in actions]
+            latest_clicked_product_nos: List[int] = payload["last_clicked_product_nos"]
+            pca_bool: bool = actions[0].pca
+
+            final_recommended_product_nos = engine.get_recommendations(
+                actions=actions,
+                last_clicked_product_nos=latest_clicked_product_nos,
+                root_click_id=root_click_no,
+                context=context,
+                post_click_num=post_click_num,
+                product_to_ignore=product_to_ignore,
+                pca=pca_bool,
+            )
+
+            response: GetRecommendationsOutput = {
+                "recommended_actions": final_recommended_product_nos,
+            }
+
+            response = jsonify(response)
+            add_headers(response)
+            return response
+
+        except AuthenticationError:
+            response = make_response('Authentication failed', 401)
+            add_headers(response)
+            return response
+
+        except ActionNotFoundError:
+            response = make_response(
+                'Action not found. Please sync your mall product', 400)
+            add_headers(response)
+            return response
+
+        except:
+            print_exc()
+            response = make_response('Internal server problems', 500)
+            add_headers(response)
+            return response
+```
+
+</div>
+</details>
+
+<details>
+<summary>After</summary>
+<div markdown="1">
+
+```py
+@bp.route("/get-recommendations", methods=["POST", "OPTIONS"])
+@handler.default
+def get_recommended_actions(payload: GetRecommendationsInput) -> GetRecommendationsOutput:
+    context: MallContext = payload["mall_context"]
+    post_click_num: int = int(payload["post_click_num"])
+    product_to_ignore = int(payload["product_to_ignore"])
+    root_click_no: int = int(payload["root_click_no"])
+    actions = payload["actions"]
+    actions = [Action.from_json(action) for action in actions]
+    latest_clicked_product_nos: List[int] = payload["last_clicked_product_nos"]
+    pca_bool: bool = actions[0].pca
+
+    final_recommended_product_nos = engine.get_recommendations(
+        actions=actions,
+        last_clicked_product_nos=latest_clicked_product_nos,
+        root_click_id=root_click_no,
+        context=context,
+        post_click_num=post_click_num,
+        product_to_ignore=product_to_ignore,
+        pca=pca_bool,
+    )
+
+    return {
+        "recommended_actions": final_recommended_product_nos,
+    }
+```
+
+</div>
+</details>

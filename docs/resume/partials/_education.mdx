@@ -1,0 +1,22 @@
+import educationValues from "@site/src/page-contents/Home/Contents/Education/values";
+
+:::info
+
+<div></div>
+
+<>
+  {educationValues.educations.map((education) => (
+    <div key={education.title}>
+      <strong className="company-link" onClick={education.onClick}>
+        {education.title} ({education.period})
+      </strong>
+      <ul style={{ margin: "1rem 0 0 0" }}>
+        {education.details.map((detail, index) => (
+          <li key={`${education.title}__detail--${index}`}>{detail}</li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</>
+
+:::

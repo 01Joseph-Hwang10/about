@@ -1,0 +1,25 @@
+import experienceValues from "@site/src/page-contents/Home/Contents/Experience/values";
+import Markdown from "@site/src/components/Markdown";
+
+:::note
+
+<div></div>
+
+<>
+  {experienceValues.experiences.map((experience) => (
+    <div className="experience" key={experience.title}>
+      <strong className="company-link" onClick={experience.onClick}>
+        {experience.title} (@{experience.id})
+      </strong>
+      <ul>
+        <li>{experience.period}</li>
+        <li>{experience.subtitle}</li>
+        <li>
+          <Markdown>{experience.details.at(0)}</Markdown>
+        </li>
+      </ul>
+    </div>
+  ))}
+</>
+
+:::

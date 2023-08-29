@@ -1,0 +1,12 @@
+h4 {
+  font-size: 1.1rem;
+  margin-top: 2rem !important;
+  &:before {
+    content: "👉";
+    margin-right: 0.5rem;
+  }
+}
+
+div[id^="dmermaid-svg-"] {
+  display: none;
+}

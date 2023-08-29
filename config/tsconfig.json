@@ -1,0 +1,13 @@
+{
+  "include": ["**/*"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "allowJs": true,
+    "lib": ["ESNext"],
+    "skipLibCheck": true,
+    "module": "Node16",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "types"
+  },
+}

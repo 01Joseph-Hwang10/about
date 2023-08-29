@@ -1,0 +1,44 @@
+
+.text {
+  color: var(--ifm-color-primary-contrast-foreground);
+  word-break: keep-all;
+  transition: color var(--ifm-transition-slow)
+    var(--ifm-transition-timing-default);
+}
+
+.title {
+  font-size: 2rem;
+  @media screen and (min-width: 998px) {
+    font-size: 3rem;
+  }
+}
+
+.subtitle {
+  font-size: 1rem;
+  @media screen and (min-width: 998px) {
+    font-size: 1.5rem;
+  }
+}
+
+.buttonWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/** @todo Implement parallax. That will be cool */
+.hero {
+  padding: 5rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  background-position: center;
+  background-size: cover;
+  transition: background-image var(--ifm-transition-fast)
+    var(--ifm-transition-timing-default);
+
+  @media screen and (min-width: 998px) {
+    padding: 10rem 0;
+  }
+}
