@@ -32,7 +32,11 @@ jobs:
 
       - name: Retrieve updated version
         shell: bash
-        run: echo "version=$(require('./package.json').version)" >> "$GITHUB_OUTPUT"
+        run: |
+          set -e
+
+          version=$(node -pe 'require("./package.json").version')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
   deploy:
     name: Deploy to GitHub Pages
