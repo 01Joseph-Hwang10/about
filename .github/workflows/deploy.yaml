@@ -8,7 +8,7 @@ on:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
 env:
-  WEBPAGE_URL: https://01Joseph-Hwang10.github.io
+  WEBPAGE_URL: https://01joseph-hwang10.github.io
 
 jobs:
   bump_version:

@@ -76,7 +76,7 @@ echo "Uploading $FILENAME to GitHub..."
 
 # Repository information
 OWNER="01Joseph-Hwang10"
-REPO="$OWNER.github.io"
+REPO="01joseph-hwang10.github.io"
 BRANCH="gh-pages"
 
 # Path to the PDF file you want to upload
