@@ -1,6 +1,6 @@
 {
   "name": "about",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "private": true,
   "scripts": {
     "husky": "husky install",
