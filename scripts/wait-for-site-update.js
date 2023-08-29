@@ -18,7 +18,7 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   let iterations = 0;
   while (!timeoutExceeded) {
     iterations++;
-    console.log(`Trying to get the latest version. (${{ iterations }})`);
+    console.log(`Trying to get the latest version. (Iteration: ${iterations})`);
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
 
