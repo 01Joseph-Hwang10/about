@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.13 (2023-08-29)
+
+
+### :bug: Bug Fix
+
+* export resume ([e4d4978](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/e4d497823eca92315f1d27339aae128028cb27cf))
+
 ### 0.1.12 (2023-08-29)
 
 
