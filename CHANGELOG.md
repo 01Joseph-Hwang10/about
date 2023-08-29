@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.18 (2023-08-29)
+
+
+### :bug: Bug Fix
+
+* add puppeteer args ([9d2323f](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/9d2323fb043999622cedc0d39375505d7aadf1ea))
+
 ### 0.1.17 (2023-08-29)
 
 
