@@ -66,6 +66,10 @@ npx docs-to-pdf \
   --paperFormat="$_paperFormat" \
   --disableTOC
 
+echo "Removing first pages..."
+
+sudo apt-get install -y qpdf
+
 qpdf --empty --pages "$_outputPDFFilename" 2-z -- "$FILENAME"
 
 echo "Uploading $FILENAME to GitHub..."
