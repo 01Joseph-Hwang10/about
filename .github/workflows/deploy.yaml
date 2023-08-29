@@ -172,5 +172,6 @@ jobs:
 
           # Commit and push changes
           COMMIT_MESSAGE="chore: update $FILENAME"
+          git add -A
           HUSKY=0 git commit -m "$COMMIT_MESSAGE"
           git push origin "$BRANCH"
