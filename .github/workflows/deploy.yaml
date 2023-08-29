@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - gh-pages
+      - main
     # Review gh actions docs if you want to further define triggers, paths, etc
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
 
@@ -67,56 +67,56 @@ jobs:
           # user_name: github-actions[bot]
           # user_email: 41898282+github-actions[bot]@users.noreply.github.com
 
-  check_webpage_update:
-    name: Check webpage update
-    needs: bump_version
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: npm
+  # check_webpage_update:
+  #   name: Check webpage update
+  #   needs: bump_version
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 18
+  #         cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+  #     - name: Install dependencies
+  #       run: npm ci
 
-      - name: Check webpage update
-        shell: bash
-        env:
-          VERSION: ${{ needs.bump_version.outputs.version }}
-        run: |
-          set -e
-          node ./scripts/wait-for-site-update.js
+  #     - name: Check webpage update
+  #       shell: bash
+  #       env:
+  #         VERSION: ${{ needs.bump_version.outputs.version }}
+  #       run: |
+  #         set -e
+  #         node ./scripts/wait-for-site-update.js
 
-  export_resume:
-    name: Export resume
-    runs-on: ubuntu-latest
-    needs: check_webpage_update
-    strategy:
-      matrix:
-        variants:
-          [
-            general,
-            frontend-agnostic,
-            backend-agnostic,
-            project-management-agnostic,
-          ]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: npm
+  # export_resume:
+  #   name: Export resume
+  #   runs-on: ubuntu-latest
+  #   needs: check_webpage_update
+  #   strategy:
+  #     matrix:
+  #       variants:
+  #         [
+  #           general,
+  #           frontend-agnostic,
+  #           backend-agnostic,
+  #           project-management-agnostic,
+  #         ]
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 18
+  #         cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+  #     - name: Install dependencies
+  #       run: npm ci
 
-      - name: Export resume
-        shell: bash
-        env:
-          VARIANT: ${{ matrix.variants }}
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -e
-          ./scripts/export-resume.sh $VARIANT
+  #     - name: Export resume
+  #       shell: bash
+  #       env:
+  #         VARIANT: ${{ matrix.variants }}
+  #         TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       run: |
+  #         set -e
+  #         ./scripts/export-resume.sh $VARIANT

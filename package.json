@@ -14,7 +14,8 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
-    "version": "standard-version --no-verify -m \"chore: Update CHANGELOG.md\""
+    "version": "standard-version --no-verify -m \"chore: Update CHANGELOG.md\"",
+    "postversion": "git push --follow-tags -u"
   },
   "dependencies": {
     "@ant-design/react-slick": "^1.0.2",
