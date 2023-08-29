@@ -28,7 +28,7 @@ jobs:
 
       - name: Bump version
         shell: bash
-        run: node ./scripts/bump-version.sh
+        run: ./scripts/bump-version.sh
 
       - name: Retrieve updated version
         shell: bash
