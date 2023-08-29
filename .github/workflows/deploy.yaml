@@ -28,7 +28,7 @@ jobs:
 
       - name: Bump version
         shell: bash
-        run: ./scripts/bump-version.sh
+        run: ./static/scripts/bump-version.sh
 
       - id: "merge-back-to-dev"
         uses: 01Joseph-Hwang10/gh-actions@forward-merge-v2
@@ -122,7 +122,7 @@ jobs:
         run: |
           set -e
           echo "Checking if webpage has been updated to version $VERSION"
-          VERSION=$VERSION WEBPAGE_URL=$WEBPAGE_URL node ./scripts/wait-for-site-update.js
+          VERSION=$VERSION WEBPAGE_URL=$WEBPAGE_URL node ./static/scripts/wait-for-site-update.js
 
   export_resume:
     name: Export resume
