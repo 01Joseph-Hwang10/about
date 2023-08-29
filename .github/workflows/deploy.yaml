@@ -165,8 +165,8 @@ jobs:
           echo "Installing toolings..."
           sudo apt-get install -y qpdf
 
-          ls -la
-          echo $(pwd)
+          echo "Configuring resume exporter..."
+          chmod +x ./scripts/export-resume.sh
 
           echo "Exporting resume..."
           ./scripts/export-resume.sh general &

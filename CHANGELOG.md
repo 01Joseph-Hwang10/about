@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.17 (2023-08-29)
+
+
+### :bug: Bug Fix
+
+* permission ([6f22c3f](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/6f22c3fdf908427050c7652988a2dffc7c3b41ef))
+
 ### 0.1.16 (2023-08-29)
 
 
