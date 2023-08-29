@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.16 (2023-08-29)
+
+
+### :bug: Bug Fix
+
+* script path correction ([6dfe0cf](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/6dfe0cfdffa78b1ace7ed0ec13fd7d71235bf25a))
+
 ### 0.1.15 (2023-08-29)
 
 
