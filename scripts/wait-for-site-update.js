@@ -41,7 +41,7 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       siteUpdated = true;
       break;
     }
-    await wait(1000);
+    await wait(5000);
   }
   clearTimeout(timer);
   if (!siteUpdated) {
