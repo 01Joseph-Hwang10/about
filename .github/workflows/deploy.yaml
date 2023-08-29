@@ -159,8 +159,14 @@ jobs:
           git checkout -f "$BRANCH"
           git pull
 
+          echo "Creating .gitignore..."
+          echo "node_modules" > .gitignore
+
           echo "Installing toolings..."
           sudo apt-get install -y qpdf
+
+          ls -la
+          echo $(pwd)
 
           echo "Exporting resume..."
           ./scripts/export-resume.sh general &
@@ -171,7 +177,7 @@ jobs:
           wait
 
           # Commit and push changes
-          COMMIT_MESSAGE="chore: update $FILENAME"
+          COMMIT_MESSAGE="chore: update $FILENAME [no ci]"
           git add -A
           HUSKY=0 git commit -m "$COMMIT_MESSAGE"
           git push origin "$BRANCH"
