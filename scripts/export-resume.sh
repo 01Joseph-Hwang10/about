@@ -94,11 +94,11 @@ FILEPATH="files/resume/$FILENAME"
 mv "$FILENAME" "$FILEPATH"
 
 # Commit and push changes
-COMMIT_MESSAGE="Update $FILENAME"
+COMMIT_MESSAGE="chore: update $FILENAME"
 
 git pull
 git add "$FILEPATH"
-git commit -m "$COMMIT_MESSAGE"
+HUSKY=0 git commit -m "$COMMIT_MESSAGE"
 git push origin "$BRANCH"
 
 echo "Cleaning up..."

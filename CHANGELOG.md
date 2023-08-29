@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.10 (2023-08-29)
+
+
+### :bug: Bug Fix
+
+* add git pulls ([086690f](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/086690f713c44c7aee780738cbb86bc52b42d531))
+
 ### 0.1.9 (2023-08-29)
 
 
