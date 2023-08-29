@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.11 (2023-08-29)
+
+
+### :bug: Bug Fix
+
+* no unshallow ([b241ead](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/b241ead45b6267a0ffead02b8319565fe2e51aad))
+
 ### 0.1.10 (2023-08-29)
 
 
