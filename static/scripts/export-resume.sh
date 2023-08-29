@@ -77,10 +77,6 @@ FILEPATH="files/resume/$FILENAME"
 
 mv "$FILENAME" "$FILEPATH"
 
-echo "[$FILENAME] Staging changes..."
-
-git add "$FILEPATH"
-
 echo "[$FILENAME] Cleaning up..."
 
 rm "$_outputPDFFilename"
