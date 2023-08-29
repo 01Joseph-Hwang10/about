@@ -57,6 +57,17 @@ jobs:
           node-version: 18
           cache: npm
 
+      - name: Sync files
+        shell: bash
+        run: |
+          set -e
+
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+
+          git fetch --unshallow
+          git pull
+
       - name: Install dependencies
         run: npm ci
 
@@ -90,6 +101,17 @@ jobs:
           node-version: 18
           cache: npm
 
+      - name: Sync files
+        shell: bash
+        run: |
+          set -e
+
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+
+          git fetch --unshallow
+          git pull
+
       - name: Install dependencies
         run: npm ci
 
@@ -121,6 +143,17 @@ jobs:
         with:
           node-version: 18
           cache: npm
+
+      - name: Sync files
+        shell: bash
+        run: |
+          set -e
+
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+
+          git fetch --unshallow
+          git pull
 
       - name: Install dependencies
         run: npm ci
