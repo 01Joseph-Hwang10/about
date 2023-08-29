@@ -15,6 +15,7 @@ _excludeSelectors=".margin-vert--xl a,[class^='tocCollapsible'],.breadcrumbs,.th
 _paginationSelector=".no-pagination"
 _outputPDFFilename="docs-to-pdf-$RESUME_TYPE.pdf"
 _paperFormat="A4"
+_puppeteerArgs="--no-sandbox,--disable-web-security"
 # _pdfMargin="100,100,100,100"
 
 _cssStyle="""
@@ -64,6 +65,7 @@ npx docs-to-pdf \
   --cssStyle="$_cssStyle" \
   --outputPDFFilename="$_outputPDFFilename" \
   --paperFormat="$_paperFormat" \
+  --puppeteerArgs="$_puppeteerArgs" \
   --disableTOC
 
 echo "[$FILENAME] Removing first pages..."
