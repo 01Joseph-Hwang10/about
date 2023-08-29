@@ -96,6 +96,7 @@ mv "$FILENAME" "$FILEPATH"
 # Commit and push changes
 COMMIT_MESSAGE="Update $FILENAME"
 
+git pull
 git add "$FILEPATH"
 git commit -m "$COMMIT_MESSAGE"
 git push origin "$BRANCH"
