@@ -42,6 +42,7 @@ jobs:
           set -e
 
           version=$(node -pe 'require("./package.json").version')
+          echo "Updated version: $version"
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
   deploy:

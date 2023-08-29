@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 
 const url = process.env.WEBPAGE_URL;
 const metaTagName = "about:version";
-const timeout = 1000 * 60 * 3; // 3 minutes
+const timeout = 1000 * 60 * 10; // 10 minutes
 
 let timeoutExceeded = false;
 
@@ -17,9 +17,8 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 (async () => {
   let iterations = 0;
   while (!timeoutExceeded) {
-    console.log(
-      `Trying to get the latest version. (Iteration: ${++iterations})`,
-    );
+    iterations++;
+    console.log(`Trying to get the latest version. (${{ iterations }})`);
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
 
@@ -30,6 +29,11 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     );
 
     const version = await versionSelector?.evaluate((node) => node.content);
+
+    console.log({
+      receivedVersion: version,
+      expectedVersion: process.env.VERSION,
+    });
 
     await browser.close();
     if (version === process.env.VERSION) {
