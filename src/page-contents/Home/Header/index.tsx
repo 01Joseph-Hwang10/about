@@ -1,7 +1,6 @@
 import React from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import HomepageHero from "./Hero";
-import personal from "@site/config/values/personal";
 import Link from "@docusaurus/Link";
 import { translate } from "@docusaurus/Translate";
 // @ts-ignore
@@ -10,6 +9,7 @@ import clsx from "clsx";
 
 const HomepageHeader: React.FC = () => {
   const { siteConfig } = useDocusaurusContext();
+  const personal = siteConfig.customFields.personal as Record<string, string>;
 
   return (
     <HomepageHero>

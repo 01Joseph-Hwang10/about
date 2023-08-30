@@ -1,11 +1,11 @@
 import Head from "@docusaurus/Head";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { useBaseUrlUtils } from "@docusaurus/useBaseUrl";
-import personal from "@site/config/values/personal";
 import React from "react";
 
 const HomepageHead: React.FC = () => {
   const { siteConfig } = useDocusaurusContext();
+  const personal = siteConfig.customFields.personal as Record<string, string>;
   const { withBaseUrl } = useBaseUrlUtils();
   const pageTitle = `${personal.myName} - ${personal.tagline}`;
   const description = siteConfig.tagline;

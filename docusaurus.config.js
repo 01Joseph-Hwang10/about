@@ -6,8 +6,110 @@ const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 // Custom values.
-const personal = require("./config/values/personal");
-const navbar = require("./config/docusaurus/navbar");
+
+const personal = {
+  myName: "황현규",
+  tagline: "Start-up Enthusiast",
+  github: {
+    url: "https://github.com/01Joseph-Hwang10",
+    username: "01Joseph-Hwang10",
+    reponame: "01joseph-hwang10.github.io",
+  },
+  stackoverflow: "https://stackoverflow.com/users/14837031/joseph-hwang",
+  leetcode: "https://leetcode.com/01Joseph-Hwang10/",
+  email: "hghwang@unist.ac.kr",
+};
+
+/** @type {import('@docusaurus/preset-classic').ThemeConfig['navbar']} */
+const navbar = {
+  title: `${personal.myName}'s Page`,
+  hideOnScroll: false,
+  logo: {
+    alt: `${personal.myName}'s Logo`,
+    src: "img/logo.svg",
+  },
+  items: [
+    // {
+    //   type: "docSidebar",
+    //   sidebarId: "documentsSidebar",
+    //   position: "left",
+    //   label: "Documents",
+    // },
+    {
+      to: "/docs/category/%EC%9D%B4%EB%A0%A5%EC%84%9C",
+      label: "Resume",
+      position: "left",
+    },
+    {
+      to: "/docs/category/%EA%B2%BD%EB%A0%A5-%EA%B8%B0%EC%88%A0%EC%84%9C",
+      label: "Career Description",
+      position: "left",
+    },
+    // { to: "/blog", label: "Blog", position: "left" },
+    {
+      type: "localeDropdown",
+      position: "right",
+    },
+    {
+      href: personal.github.url,
+      label: "GitHub",
+      position: "right",
+    },
+  ],
+};
+
+/** @type {import('@docusaurus/preset-classic').ThemeConfig['footer']} */
+const footer = {
+  style: "dark",
+  links: [
+    {
+      title: "Docs",
+      items: [
+        {
+          label: "Career Description",
+          to: "/docs/category/%EA%B2%BD%EB%A0%A5-%EA%B8%B0%EC%88%A0%EC%84%9C",
+        },
+        {
+          label: "Resume",
+          to: "/docs/category/%EC%9D%B4%EB%A0%A5%EC%84%9C",
+        },
+      ],
+    },
+    {
+      title: "Community",
+      items: [
+        {
+          label: "Stack Overflow",
+          href: personal.stackoverflow,
+        },
+        {
+          label: "Leet Code",
+          href: personal.leetcode,
+        },
+        {
+          label: "Email",
+          href: `mailto:${personal.email}`,
+        },
+      ],
+    },
+    {
+      title: "More",
+      items: [
+        {
+          label: "Blog",
+          to: "/blog",
+        },
+        {
+          label: "GitHub",
+          href: personal.github.url,
+        },
+      ],
+    },
+  ],
+  copyright: `Copyright © ${new Date().getFullYear()} ${
+    personal.myName
+  }. Built with Docusaurus.`,
+};
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -39,6 +141,10 @@ const config = {
     locales: ["ko"],
   },
 
+  customFields: {
+    personal,
+  },
+
   presets: [
     [
       "classic",
@@ -63,8 +169,8 @@ const config = {
     ({
       // Replace with your project's social card
       image: "img/docusaurus-social-card.jpg",
-      navbar: require("./config/docusaurus/navbar"),
-      footer: require("./config/docusaurus/footer"),
+      navbar,
+      footer,
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
