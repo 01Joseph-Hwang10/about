@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.19 (2023-08-30)
+
+
+### :bug: Bug Fix
+
+* install fonts ([3bcc7a8](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/3bcc7a891524b30db17a3dea5f4ad109cbe594ed))
+
 ### 0.1.18 (2023-08-29)
 
 
