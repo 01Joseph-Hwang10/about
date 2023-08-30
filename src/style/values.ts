@@ -7,3 +7,5 @@
  * var(--mobile-width-scalar)
  */
 export const mobileWidth = 998;
+
+export const wideWidth = 1442;

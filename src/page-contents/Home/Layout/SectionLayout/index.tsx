@@ -1,10 +1,9 @@
 import React from "react";
-import styles, { Title } from "./styles";
+import styles, { Title, TitleProps } from "./styles";
 
-interface SectionLayoutProps {
+interface SectionLayoutProps extends TitleProps {
   id?: string;
   title?: string;
-  titleSpacing?: string;
   containerSpacing?: string;
   children: React.ReactNode;
 }
@@ -13,12 +12,12 @@ const SectionLayout: React.FC<SectionLayoutProps> = ({
   id,
   title,
   children,
-  titleSpacing,
   containerSpacing,
+  ...titleProps
 }) => {
   return (
     <div id={id} className="container" css={styles.container(containerSpacing)}>
-      {title && <Title verticalMargin={titleSpacing}>{title}</Title>}
+      {title && <Title {...titleProps}>{title}</Title>}
       {children}
     </div>
   );

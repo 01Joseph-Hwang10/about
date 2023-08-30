@@ -42,7 +42,7 @@ nav:first-child, /* Hide breadcrumbs */
 
 li,
 .theme-admonition p,
-.theme-admonition p a {
+.theme-admonition a {
   font-size: 0.65rem;
 }
 
