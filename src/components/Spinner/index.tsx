@@ -2,6 +2,7 @@ import { SerializedStyles } from "@emotion/react";
 import clsx from "clsx";
 import React from "react";
 import { Oval } from "react-loader-spinner";
+// @ts-ignore
 import styles from "./styles.module.scss";
 
 interface SpinnerProps {
