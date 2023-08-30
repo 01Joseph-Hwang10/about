@@ -4,6 +4,7 @@ import HomepageHero from "./Hero";
 import personal from "@site/config/values/personal";
 import Link from "@docusaurus/Link";
 import { translate } from "@docusaurus/Translate";
+// @ts-ignore
 import styles from "./styles.module.scss";
 import clsx from "clsx";
 
