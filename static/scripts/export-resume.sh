@@ -41,8 +41,13 @@ nav:first-child, /* Hide breadcrumbs */
 }
 
 li,
-.theme-admonition p {
+.theme-admonition p,
+.theme-admonition p a {
   font-size: 0.65rem;
+}
+
+.theme-admonition p {
+  margin-bottom: 0.5rem;
 }
 
 .metadata-tags span { /* Smaller tags */
