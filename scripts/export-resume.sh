@@ -18,12 +18,12 @@ _paperFormat="A4"
 # _pdfMargin="100,100,100,100"
 
 _cssStyle="""
-h4 {
+.markdown h4 {
   font-size: 1rem;
   margin-bottom: 0.5rem !important;
 }
 
-h4:before { 
+.markdown h4:before { 
   content: '=>'; /* Emojis are not supported in PDF, so we use arrows instead */
   margin-right: 0.5rem; 
   color: var(--ifm-color-warning); 
