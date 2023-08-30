@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.27 (2023-08-30)
+
+
+### :mega: Other
+
+* 재학 중 -> 휴학 중 ([3c91e88](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/3c91e88cee7eae60c58afc7234675a7749944b0e))
+
 ### 0.1.26 (2023-08-30)
 
 
