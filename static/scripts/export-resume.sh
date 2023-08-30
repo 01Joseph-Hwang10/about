@@ -40,14 +40,15 @@ nav:first-child, /* Hide breadcrumbs */
   display: none !important;
 }
 
-li {
+li,
+.theme-admonition p {
   font-size: 0.65rem;
 }
 
 .metadata-tags span { /* Smaller tags */
-  font-size: 0.1rem;
-  line-height: 0.75;
-  padding: 0.2rem 0.4rem;
+  font-size: 0.5rem;
+  line-height: 1;
+  padding: 0.125rem 0.25rem;
 }
 
 .me-in-a-nutshell-item {
