@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.23 (2023-08-30)
+
+
+### :mega: Other
+
+* style tweak ([98b1bb7](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/98b1bb7831f7142298a7e8758c3049d672db3d9b))
+
 ### 0.1.22 (2023-08-30)
 
 

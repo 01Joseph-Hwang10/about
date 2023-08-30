@@ -6,7 +6,7 @@ import OutlinedAvatar from "@site/src/components/Avatar/OutlinedAvatar";
 import PaintBackground from "@site/src/components/PaintBackground";
 import useIsDarkMode from "@site/src/hooks/useIsDarkMode";
 import { css } from "@emotion/react";
-import { mobileWidth, wideWidth } from "@site/src/style/values";
+import { mobileWidth } from "@site/src/style/values";
 import values from "./values";
 import Markdown from "@site/src/components/Markdown";
 
@@ -24,14 +24,10 @@ const AboutMe = () => {
         isDarkMode={isDarkMode}
         skewY={-3}
         css={css`
-          margin-top: -1.5rem;
+          margin-top: -6rem;
           height: calc(100% + 12rem);
           @media screen and (min-width: ${mobileWidth}px) {
-            margin-top: -3rem;
-            height: calc(75% - 6rem);
-          }
-          @media screen and (min-width: ${wideWidth}px) {
-            margin-top: -1.5rem;
+            height: calc(75%);
           }
         `}
       />

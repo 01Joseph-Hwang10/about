@@ -9,7 +9,6 @@ const styles = {
 
 export interface TitleProps {
   verticalMargin?: string;
-  color?: string;
   mixBlendMode?: string;
 }
 
@@ -19,7 +18,6 @@ export const Title = styled.h2<TitleProps>`
   font-weight: 900;
   text-align: center;
   letter-spacing: 1px;
-  color: ${({ color }) => color || "var(--ifm-heading-color)"};
   margin: ${({ verticalMargin: margin }) => margin || "6rem auto"};
   mix-blend-mode: ${({ mixBlendMode }) => mixBlendMode || "unset"};
 `;
