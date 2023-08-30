@@ -30,13 +30,12 @@
 } */
 
 :root {
-  --ifm-heading-color: var(--ifm-color-primary);
   --mobile-width-scalar: 998;
   --mobile-width: calc(var(--mobile-width-scalar) * 1px);
 }
 
-[data-theme="dark"] {
-  --ifm-heading-color: inherit;
+* {
+  word-break: keep-all;
 }
 
 html {

@@ -20,6 +20,12 @@ export const Title = styled.h2<TitleProps>`
   letter-spacing: 1px;
   margin: ${({ verticalMargin: margin }) => margin || "6rem auto"};
   mix-blend-mode: ${({ mixBlendMode }) => mixBlendMode || "unset"};
+
+  color: var(--ifm-color-primary);
+
+  [data-theme="dark"] & {
+    color: var(--ifm-font-color-base);
+  }
 `;
 
 export default styles;

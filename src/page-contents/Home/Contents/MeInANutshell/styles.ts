@@ -10,6 +10,11 @@ const header = css`
 const title = css`
   text-align: center;
   font-weight: 400;
+  color: var(--ifm-color-primary);
+
+  [data-theme="dark"] & {
+    color: var(--ifm-font-color-base);
+  }
 `;
 
 const description = css`
