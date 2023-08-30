@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.24 (2023-08-30)
+
+
+### :bug: Bug Fix
+
+* type issue ([ecd0fd7](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/ecd0fd75d1dd989ed0e02a69c462d4ce0f3b9554))
+
 ### 0.1.23 (2023-08-30)
 
 
