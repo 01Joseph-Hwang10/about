@@ -33,6 +33,12 @@ export const CareerPeriod = styled.h3<CareerTitleProps>`
   @media screen and (min-width: ${mobileWidth}px) {
     font-size: ${({ emphasize }) => (emphasize ? "1.5rem" : "1.25rem")};
   }
+
+  color: var(--ifm-color-primary);
+
+  [data-theme="dark"] & {
+    color: var(--ifm-font-color-base);
+  }
 `;
 
 const body = css`
