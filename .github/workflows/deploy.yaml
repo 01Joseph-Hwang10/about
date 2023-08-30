@@ -162,8 +162,9 @@ jobs:
           echo "Creating .gitignore..."
           echo "node_modules" > .gitignore
 
-          echo "Installing toolings..."
-          sudo apt-get install -y qpdf
+          echo "Installing tools and fonts..."
+          sudo apt-get update
+          sudo apt-get install -y qpdf fonts-noto fonts-noto-cjk
 
           echo "Configuring resume exporter..."
           chmod +x ./scripts/export-resume.sh
@@ -180,4 +181,4 @@ jobs:
           COMMIT_MESSAGE="chore: update $FILENAME [no ci]"
           git add -A
           HUSKY=0 git commit -m "$COMMIT_MESSAGE"
-          git push origin "$BRANCH"
+          git push -f origin "$BRANCH"
