@@ -42,6 +42,10 @@
     padding: 10rem 0;
   }
 
+  @media screen and (min-width: 1442px) {
+    padding: 20rem 0;
+  }
+
   background-image: url("/img/newyork-light.jpg");
   [data-theme="dark"] & {
     background-image: url("/img/newyork-dark.jpg");

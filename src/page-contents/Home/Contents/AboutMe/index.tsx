@@ -6,7 +6,7 @@ import OutlinedAvatar from "@site/src/components/Avatar/OutlinedAvatar";
 import PaintBackground from "@site/src/components/PaintBackground";
 import useIsDarkMode from "@site/src/hooks/useIsDarkMode";
 import { css } from "@emotion/react";
-import { mobileWidth } from "@site/src/style/values";
+import { mobileWidth, wideWidth } from "@site/src/style/values";
 import values from "./values";
 import Markdown from "@site/src/components/Markdown";
 
@@ -18,15 +18,20 @@ const AboutMe = () => {
         id: "pages.Home.Contents.AboutMe.title",
         message: "안녕하세요, 황현규입니다 😃",
       })}
-      titleSpacing="0 0 6rem 0"
+      verticalMargin="0 0 12rem 0"
     >
       <PaintBackground
         isDarkMode={isDarkMode}
         skewY={-3}
         css={css`
-          height: 75%;
-          @media screen and (max-width: ${mobileWidth}px) {
-            height: 100%;
+          margin-top: -1.5rem;
+          height: calc(100% + 12rem);
+          @media screen and (min-width: ${mobileWidth}px) {
+            margin-top: -3rem;
+            height: calc(75% - 6rem);
+          }
+          @media screen and (min-width: ${wideWidth}px) {
+            margin-top: -1.5rem;
           }
         `}
       />
