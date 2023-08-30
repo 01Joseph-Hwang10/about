@@ -16,7 +16,7 @@ const Experience: React.FC = () => {
         id: "pages.Home.Contents.Experience.title",
         message: "경력 사항",
       })}
-      titleSpacing="0 0 10rem 0"
+      verticalMargin="0 0 10rem 0"
     >
       <PaintBackground
         background={
