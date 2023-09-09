@@ -18,8 +18,8 @@ export class MetadataTagsSectionFilter implements ContentFilter {
   }
 
   apply(node, i) {
-    // Stop erasing when <h4> is found
-    if (node.tagName === "H4") this.eraseMode = false;
+    // Stop erasing when <h4> or higher is found
+    if (["H1", "H2", "H3", "H4"].includes(node.tagName)) this.eraseMode = false;
 
     // When this.eraseMode is on, erase current node
     if (this.eraseMode) {

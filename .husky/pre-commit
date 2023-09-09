@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Remove every file in static/files/resume
+rm -rf ./static/files/resume
+
+# Run the script to restore resume, folder only
+mkdir ./static/files/resume
+touch ./static/files/resume/.gitkeep
+
+git add -A

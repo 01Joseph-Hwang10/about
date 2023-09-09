@@ -1,11 +1,11 @@
 import Tags from "@site/src/components/Tag/Tags";
 import values from "./values";
 
-#### OOP에 기반한 `Admin Dashboard` 코드 리팩터링
+#### OOP에 기반한 React Component와 StencilJS Web Component의 상태 연동
 
 <Tags
-  metadata={["general", "frontend-agnostic"]}
-  tags={["frontend", "improvement", "@shepherd23"]}
+  metadata={["general", "frontend-agnostic", "standbylab"]}
+  tags={["frontend", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
 
@@ -49,3 +49,103 @@ Insert link here
 - 또한 Auth Flow가 복잡했기 때문에 어느 부분에서 에러가 발생했는지 파악하기 어려웠음.
 - 이러한 문제를 해결하고자 `Admin Dashboard`의 Auth Flow를 테스트하기 위해 Cypress를 활용한 테스트 작성함.
 - => Iteration 속도 향상. 개발 생산성 향상.
+
+#### Code Split과 Suspense 컴포넌트를 활용한 초기 로딩 UX 개선
+
+<Tags
+  metadata={["general", "frontend-agnostic", "standbylab"]}
+  tags={["frontend", "improvement", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- 컴포넌트를 활용해 MUI, D3등 다소 무거운 라이브러리 활용으로 `Admin Dashboard`의 번들 크기가 커지는 문제가 있었음.
+- => Code Split과 `React.Suspense` 를 활용해 초기 로딩 UX 개선.
+
+<details>
+<summary>AppRouter</summary>
+<div markdown="1">
+
+```tsx
+const Overview = lazy(() => import("@src/features/overview"));
+const Dashboard = lazy(() => import("@src/features/dashboard"));
+const Store = lazy(() => import("@src/features/store"));
+const DesignEditorScaffold = lazy(
+  () => import("@src/features/design/scaffold"),
+);
+const DefaultBannerDesign = lazy(
+  () => import("@src/features/design/default-banner-design"),
+);
+const ListingBannerDesign = lazy(
+  () => import("@src/features/design/listing-banner-design"),
+);
+
+const AppRouter = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path={URI.root} element={<Initializer />} />
+        <Route path={URI.requestAccessToken} element={<AccessTokenFetcher />} />
+        <Route path={URI.confirmPayment} element={<ConfirmPayment />} />
+        <Route path={URI.error} element={<ErrorPage />} />
+        <Route
+          path={URI.dashboard.root}
+          element={
+            <Suspense fallback={<Loader fill />}>
+              <Dashboard />
+            </Suspense>
+          }
+        >
+          <Route
+            path={URI.dashboard.overview}
+            element={
+              <Suspense fallback={<Loader fill />}>
+                <Overview />
+              </Suspense>
+            }
+          />
+          <Route
+            path={URI.dashboard.store}
+            element={
+              <Suspense fallback={<Loader fill />}>
+                <Store />
+              </Suspense>
+            }
+          />
+          <Route
+            path={URI.dashboard.design.root}
+            element={
+              <Suspense fallback={<Loader fill />}>
+                <DesignEditorScaffold />
+              </Suspense>
+            }
+          >
+            <Route
+              path={URI.dashboard.design.defaultBanner}
+              element={
+                <Suspense fallback={<Loader fill />}>
+                  <DefaultBannerDesign />
+                </Suspense>
+              }
+            />
+            <Route
+              path={URI.dashboard.design.listingBanner}
+              element={
+                <Suspense fallback={<Loader fill />}>
+                  <ListingBannerDesign />
+                </Suspense>
+              }
+            />
+          </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+};
+```
+
+</div>
+</details>
+
+##### See Also
+
+- [`AppRouter`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#code-split과-suspense-컴포넌트를-활용한-초기-로딩-ux-개선)

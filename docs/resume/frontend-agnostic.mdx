@@ -7,14 +7,16 @@ description: "Frontend 직무와 관련한 사항을 정리한 이력서입니�
 
 import "./custom.scss";
 
+import MeInANutshellItems from "@site/src/page-contents/Home/Contents/MeInANutshell/MeInANutshellItems";
 import FilterBoundary from "@site/src/components/Tag/Meta/FilterBoundary";
 import {
   MetadataTagsSectionFilter,
-  RelatedFilter,
+  SubsectionFilter,
   HrefFilter,
 } from "@site/src/components/Tag/Meta/FilterBoundary/filters";
+import ProjectTitle from "@site/src/components/Project/ProjectTitle";
 
-import Introduction from "./partials/_introduction.mdx";
+import Overview from "./partials/_overview.mdx";
 import Education from "./partials/_education.mdx";
 import Experience from "./partials/_experience.mdx";
 import MoreExperience from "./partials/_more-experience.mdx";
@@ -42,7 +44,22 @@ https://raw.githubusercontent.com/01Joseph-Hwang10/01joseph-hwang10.github.io/gh
 
 # 황현규
 
-<Introduction />
+<Overview />
+
+주니어 개발자 황현규입니다. 창업과 스타트업에 관심이 많습니다.
+
+창업 아이템을 내 손으로 직접 구현하기 위해 개발을 시작했으며, 나의
+아이디어를 직접 구현하여 세상에 가치를 제공할 때 느끼는 보람이 매우 커,
+학부 신입생 때부터 교내외의 스타트업, 다수의 해커톤 및 창업 활동에
+참여하여 팀의 핵심 인원으로써 활약하였습니다.
+
+"최소 자원으로 최대 효용" 이라는 린 스타트업의 철학에 깊은
+공감을 하며, 업무를 진행할 때도 어떻게 하면 최소한의 자원으로 최대의
+효과를 이끌어낼 수 있을지 끊임없이 고민합니다. 또한 항상 "왜?"
+라는 질문을 던지며, 무엇을 하는지에 대한 뚜렷한 목적을 가지고 업무를
+진행합니다.
+
+<MeInANutshellItems mode="desktop" />
 
 ## 학력 사항
 
@@ -59,16 +76,24 @@ https://raw.githubusercontent.com/01Joseph-Hwang10/01joseph-hwang10.github.io/gh
 <FilterBoundary
   filters={[
     new MetadataTagsSectionFilter("frontend-agnostic"),
-    new RelatedFilter(),
-    new HrefFilter(),
+    new SubsectionFilter("Related"),
   ]}
 >
+  <ProjectTitle
+    title="PickHound"
+    link="https://01joseph-hwang10.github.io/docs/career-description/pickhound"
+  />
   <AdminDashboard />
   <BannerManager />
   <Common />
-  <LearnQueExperience />
   <RecommendationAPI />
   <BanditEngine />
+
+  <ProjectTitle
+    title="LearnQue"
+    link="https://01joseph-hwang10.github.io/docs/career-description/learnque"
+  />
+  <LearnQueExperience />
 </FilterBoundary>
 
 ## 스킬셋

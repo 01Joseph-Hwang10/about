@@ -65,6 +65,7 @@ const supportingStacks: Record<FeaturedStack["key"], SupportingStack> = {
   },
   react: {
     words: [
+      "NextJS",
       "Redux",
       "RTK Query",
       "TailwindCSS",
@@ -74,7 +75,6 @@ const supportingStacks: Record<FeaturedStack["key"], SupportingStack> = {
       "Storybook",
       "StencilJS",
       "D3",
-      "NextJS",
       "Figma",
     ],
     seed: 3,

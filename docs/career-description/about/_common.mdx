@@ -1,0 +1,19 @@
+import Tags from "@site/src/components/Tag/Tags";
+import values from "../values";
+
+#### CSS `max-*`, `&:before`를 이용한 반응형 쇼케이스 이미지 구현
+
+<Tags
+  metadata={["frontend-agnostic" "standbylab"]}
+  tags={["frontend", "feature"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- 정해진 가로세로비의 이미지를 화면 너비에 따라 크기가 정해지는 쇼케이스 카드에 가장 크게 fit 하기 위해 `max-width: 100%; max-height: 100%;` 를 적용함.
+  - `이미지의 가로세로비 < 쇼케이스 카드의 가로세로비` => 쇼케이스 카드의 높이를 기준으로 fit.
+  - `이미지의 가로세로비 > 쇼케이스 카드의 가로세로비` => 쇼케이스 카드의 너비를 기준으로 fit.
+- 쇼케이스 카드의 빈 영역은 `before` pseudo selector와 `background-image`, `position`, `filter` 프로퍼티를 이용해 블러처리된 이미지로 fill.
+
+##### See Also
+
+- [Showcase Example](https://01joseph-hwang10.github.io/#Projects)

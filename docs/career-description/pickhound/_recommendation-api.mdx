@@ -1,10 +1,10 @@
 import Tags from "@site/src/components/Tag/Tags";
 import values from "./values";
 
-#### 상품 정보에 대한 Caching 기능 추가
+#### 상품 정보에 대한 Caching 구현
 
 <Tags
-  metadata={["general", "backend-agnostic"]}
+  metadata={["general", "backend-agnostic", "standbylab"]}
   tags={["backend", "optimization", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
@@ -92,6 +92,35 @@ export class ActionProviderService {
 </div>
 </details>
 
+##### See Also
+
+- [PickHound](https://01joseph-hwang10.github.io/docs/career-description/pickhound)
+- [ActionProviderService](https://01joseph-hwang10.github.io/docs/career-description/pickhound#상품-정보에-대한-caching-구현)
+
+#### 복합 인덱스 관리를 위한 명시적 메서드 네이밍 컨벤션 수립
+
+<Tags
+  metadata={["general", "backend-agnostic", "standbylab"]}
+  tags={["backend", "improvement", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- Firestore를 도입하고 여러 필드를 기준으로 쿼리를 수행하는 경우가 늘어나면서, 복합 인덱스에 포함된 프로퍼티, 정렬 기준 등을 혼동하는 경우가 빈번히 발생.
+- => 모든 프로퍼티 이름을 포함하는 네이밍 컨벤션을 통해 복합 인덱스 관리를 명시적으로 하도록 함.
+
+:::note
+
+##### 네이밍 컨벤션 예시: `listRewardRecordByMallIdIssuanceTypeTimerange`
+
+- list: 목록을 반환
+- rewardRecord: `reward-record` 컬렉션에서
+- by: 다음의 필드를 기준으로
+- MallId: `mallId` 필드
+- IssuanceType: `issuanceType` 필드
+- Timerange: `issuedDate` 필드를 기준으로 `class Timerange` 클래스에 정의된 `startDate`, `endDate` 프로퍼티를 사용해 필터링
+
+:::
+
 #### 점진적인 코드베이스 이관을 통한 DB 마이그레이션
 
 <Tags
@@ -130,81 +159,147 @@ Insert link here
 - 이에 상품 추천 API의 코드를 인스펙션하며, `Date.now()` 를 활용해 각 단계의 응답 속도를 측정함.
 - => Firestore로의 count 쿼리가 응답 지연의 원인임을 발견하고, count 쿼리를 제거해 응답 지연 문제 해결.
 
-#### Leaky Bucket Policy를 적용한 API의 호출 제한 문제 해결
+#### Leaky Bucket이 적용된 엔드포인트를 위한 HTTP Client 구현
 
 <Tags
-  metadata={["general", "backend-agnostic"]}
-  tags={["devops", "feature", "@shepherd23"]}
+  metadata={["general", "backend-agnostic", "standbylab"]}
+  tags={["backend", "feature", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
 
 - 데이터 요청이 필요한 API의 Leaky Bucket Policy로 인해 1초에 2회 수준으로 API 호출이 제한됨.
-- 각 상품의 상세 정보를 하나씩 전부 요청해야 하는 상황에서 단순 API 호출로는 HTTP 429 에러 발생했음
+- 각 상품의 상세 정보를 하나씩 전부 요청해야 하는 상황에서 단순 API 호출로는 HTTP 429 에러 발생.
 - => LeakyBucketClient 클래스를 구현해 호출의 빈도를 제한하고, 429 에러 발생 시 재시도하는 로직을 구현해 이슈 해결.
 
 <details>
-<summary>LeakyBucketClient.leakyBucket</summary>
+<summary>LeakyBucketClient</summary>
 <div markdown="1">
 
 ```ts
-class LeakyBucketClient {
-  async leakyBucket<T = any>(
-    requestConstructor: (() => Promise<T>)[],
-    {
-      maxLimit,
-      requestId,
-      leakInterval = 1000,
-      leakRate = 2,
-      timeout,
-    }: LeakyBucketOptions,
-  ): Promise<T[]> {
-    // Function scope variables
-    const results: T[] = [];
-    let currentUsage = await this.getCurrentAPIUsage(requestId);
+interface LeakyBucketClientOptions<T> {
+  mallId: string;
+  requests: (() => Promise<AxiosResponse<T>>)[];
+  maxLimit: number;
+  leakInterval?: number;
+  leakRate?: number;
+  /**
+   * @description
+   * If timeout is set, the function will be terminated after the timeout.
+   */
+  timeout?: number;
+}
 
-    let timeoutExceeded = false;
+/**
+ * @description
+ * This class is used to fetch data from an endpoint with leaky bucket policy.
+ */
+class LeakyBucketClient<T> {
+  public results: T[];
+  private currentAPIUsage: number;
+  private timeoutExceeded: boolean;
+  private state: "idle" | "running" | "finished";
 
-    // Set timeout if timeout is provided
-    if (timeout) {
-      const timer = setTimeout(() => {
-        clearTimeout(timer);
-        timeoutExceeded = true;
-      }, timeout);
+  constructor(private readonly options: LeakyBucketClientOptions<T>) {
+    this.currentAPIUsage = 0;
+    this.timeoutExceeded = false;
+    this.state = "idle";
+  }
+
+  private async getAPIUsageFromHeaders(
+    headers: AxiosResponse["headers"],
+  ): Promise<number> {
+    const rawUsage = String(headers["x-api-call-limit"]).split("/")[0];
+    const parsedUsage = Number.parseInt(rawUsage);
+    return Number.isNaN(parsedUsage) ? 0 : parsedUsage;
+  }
+
+  private startTimeout() {
+    const timer = setTimeout(() => {
+      clearTimeout(timer);
+      this.timeoutExceeded = true;
+    }, this.options.timeout);
+  }
+
+  /**
+   * @description
+   * Compute wait time for the leak.
+   *
+   * @param decrementGoal The amount of decrementing the current limit.
+   */
+  private computWaitTime(decrementGoal: number) {
+    return (decrementGoal / this.options.leakRate) * this.options.leakInterval;
+  }
+
+  /**
+   * @description
+   * Wait for the wait time, calculated by `computWaitTime` method.
+   *
+   * @param decrementGoal The amount of decrementing the current limit.
+   */
+  private async waitForTheLeak(decrementGoal: number) {
+    // Define wait time and wait
+    const waitTime = this.computWaitTime(decrementGoal);
+    await wait(waitTime);
+
+    // Decrement current limit
+    this.currentAPIUsage -= decrementGoal;
+  }
+
+  /**
+   * @description
+   * Execute @type {LeakyBucketClientOptions['requests']} under the leaky bucket policy.
+   *
+   * Note that this method is one-time use only.
+   *
+   * After the execution, the state of the client will be set to "finished",
+   * and any further execution will throw an error.
+   *
+   * If any further execution is needed, create a new instance of the client.
+   */
+  async execute(): Promise<T[]> {
+    // Check if state is idle
+    if (this.state === "finished") {
+      throw new Error("[LeakyBucketClient] This client has already finished.");
+    }
+    if (this.state === "running") {
+      throw new Error("[LeakyBucketClient] This client is already running.");
     }
 
-    /**
-     * @description
-     * Start by sending preflight request which sets pagination to 1.
-     * This is to see current api limit from the response headers from the api requests.
-     */
-    let sentPreflight = false;
-    while (results.length < requestConstructor.length) {
-      // If timeout is exceeded, throw error
-      if (timeoutExceeded) {
+    // Set state to running
+    this.state = "running";
+
+    // Start timeout for preventing infinite loop
+    if (this.options.timeout) this.startTimeout();
+
+    // Request resources
+    while (this.results.length < this.options.requests.length) {
+      // If timeout is exceeded, throw an error
+      if (this.timeoutExceeded) {
         throw new ServiceUnavailableException(
-          "[LeakyBucketClient] Can't finish the process in time.",
+          "[LeakyBucketClient] Couldn't finish the process in time.",
         );
       }
 
-      // Check current api limit from response headers
-      currentUsage = await this.getCurrentAPIUsage(requestId);
-
       // Decide paginating amount based on current api limit
-      const pagination = sentPreflight ? maxLimit - currentUsage - leakRate : 1;
+      const pagination = this.options.maxLimit - this.currentAPIUsage;
 
-      // If pagination is below 1, that is, we have reached the limit, wait for the leak interval
-      if (pagination <= 0) {
-        const decrementGoal = Math.abs(pagination) + maxLimit;
-        const waitTime = (decrementGoal / leakRate) * leakInterval;
-        await wait(waitTime);
-        await this.setCurrentAPIUsage(requestId, currentUsage - decrementGoal);
+      // Wait for the leak for further requests
+      if (pagination < 0) {
+        // Set decrement goal
+        const decrementGoal = Math.abs(pagination) + this.options.maxLimit;
+
+        // Wait for bucket to be leaked
+        await this.waitForTheLeak(decrementGoal);
         continue;
       }
 
       // Paginate promises to be sent
-      const chunk = requestConstructor.slice(
-        results.length,
-        Math.min(results.length + pagination, requestConstructor.length + 1),
+      const chunk = this.options.requests.slice(
+        this.results.length,
+        Math.min(
+          this.results.length + pagination,
+          this.options.requests.length + 1,
+        ),
       );
 
       // Invoke promises
@@ -222,39 +317,360 @@ class LeakyBucketClient {
       // If there's a 429 response, wait for the leak interval with amount of the number of overflowed requests
       if (overflowedRequestCount > 0) {
         // Calculate remaining request and set decrement goal
-        const remainingRequest = requestConstructor.slice(
-          results.length,
-        ).length;
+        const remainingRequest = this.options.requests.slice(
+          this.results.length,
+        );
         const decrementGoal =
           overflowedRequestCount +
-          Math.min(maxLimit, remainingRequest) +
-          leakRate;
+          Math.min(this.options.maxLimit, remainingRequest.length);
 
-        // Define wait time and wait
-        const waitTime = (decrementGoal / leakRate) * leakInterval;
-        await wait(waitTime);
-
-        // Decrement current limit
-        await this.setCurrentAPIUsage(requestId, currentUsage - decrementGoal);
-
-        // If preflight request is successfully sent, mark preflight as sent
-        sentPreflight = true;
+        // Wait for bucket to be leaked
+        await this.waitForTheLeak(decrementGoal);
         continue;
       }
 
-      // If preflight request is successfully sent, mark preflight as sent
-      sentPreflight = true;
-
       // Push results to the result array
-      results.push(...chunkResults.map(({ data }) => data));
+      this.results.push(...chunkResults.map(({ data }) => data));
     }
-    return results;
+
+    // Set state to finished
+    this.state = "finished";
+
+    return this.results;
+  }
+
+  /**
+   * @description
+   * We consider 502 and 429 errors as overflow errors.
+   * While considering 502 as overflow error is not strictly correct,
+   * we consider 502 as overflow error because it is highly likely that
+   * 502 error is caused by the same reason as 429 error.
+   */
+  private async safeExecute<T>(
+    request: () => Promise<AxiosResponse<T>>,
+  ): Promise<LeakyBucketFetchResponse<T>> {
+    try {
+      const result = await request();
+      this.currentAPIUsage = await this.getAPIUsageFromHeaders(result.headers);
+      return {
+        success: true,
+        data: result.data,
+        overflow: false,
+        badGateway: false,
+      };
+    } catch (error) {
+      this.currentAPIUsage = await this.getAPIUsageFromHeaders(error.headers);
+      if (error instanceof TooManyRequestsException)
+        return {
+          success: false,
+          data: null,
+          overflow: true,
+          badGateway: false,
+        };
+      if (error instanceof BadGatewayException)
+        return {
+          success: false,
+          data: null,
+          overflow: false,
+          badGateway: true,
+        };
+      throw error;
+    }
   }
 }
 ```
 
 </div>
 </details>
+
+##### See Also
+
+- [`LeakyBucketClient`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#leaky-bucket이-적용된-엔드포인트를-위한-http-client-구현)
+
+#### Bandit Engine 서비스와의 연동을 위한 HTTP Client 구현
+
+<Tags
+  metadata={["general", "backend-agnostic", "standbylab"]}
+  tags={["backend", "feature", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- [RecommendationAPI](https://01joseph-hwang10.github.io/docs/career-description/pickhound#recommendation-api-subproject)를 [Bandit Engine](https://01joseph-hwang10.github.io/docs/career-description/pickhound#bandit-engine-subproject)과 연동하기 위해 Flask 서비스와 통신하는 HTTP Client 구현.
+
+<details>
+<summary>BanditClient</summary>
+<div markdown="1">
+
+```ts
+@Injectable()
+export class BanditClient {
+  private endpoints: Record<string, string>;
+
+  constructor(options: BanditClientOptions) {
+    this.endpoints = {
+      reward: AppURL.bandit("model", options.type, "reward"),
+      getRecommendations: AppURL.bandit(
+        "model",
+        options.type,
+        "get-recommendations",
+      ),
+      processProducts: AppURL.bandit(
+        "model",
+        options.type,
+        "data_processor",
+        "products_to_actions",
+      ),
+      updatePopularities: AppURL.bandit(
+        "model",
+        options.type,
+        "data_processor",
+        "update_popularities",
+      ),
+    };
+  }
+  /**
+   * @description
+   * Bandit Engine에 리퀘스트를 보낼 적의 헤더입니다.
+   * 헤더에는 Bandit Engine API Key가 포함됩니다.
+   */
+  private defaultHeaders: RawAxiosRequestHeaders = {
+    "Content-Type": "application/json",
+    "X-API-KEY": process.env.BANDIT_ENGINE_API_KEY,
+  };
+
+  /**
+   * @description
+   * Bandit Model을 통해 추천 상품을 가져옵니다.
+   *
+   * @param {GetRecommendationsPayload} payload 추천 상품을 요청하기 위해 필요한 정보
+   * @returns {Promise<RecommendationInfo[]>} 추천 상품 ID (`productNo`) 목록
+   */
+  async getRecommendedActions(
+    payload: GetRecommendationsPayload,
+  ): Promise<RecommendationMetadata[]> {
+    const debugInfo = {
+      mallId: payload.mallId,
+      rootClickNo: payload.rootClickNo,
+      productToIgnore: payload.productToIgnore,
+      lastClickedProductNos: payload.lastClickedProductNos.join(",") || null,
+      postClickNum: payload.postClickNum,
+    };
+    const response = await this.createRequest<
+      GetRecommendationsPayload,
+      GetRecommendationsResponse
+    >(this.endpoints.getRecommendations, payload, debugInfo);
+    return response.recommendedActions;
+  }
+
+  /**
+   * @description
+   * Bandit Model에 리워드를 feed 합니다.
+   *
+   * @param {RewardPayload} payload 리워드를 feed 하기 위해 필요한 정보
+   * @returns {Promise<MallContext>} 업데이트된 쇼핑몰의 context 정보
+   */
+  async reward(payload: RewardPayload): Promise<MallContext> {
+    const debugInfo = {
+      mallId: payload.mallId,
+    };
+    const response = await this.createRequest<RewardPayload, RewardResponse>(
+      this.endpoints.reward,
+      payload,
+      debugInfo,
+    );
+    return response.mallContext;
+  }
+
+  /**
+   * @description
+   * Bandit 모델을 통해 상품을 context로 변환합니다.
+   *
+   * 이는 추천을 요청할 때마다 상품의 context를 계산하는 것이 아니라,
+   * 상품의 context를 미리 계산하여 저장해두고, 추천 요청 시에는 저장된 context를 사용하도록 하기 위함입니다.
+   * 이를 통해 추천 요청 시에 상품의 context를 계산하는 시간을 줄일 수 있어, 추천 속도를 높일 수 있습니다.
+   *
+   * @param {ProcessProductsPayload} payload 상품을 context로 변환하기 위해 필요한 정보
+   * @returns {Promise<ProcessProductsResponse>} 상품의 context 정보
+   */
+  async processProductsToContextVector(
+    payload: ProcessProductsPayload,
+  ): Promise<KeysToCamelCase<ProcessProductsResponse>> {
+    const debugInfo = {
+      mallId: payload.mallId,
+    };
+    const response = await this.createRequest<
+      ProcessProductsPayload,
+      ProcessProductsResponse
+    >(this.endpoints.processProducts, payload, debugInfo);
+    return response;
+  }
+
+  /**
+   *
+   * @param {UpdatePopularitiesPayload} payload 상품의 인기도를 업데이트하기 위해 필요한 정보
+   * @returns
+   */
+  async updatePopularities(
+    payload: UpdatePopularitiesPayload,
+  ): Promise<ReturnType<ProductContext["toJSON"]>[]> {
+    const debugInfo = {
+      mallId: payload.mallId,
+    };
+    const response = await this.createRequest<
+      UpdatePopularitiesPayload,
+      UpdatePopularitiesResponse
+    >(this.endpoints.updatePopularities, payload, debugInfo);
+    return response.actions;
+  }
+
+  /**
+   * @description
+   * Bandit Engine 서버에 리퀘스트를 보내는 메소드입니다.
+   *
+   * @param url 요청을 보낼 HTTP URL
+   * @param payload 요청의 payload
+   * @param params 요청의 query string.
+   *               모든 요청이 HTTP POST로 이루어지기 때문에 query string은 요청에 영향을 주지는 않습니다.
+   *               GCL에서 모니터링을 위해 사용됩니다.
+   * @returns
+   */
+  private async createRequest<P = any, R = any>(
+    url: string,
+    payload: P,
+    params?: Record<string, string | number | boolean>,
+  ): Promise<KeysToCamelCase<R>> {
+    try {
+      const { data } = await axios.post<R>(
+        url,
+        objectFromCamelToSnake(payload),
+        { headers: this.defaultHeaders, params },
+      );
+      return objectFromSnakeToCamel(data);
+    } catch (error) {
+      const status: Maybe<string> = error?.response?.status;
+      if (status?.toString()?.at(0) === "4") {
+        throw new BadRequestException(error);
+      }
+      throw new BanditException(error);
+    }
+  }
+}
+```
+
+</div>
+</details>
+
+- `snake_case`를 사용하는 Flask 서비스와 `camelCase`를 사용하는 NestJS 서비스 간의 데이터 교환을 위해 `objectFromSnakeToCamel`, `objectFromCamelToSnake` 함수를 구현.
+
+<details>
+<summary>objectFromSnakeToCamel</summary>
+<div markdown="1">
+
+```ts
+export type KeysToSnakeCase<T> = T extends (infer U)[]
+  ? U extends Record<string, any>
+    ? KeysToCamelCase<U>[]
+    : U[]
+  : {
+      [K in keyof T as SnakeCase<string & K>]: T[K] extends Record<string, any>
+        ? KeysToSnakeCase<T[K]>
+        : T[K];
+    };
+
+export const camelToSnake = (str: string): string => {
+  return str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+};
+
+/**
+ * @description
+ * Converts object's keys from camel case to snake case recursively.
+ */
+export const objectFromCamelToSnake = <
+  T extends Record<string, any> = Record<string, any>,
+>(
+  obj: T,
+): KeysToSnakeCase<T> => {
+  return Object.keys(obj).reduce((acc, key) => {
+    const value = obj[key];
+    if (isPrimitive(value)) {
+      acc[camelToSnake(key)] = value;
+      return acc;
+    }
+    if (Array.isArray(value)) {
+      acc[camelToSnake(key)] = value.map((item) =>
+        isPrimitive(item) ? item : objectFromCamelToSnake(item),
+      );
+      return acc;
+    }
+    if (typeof value === "object") {
+      acc[camelToSnake(key)] = objectFromCamelToSnake(value);
+      return acc;
+    }
+  }, {} as any) as KeysToSnakeCase<T>;
+};
+```
+
+</div>
+</details>
+
+<details>
+<summary>objectFromSnakeToCamel</summary>
+<div markdown="1">
+
+```ts
+export type KeysToCamelCase<T> = T extends (infer U)[]
+  ? U extends Record<string, any>
+    ? KeysToCamelCase<U>[]
+    : U[]
+  : {
+      [K in keyof T as CamelCase<string & K>]: T[K] extends Record<string, any>
+        ? KeysToCamelCase<T[K]>
+        : T[K];
+    };
+
+export const snakeToCamel = (str: string): string => {
+  return str.replace(/([-_][a-z])/g, (group) =>
+    group.toUpperCase().replace("-", "").replace("_", ""),
+  );
+};
+
+/**
+ * @description
+ * Converts object's keys from snake case to camel case recursively.
+ */
+export const objectFromSnakeToCamel = <
+  T extends Record<string, any> = Record<string, any>,
+>(
+  obj: T,
+): KeysToCamelCase<T> => {
+  return Object.keys(obj).reduce((acc, key) => {
+    const value = obj[key];
+    if (isPrimitive(value)) {
+      acc[snakeToCamel(key)] = value;
+      return acc;
+    }
+    if (Array.isArray(value)) {
+      acc[snakeToCamel(key)] = value.map((item) =>
+        isPrimitive(item) ? item : objectFromSnakeToCamel(item),
+      );
+      return acc;
+    }
+    if (typeof value === "object") {
+      acc[snakeToCamel(key)] = objectFromSnakeToCamel(value);
+      return acc;
+    }
+  }, {} as any) as KeysToCamelCase<T>;
+};
+```
+
+</div>
+</details>
+
+##### See Also
+
+- [`BanditClient`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#bandit-engine-서비스와의-연동을-위한-http-client-구현)
+- [`objectFromCamelToSnake`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#bandit-engine-서비스와의-연동을-위한-http-client-구현)
+- [`objectFromSnakeToCamel`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#bandit-engine-서비스와의-연동을-위한-http-client-구현)
 
 ##### Related
 
@@ -263,28 +679,228 @@ class LeakyBucketClient {
 #### 긴 프로세스를 담당하는 Worker 인프라 구축
 
 <Tags
-  metadata={["general", "backend-agnostic"]}
+  metadata={["general", "backend-agnostic", "standbylab"]}
   tags={["devops", "feature", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
 
 - 기존에는 모든 서비스를 Google Cloud Run을 이용해서 배포했음.
-  - 데이터 요청이 필요한 API의 Leaky Bucket Policy로 인해, 상품 정보를 자사 DB로 가져오는 프로세스가 길어지면서 Cloud Run의 프로세스 제한 시간인 1시간을 초과하는 문제 발생.
+  - 데이터 요청이 필요한 API의 Leaky Bucket Policy로 인해, 상품 정보를 자사 Firestore DB로 가져오는 프로세스가 길어지면서 Cloud Run의 프로세스 제한 시간인 1시간을 초과하는 문제 발생.
 - => GCE 인스턴스 그룹과 Cloud Load Balancer를 활용해 긴 프로세스를 담당하는 Worker 인프라를 구축하여 이슈 해결.
   - Cloud Build Substitution Variable 과 Docker Build Args를 활용해, Cloud Run과 Worker 인프라 배포 코드 공유.
+
+<details>
+<summary>cloudbuild.yaml</summary>
+<div markdown="1">
+
+```yaml
+# Following substitutes are required:
+#
+# - _PROJECT: project name (folder name among source code)
+# - _DEPLOY_TO: 'GCR' | 'GCE' | 'None'
+# - _SERVICE_NAME: service name (Service name used among GCP. It's the name related with Container Registry)
+# - _INSTANCE_GROUP_NAME: GCE instance group name (only needed when deploy to GCE)
+# - _INSTANCE_TEMPLATE_NAME: GCE instance template name (only needed when deploy to GCE)
+
+steps:
+  # Pull the cached image
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - "docker pull ${_IMAGE_URL}:latest || exit 0"
+
+  # Build docker image for the project
+  - name: gcr.io/cloud-builders/docker
+    id: Build
+    args:
+      - build
+      - "--build-arg"
+      - "PROJECT=${_PROJECT}"
+      - "--cache-from=${_IMAGE_URL}:latest"
+      - "--network=cloudbuild"
+      - "-t"
+      - "${_IMAGE_URL}:${COMMIT_SHA}"
+      - "-t"
+      - "${_IMAGE_URL}:latest"
+      - .
+      - "-f"
+      - ci/api/Dockerfile
+
+  # Push the image
+  - name: gcr.io/cloud-builders/docker
+    id: Push
+    args:
+      - push
+      - --all-tags
+      - ${_IMAGE_URL}
+
+  # Deploy the image
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
+    id: Deploy
+    entrypoint: bash
+    env:
+      - "SERVICE_NAME=${_SERVICE_NAME}"
+      - "DEPLOY_TO=${_DEPLOY_TO}"
+      - "IMAGE_URL=${_IMAGE_URL}:${COMMIT_SHA}"
+      - "REGION=${_DEPLOY_REGION}"
+      - "PROJECT_ID=${PROJECT_ID}"
+      - "INSTANCE_TEMPLATE_NAME=${_INSTANCE_TEMPLATE_NAME}"
+      - "INSTANCE_GROUP_NAME=${_INSTANCE_GROUP_NAME}"
+    args:
+      - ./ci/api/deploy.sh
+
+images:
+  - ${_IMAGE_URL}
+
+options:
+  substitutionOption: ALLOW_LOOSE
+
+substitutions:
+  _GCR_HOSTNAME: asia.gcr.io
+  _IMAGE_URL: ${_GCR_HOSTNAME}/${PROJECT_ID}/${REPO_NAME}/${_SERVICE_NAME}
+  _DEPLOY_REGION: asia-northeast3
+
+tags:
+  - ${_SERVICE_NAME}
+```
+
+</div>
+</details>
+
+<details>
+<summary>deploy.sh</summary>
+<div markdown="1">
+
+```bash
+#!/bin/bash
+
+# Following environment variables are given:
+#
+# - PROJECT_ID: project id of GCP project
+# - SERVICE_NAME: service name (GCR service name, only required when "DEPLOY_TO" is 'GCR')
+# - DEPLOY_TO: 'GCR' | 'GCE' | 'None'
+# - IMAGE_URL: image url (GCR image url)
+# - REGION: region to deploy (only required when "DEPLOY_TO" is 'GCR')
+# - INSTANCE_GROUP_NAME: instance group name (only required when "DEPLOY_TO" is 'GCE')
+# - INSTANCE_TEMPLATE_NAME: instance template name or prefix (only required when "DEPLOY_TO" is 'GCE')
+
+# Exit on any error
+set -e
+
+# If DEPLOY_TO is 'None', exit
+if [ "$DEPLOY_TO" == "None" ]; then
+  echo "Nothing to deploy"
+  exit 0
+fi
+
+# If DEPLOY_TO is 'GCR', deploy to GCR
+if [ "$DEPLOY_TO" == "GCR" ]; then
+  echo "Deploying to GCR"
+  gcloud run services update $SERVICE_NAME --platform=managed --image=$IMAGE_URL --region=$REGION --quiet
+  exit 0
+fi
+
+# If DEPLOY_TO is 'GCE', deploy to GCE
+if [ "$DEPLOY_TO" == "GCE" ]; then
+  echo "Deploying to GCE"
+  # Retrieve a name of the previous instance template
+  INSTANCE_TEMPLATE_NAME=$(
+      gcloud compute instance-templates list \
+          --filter="name~'${INSTANCE_TEMPLATE_NAME}*'" \
+          --sort-by="~creationTimestamp" \
+          --limit=1 \
+          --format="value(NAME)"
+  )
+
+  # Replace VMs
+  # We replace VMs as we need to update the docker image inside the template.
+  # Replacing VMs will update the docker image inside the template.
+  gcloud compute instance-groups managed rolling-action replace \
+    $INSTANCE_GROUP_NAME \
+    --max-surge=3 \
+    --max-unavailable=3 \
+    --replacement-method=substitute \
+    --region=$REGION
+  exit 0
+fi
+
+# If DEPLOY_TO is not 'GCR' or 'GCE', exit
+echo "Invalid DEPLOY_TO: $DEPLOY_TO"
+exit 1
+```
+
+</div>
+</details>
+
+<details>
+<summary>Dockerfile</summary>
+<div markdown="1">
+
+```dockerfile
+ARG PROJECT
+
+# Pull node image as build
+FROM node:16-alpine as build
+ARG PROJECT
+
+# Set working directory
+WORKDIR /app
+
+# Copy package.json, and .npmrc
+COPY package*.json ./
+COPY .npmrc .
+
+# Install dependencies
+RUN npm run registry:login
+RUN npm ci
+
+# Set working directory
+WORKDIR /app
+
+# Copy source files
+COPY [ "nest-cli.json", "tsconfig.json", "tsconfig.build.json", "./"]
+COPY libs ./libs
+COPY apps/${PROJECT} ./apps/${PROJECT}
+
+# Build app
+RUN npm run ${PROJECT}:build:prod
+
+# Install only production dependencies
+RUN npm prune --production
+
+# Create another build stage
+FROM node:16-alpine
+ARG PROJECT
+ENV PROJECT=${PROJECT}
+
+# Set working directory
+WORKDIR /app
+
+# Copy from build image
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+
+# Expose port
+EXPOSE 3000
+
+# Start app
+CMD npm run $PROJECT:start:prod
+```
+
+</div>
+</details>
+
+##### See Also
+
+- [`cloudbuild.yaml`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#긴-프로세스를-담당하는-worker-인프라-구축)
+- [`deploy.sh`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#긴-프로세스를-담당하는-worker-인프라-구축)
+- [`Dockerfile`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#긴-프로세스를-담당하는-worker-인프라-구축)
 
 ##### Related
 
 - [GCE instance group autoscaler 의 instance termination으로 인한 프로세스 중단 문제 해결](#gce-instance-group-autoscaler-의-instance-termination으로-인한-프로세스-중단-문제-해결)
-
-<div style={{ display: 'none' }}>
-##### See Also
-
-아래 링크에서 위와 관련한 블로그 포스트를 확인할 수 있습니다.
-
-Insert link here
-
-</div>
 
 #### GCE instance group autoscaler 의 instance termination으로 인한 프로세스 중단 문제 해결
 
