@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkabout=self.webpackChunkabout||[]).push([[718],{59224:s=>{s.exports=JSON.parse('{"label":"Redux","permalink":"/posts/tags/redux","allTagsPath":"/posts/tags","count":1}')}}]);
