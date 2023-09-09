@@ -45,7 +45,7 @@ const navbar = {
       label: "Career Description",
       position: "left",
     },
-    // { to: "/blog", label: "Blog", position: "left" },
+    { to: "/posts", label: "Posts", position: "left" },
     {
       type: "localeDropdown",
       position: "right",
@@ -96,8 +96,8 @@ const footer = {
       title: "More",
       items: [
         {
-          label: "Blog",
-          to: "/blog",
+          label: "Posts",
+          to: "/posts",
         },
         {
           label: "GitHub",
@@ -156,6 +156,7 @@ const config = {
         },
         blog: {
           showReadingTime: true,
+          routeBasePath: "/posts",
         },
         theme: {
           customCss: require.resolve("./src/style/global.scss"),

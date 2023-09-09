@@ -12,14 +12,13 @@ import FilterBoundary from "@site/src/components/Tag/Meta/FilterBoundary";
 import {
   MetadataTagsSectionFilter,
   SubsectionFilter,
-  HrefFilter,
+  OrphanSectionFilter,
 } from "@site/src/components/Tag/Meta/FilterBoundary/filters";
 import ProjectTitle from "@site/src/components/Project/ProjectTitle";
 
 import Overview from "./partials/_overview.mdx";
 import Education from "./partials/_education.mdx";
 import Experience from "./partials/_experience.mdx";
-import MoreExperience from "./partials/_more-experience.mdx";
 import Skillsets from "./partials/_skillsets.mdx";
 import Achievements from "./partials/_achievements.mdx";
 
@@ -34,6 +33,10 @@ import BannerManager from "../career-description/pickhound/_banner-manager.mdx";
 import AdminDashboard from "../career-description/pickhound/_admin-dashboard.mdx";
 import RecommendationAPI from "../career-description/pickhound/_recommendation-api.mdx";
 import BanditEngine from "../career-description/pickhound/_bandit-engine.mdx";
+
+<>{/* About Experience */}</>
+
+import AboutCommon from "../career-description/about/_common.mdx";
 
 :::tip
 
@@ -72,12 +75,11 @@ https://raw.githubusercontent.com/01Joseph-Hwang10/01joseph-hwang10.github.io/gh
 
 ## 업무 경험
 
-<MoreExperience />
-
 <FilterBoundary
   filters={[
     new MetadataTagsSectionFilter("project-management-agnostic"),
     new SubsectionFilter("Related"),
+    new OrphanSectionFilter(),
   ]}
 >
   <ProjectTitle
@@ -89,12 +91,16 @@ https://raw.githubusercontent.com/01Joseph-Hwang10/01joseph-hwang10.github.io/gh
   <Common />
   <RecommendationAPI />
   <BanditEngine />
-
   <ProjectTitle
     title="LearnQue"
     link="https://01joseph-hwang10.github.io/docs/career-description/learnque"
   />
   <LearnQueExperience />
+  <ProjectTitle
+    title="01joseph-hwang10.github.io"
+    link="https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io"
+  />
+  <AboutCommon />
 </FilterBoundary>
 
 ## 스킬셋

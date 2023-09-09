@@ -1,5 +1,6 @@
 ---
 title: 이력서 (스탠바이랩)
+description: ""
 toc_max_heading_level: 2
 draft: true
 ---
@@ -11,13 +12,13 @@ import FilterBoundary from "@site/src/components/Tag/Meta/FilterBoundary";
 import {
   MetadataTagsSectionFilter,
   SubsectionFilter,
+  OrphanSectionFilter,
 } from "@site/src/components/Tag/Meta/FilterBoundary/filters";
 import ProjectTitle from "@site/src/components/Project/ProjectTitle";
 
 import Overview from "../partials/_overview.mdx";
 import Education from "../partials/_education.mdx";
 import Experience from "../partials/_experience.mdx";
-import MoreExperience from "../partials/_more-experience.mdx";
 import Skillsets from "../partials/_skillsets.mdx";
 
 <>{/* Learnque Experience */}</>
@@ -46,6 +47,14 @@ import AboutCommon from "../../career-description/about/_common.mdx";
 
 <Overview />
 
+주니어 개발자 황현규입니다. 창업과 스타트업에 관심이 많습니다.
+
+창업 아이템을 내 손으로 직접 구현하기 위해 개발을 시작했으며, 다수의 해커톤 및 창업 활동에서 활약하면서 나의 아이디어를 직접 구현하는 과정에서 개발에 대한 흥미와 재미를 느껴 개발에 몰두하고 있습니다.
+
+최소의 자원으로 최대의 효과를 추구하는 린 방법론에 크게 공감하며, 개발을 할때도 어떻게 하면 더 적은 코드로 더 많은 일을 할 수 있을지 고민합니다. 기능 구현에 불필요한 단계가 주기적으로 살피며, 무엇을 하는지에 대한 뚜렷한 목적을 가지고 업무를 진행합니다.
+
+또한 명시적인 변수/함수 네이밍, 모듈화, OOP 등을 통해 가독성이 높은 코드, 유지보수가 용이한 코드를 작성하는데 큰 노력을 하며, 팀원이 처음 보는 코드라도 금방 이해하고 기여할 수 있게끔 노력합니다.
+
 ## 학력 사항
 
 <Education />
@@ -56,12 +65,11 @@ import AboutCommon from "../../career-description/about/_common.mdx";
 
 ## 개발/업무 경험
 
-<MoreExperience />
-
 <FilterBoundary
   filters={[
     new MetadataTagsSectionFilter("standbylab"), 
-    new SubsectionFilter(["Related"])
+    new SubsectionFilter(["Related"]),
+    new OrphanSectionFilter(),
   ]}
 >
   <ProjectTitle
