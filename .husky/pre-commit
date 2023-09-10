@@ -1,8 +1,10 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# Remove every file in static/files/resume
+# Remove every locally exported resume
 rm -rf ./static/files/resume
+rm -rf ./resume-*.pdf
+rm -rf ./docs-to-pdf-*.pdf
 
 # Run the script to restore resume, folder only
 mkdir ./static/files/resume
