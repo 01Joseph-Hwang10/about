@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkabout=self.webpackChunkabout||[]).push([[8297],{81957:t=>{t.exports=JSON.parse('{"permalink":"/posts/tags/react","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

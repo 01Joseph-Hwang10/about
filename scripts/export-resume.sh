@@ -2,14 +2,17 @@
 
 set -e
 
-RESUME_TYPE=$1
+RESUME_URL=$1
+# Replace slashes with dashes
+RESUME_TYPE=${RESUME_URL//\//-}
+
 FILENAME="resume-$RESUME_TYPE.pdf"
 
 echo "[$FILENAME] Exporting resume to $FILENAME..."
 
 rm -f "$FILENAME"
 
-_initialDocURLs="$WEBPAGE_URL/docs/resume/$RESUME_TYPE"
+_initialDocURLs="$WEBPAGE_URL/docs/resume/$RESUME_URL"
 _contentSelector="article"
 _excludeSelectors=".margin-vert--xl a,[class^='tocCollapsible'],.breadcrumbs,.theme-edit-this-page,.slick-slider"
 _outputPDFFilename="docs-to-pdf-$RESUME_TYPE.pdf"
