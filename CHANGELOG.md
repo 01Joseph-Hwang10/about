@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.30 (2023-09-10)
+
+
+### :bug: Bug Fix
+
+* install puppeteer at github actions ([8943520](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/89435207de4e89c7de82c00ea03b37ebd1977fd8))
+
 ### 0.1.29 (2023-09-10)
 
 
