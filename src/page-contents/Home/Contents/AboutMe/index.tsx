@@ -27,7 +27,7 @@ const AboutMe = () => {
           margin-top: -6rem;
           height: calc(100% + 12rem);
           @media screen and (min-width: ${mobileWidth}px) {
-            height: calc(75%);
+            height: 75%;
           }
         `}
       />

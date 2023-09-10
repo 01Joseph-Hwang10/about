@@ -2,14 +2,14 @@
 title: React Component & Web Component (via StencilJS) 상태 연동
 slug: /react-stenciljs-integration
 authors: joseph
-tags: [React, Redux, StencilJS, OOP, FLUX, "@shepherd23"]
+tags: [React, Redux, StencilJS, OOP, FLUX, MVC, "@shepherd23"]
 ---
 
 import Figure from "@site/src/components/Figure";
 
 작성자는 [쉐퍼드23](https://shepherd23.com)의 Product Manager & Software Engineer로 재직하며
 [카페24](https://www.cafe24.com/) 플랫폼을 대상으로 하는 Contextual Bandit 기반의
-개인화 상품 추천 플러그인 [PickHound](https://store.cafe24.com/kr/apps/17367)의 개발 부문을 담당한 바가 있습니다.
+개인화 상품 추천 플러그인 [PickHound](https://store.cafe24.com/kr/apps/17367)의 개발 부문을 담당한 바가 있습니다. (See: [경력 기술서 - PickHound](/docs/career-description/pickhound))
 
 작성자는 플러그인 개발의 일환으로, StencilJS를 이용해 카페24 쇼핑몰 위에 표시되는 상품 추천 팝업 배너를 개발하였고, 팝업 배너의 디자인을 수정할 수 있는 디자인 에디터를 React CSR 애플리케이션으로 구현한 쇼핑몰 관리자용 어드민 대시보드를 개발하였습니다.
 
@@ -17,6 +17,7 @@ import Figure from "@site/src/components/Figure";
   src={require("./banner-design-page.png").default}
   alt="Banner Design Page"
   caption="추천 배너 디자인 수정 페이지"
+  appearance="flat"
 />
 
 이번 글에서는 이 중 배너 디자인 수정 페이지를 개발하며 겪었던 상태 관리에 대한 고민과 이를 해결하기 위해 시도했던 방법들에 대해 소개하고자 합니다.
@@ -43,14 +44,16 @@ import Figure from "@site/src/components/Figure";
 
 여기서 어려웠던 점은, 배너는 StencilJS, 대시보드는 React CSR 애플리케이션으로 개발하는 상황에서 배너의 디자인 정보를 Web Component에 안정적으로 반영하는 것이었습니다.
 
-처음에는 이를 Redux로 해결하고자 했습니다. `@reduxjs/toolkit`의 `createSlice` API를 이용해 `DesignSlice`를 만들고, 여기에서 추천 배너의 모든 디자인 정보를 관리하고, 배너의 디자인 정보를 변경할 때마다 `DesignSlice`의 상태를 업데이트하도록 하였습니다.
+처음에는 이를 전부 Redux에 기반한 FLUX 패턴으로 해결하고자 하였습니다. `@reduxjs/toolkit`의 `createSlice` API를 이용해 `DesignSlice`를 만들어 모든 디자인 정보를 관리하고, `view`에서 배너의 디자인 정보를 변경할 때마다 `dispatch`를 통해 `action`이 `DesignSlice`로 흘러 들어가 `store`의 상태를 업데이트하고, 이것이 다시 `view`에 반영되도록 하였습니다.
 
 그러나 변경 가능한 디자인 옵션이 여러가지인 상황에서 모든 코드를 `DesignSlice`에 몰아넣는 것은 좋은 방법이 아니라고 생각했습니다.
-또한 React의 상태와 StencilJS로 빌드된 Web Component의 상태를 한 곳에서 관리하는 것도 좋은 방법이 아니라고 생각했습니다.
+또한 React의 상태와 StencilJS로 빌드된 Web Component의 상태를 한 곳에서 같은 방식으로 관리하는 것도 좋은 방법이 아니라고 생각했습니다.
+
+이에 작성자는 React 단의 디자인 에디터는 `@reduxjs/toolkit`을 활용한 FLUX 패턴으로, 추천 배너 Web Component는 `Banner Manager` 객체가 `Controller`, `style` 오브젝트가 `Model`, `DesignSlice`가 `View` 역할을 하는 MVC 패턴으로 상태 관리를 구현하고자 하였습니다. 이 방향이 React 단은 React에 적합한 코드 스타일로, StencilJS로 빌드한 Web Component 단은 Web Component 에 적합한 코드 스타일로 상태를 관리할 수 있을 것이라고 생각했기 때문입니다.
 
 ## Banner Manager
 
-이에 StencilJS로 빌드한 Web Component의 style을 관리하는 별도의 객체를 작성하고 DesignSlice는 React 단의 상태만 관리하게끔 만들고자 하였습니다.
+먼저 StencilJS로 빌드한 Web Component의 style을 관리하는 별도의 객체를 작성해 DesignSlice는 React 단의 상태만 관리하게끔 만들고자 하였습니다.
 
 <details>
 <summary>Banner Manager 구현 예시: DefaultBannerManager</summary>
@@ -408,10 +411,11 @@ useEffect(() => {
   src={require("./banner-design-page.png").default}
   alt="Banner Design Page"
   caption="추천 배너 디자인 수정 페이지"
+  appearance="flat"
 />
 
 위와 같은 일련의 작업들을 통해서 배너의 디자인을 수정할 수 있는 디자인 에디터를 개발하였습니다.
 
 위에서 언급한 것처럼 디자인 에디터는 위 사진의 "배너 디자인 설정" 카드에서 배너의 색깔, 스타일, 그림자 유무 등의 디자인을 설정할 수 있고, 어떤 옵션을 변경할 때마다 배너에 변경한 옵션이 바로 적용되어 사용자가 시각적으로 확인할 수 있도록 구현하였습니다.
 
-개발하고자 하는 기능이 다소 복잡했지만, OOP와 모듈화에 대한 계속적인 고민을 통해 코드의 Readability와 유지보수의 용이함을 보장할 수 있었습니다. 또한 작업을 진행하면서 코드 패턴에 관한 깊은 고찰과 Javascript, React, Redux, Web Component 의 동작 원리에 대한 이해를 크게 높일 수 있었습니다.
+개발하고자 하는 기능이 다소 복잡했지만, OOP와 모듈화에 대한 계속적인 고민을 통해 코드의 Readability와 유지보수의 용이함을 보장할 수 있었습니다. 또한 작업을 진행하면서 FLUX, MVP 등 코드 패턴에 관한 깊은 고찰과 Javascript, React, Redux, Web Component 의 동작 원리에 대한 이해를 크게 높일 수 있었습니다.

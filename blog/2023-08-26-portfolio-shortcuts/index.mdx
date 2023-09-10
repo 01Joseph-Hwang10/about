@@ -1,0 +1,486 @@
+---
+title: "포트폴리오 페이지 개발 기록: 바로가기 툴바"
+slug: /portfolio-shortcuts
+authors: joseph
+tags: [React, Docusaurus, "01joseph-hwang10.github.io"]
+---
+
+import Figure from "@site/src/components/Figure";
+
+작성자는 본래 [노션](https://www.notion.so/)을 이용해 포트폴리오 페이지를 제작하였습니다.
+노션은 깔끔하고 직관적인 UI를 제공하고 여러 종류의 블록을 조립하는 형태로 페이지를 만들기 때문에 이를 통해 단기간 안에 준수한 디자인의 포트폴리오 웹페이지를 제작할 수 있었습니다.
+
+그러나 노션에서 제공하는 블록의 디자인이 제한적이고, 특히 포트폴리오 페이지를 만들기 위한 역할과는 거리가 먼 도구라고 생각했습니다.
+이에 고심 끝에 [Docusaurus](https://docusaurus.io/)를 활용해 직접 포트폴리오 웹페이지를 제작하였습니다.
+
+본 글에서는 포트폴리오 페이지 제작 중 루트 페이지의 각 섹션으로 바로가기를 제공하고 현재 보고 있는 섹션을 하이라이트하는 바로가기 섹션을 만드는 과정을 기록합니다.
+
+<!-- truncate-->
+
+:::info
+
+## More Readings
+
+- [포트폴리오 페이지 개발 기록: HomepageHeader 구성](/posts/portfolio-landing)
+
+:::
+
+## Idea
+
+작성자의 포트폴리오 페이지의 루트 페이지는 랜딩페이지의 형태로 구성되어, 자기소개, 스킬셋, 프로젝트 등의 여려 섹션으로 구성되어 있습니다.
+이러한 섹션들은 페이지를 스크롤하면서 이동할 수 있는데, 이때 각 섹션으로 바로 이동할 수 있는 바로가기 섹션을 제공하고 싶었습니다.
+
+한편, [Infima](https://infima.dev/)의 컴포넌트 중 [Pills](https://infima.dev/docs/components/pills)라는 컴포넌트가 있는데, 이 컴포넌트가 바로가기 섹션을 구현하는데 매우 적합하다고 생각하여 이를 활용하기로 하였습니다.
+
+또한, 현재 보고 있는 섹션에 해당하는 바로가기 섹션의 아이템을 하이라이트하는 기능을 추가하고 싶었습니다.
+
+<Figure
+  src={require("./shortcut-section.jpg").default}
+  alt={"Shortcut Section"}
+  caption={"루트 페이지 바로가기 툴바"}
+/>
+
+## Implementation
+
+위에어 언급한 것처럼 Infima의 Pills 컴포넌트가 바로가기 섹션을 구현하는데 딱 맞다고 생각하여 이를 활용하기로 하였습니다.
+
+Infima 문서에서는 Pills와 관련해 아래와 같은 코드 스니펫을 제공합니다.
+
+```html
+<ul class="pills pills--block">
+  <li class="pills__item pills__item--active">Alpha</li>
+  <li class="pills__item">Beta</li>
+  <li class="pills__item">Gamma</li>
+  <li class="pills__item">Zeta</li>
+</ul>
+```
+
+이를 응용해 결론적으로 아래와 같은 `<Shortcuts />` 컴포넌트를 작성하였습니다.
+
+:::note
+
+`subscribe()`, `unsubscribe()` 함수의 구현은 [여기](/posts/portfolio-landing#usescroll)를 참조하세요.
+
+:::
+
+<details>
+<summary>Shortcuts</summary>
+<div markdown="1">
+
+```tsx
+const Shortcuts: React.FC = () => {
+  const navbarHeight = useNavbarHeight();
+
+  const [currentSection, setCurrentSection] = useState<Shortcut>(
+    values.shortcuts[0],
+  );
+  const updateCurrentSection = (event: CustomEvent<[Shortcut]>) => {
+    const shortcut = event?.detail[0];
+    if (!shortcut) return;
+    setCurrentSection(shortcut);
+  };
+
+  // From `usehooks-ts`
+  useEffectOnce(() => {
+    subscribe(events.shortcuts.sectionChanged, updateCurrentSection);
+    return () => {
+      unsubscribe(events.shortcuts.sectionChanged, updateCurrentSection);
+    };
+  });
+  return (
+    <div className="container" css={styles.container(navbarHeight)}>
+      <Pills className="pills pills--block">
+        {values.shortcuts.map((shortcut) => (
+          <PillItem
+            key={`pill_item--${shortcut.replace(" ", "")}`}
+            onClick={() =>
+              (window.location.href = `#${shortcut.replace(" ", "")}`)
+            }
+            className={clsx(
+              "pills__item",
+              currentSection === shortcut.replace(" ", "") &&
+                "pills__item--active",
+            )}
+          >
+            {shortcut}
+          </PillItem>
+        ))}
+      </Pills>
+    </div>
+  );
+};
+```
+
+</div>
+</details>
+
+아래는 위 구현에 대한 코드라인별 설명입니다.
+
+### Sticky Position
+
+작성자는 사용자가 스크롤을 하면 바로가기 섹션이 네비게이션 바의 바로 아래에 고정되어야 한다고 생각했습니다.
+
+그러나 사용자가 처음 페이지에 접속했을 때는 바로가기 섹션이 네비게이션 바의 바로 아래에 고정되어 있으면 `HomepageHeader` 컴포넌트의 도시 풍경 사진을 가리게 되기 때문에, `position: sticky`를 활용해 처음에는 도시 풍경 사진 아래에 위치하고, 사용자가 스크롤을 하면 네비게이션 바의 바로 아래에 고정되도록 구현하고자 하였습니다.
+
+<Figure
+  src={require("./landing-light.png").default}
+  alt={"Light Mode"}
+  caption={"초기 화면: 바로가기 섹션이 도시 풍경 사진 바로 아래에 위치한다"}
+  appearance="flat"
+/>
+
+그러나 네비게이션 바는 `Shortcuts`의 Sticky Container에 포함되지 않기 때문에, `position: sticky; top: 0;`을 적용하면 바로가기 섹션과 네비게이션 바가 서로 겹치게 됩니다. 따라서 네비게이션 바의 높이를 구해 이를 `top`으로 설정해야 했습니다.
+
+이를 위해 `useNavbarHeight()` 훅을 작성하였습니다.
+
+#### `useNavbarHeight()`
+
+`useNavbarHeight`은 기본적으로 네비게이션 바의 높이를 반환하는 단순한 기능의 훅입니다. Docusaurus는 기본적으로 SSR을 지원하고 이에 맞게 빌드되기 때문에, `useIsBrowser()` 훅을 활용해 클라이언트 단에서 실행되는 경우에만 네비게이션 바의 높이를 구하도록 하였습니다.
+
+```ts
+// src/theme/Navbar/utils/navbarUtils.ts
+const getNavbarHeight = (): number | undefined => {
+  return document.querySelector(".navbar, .navbar-home")?.clientHeight;
+};
+
+// src/hooks/useNavbarHeight.ts
+const useNavbarHeight = (): number | undefined => {
+  const isBrowser = useIsBrowser(); // Provided by `@docusaurus/useIsBrowser`
+  const [navbarHeight, setNavbarHeight] = useState<number>();
+
+  useEffect(() => {
+    if (isBrowser) {
+      setNavbarHeight(getNavbarHeight());
+    }
+  }, [isBrowser]);
+
+  return navbarHeight;
+};
+```
+
+#### `position: sticky`
+
+위에서 구현한 `useNavbarHeight()` 훅을 활용해 `Shortcuts` 컴포넌트가 네비게이션 바의 바로 아래에 고정되도록 구현할 수 있었습니다.
+
+```tsx
+// src/page-contents/Home/Shortcuts/styles.ts
+import { css } from "@emotion/react";
+
+const container = (navbarHeight?: number) => css`
+  padding: 0.5rem 0;
+  position: sticky;
+  top: ${navbarHeight}px;
+  background-color: var(--ifm-color-background);
+  z-index: var(--ifm-z-index-fixed);
+`;
+
+// src/page-contents/Home/Shortcuts/index.tsx
+import styles from "./styles";
+
+const Shortcuts: React.FC = () => {
+  const navbarHeight = useNavbarHeight();
+
+  /* ... properties */
+
+  return (
+    <div className="container" css={styles.container(navbarHeight)}>
+      {/* ... JSX Contents */}
+    </div>
+  );
+};
+```
+
+### Scrollable Shortcuts (in mobile)
+
+작성자는 사용자가 모바일 환경에서도 바로가기 섹션을 이용할 수 있도록 하고 싶었습니다.
+
+그러나 모바일에서는 기본 `pills`, `pills--block`의 구현에 의해 바로가기 섹션의 아이템 세로로 나열되는 문제가 있었습니다.
+이에 Media Query와 `flex-wrap`, `overflow-x` 프로퍼티를 활용해 모바일에서도 바로가기 섹션의 아이템이 가로로 나열되고, 아이템의 수가 많아져 한 화면에 모든 아이템이 보이지 않는 경우를 위해 아래와 같이 스크롤이 가능하도록 구현하였습니다.
+
+```tsx
+// src/page-contents/Home/Shortcuts/styles.ts
+import styled from "@emotion/styled";
+
+export const Pills = styled.ul`
+  display: flex;
+  @media screen and (max-width: ${mobileWidth}px) {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+  }
+`;
+
+export const PillItem = styled.li`
+  white-space: nowrap;
+`;
+
+// src/page-contents/Home/Shortcuts/index.tsx
+import styles from "./styles";
+
+const Shortcuts: React.FC = () => {
+  const navbarHeight = useNavbarHeight();
+
+  /* ... properties */
+
+  return (
+    <div className="container" css={styles.container(navbarHeight)}>
+      <Pills className="pills pills--block">
+        {values.shortcuts.map((shortcut) => (
+          <PillItem
+            key={`pill_item--${shortcut.replace(" ", "")}`}
+            className="pills__item"
+          >
+            {shortcut}
+          </PillItem>
+        ))}
+      </Pills>
+    </div>
+  );
+};
+```
+
+### Highlight Current Section
+
+작성자는 사용자가 현재 보고 있는 섹션에 해당하는 바로가기 섹션의 아이템을 하이라이트하는 기능을 추가하고 싶었습니다.
+
+이를 위해서는 아래와 같은 작업이 필요했습니다.
+
+1. 섹션을 구분해야 한다.
+2. 사용자의 현재 위치를 알아야 한다.
+3. 사용자의 위치가 어느 섹션에 해당하는지 알아야 한다.
+
+#### 섹션을 구분해야 한다.
+
+이에 우선 섹션을 구분하기 위한 `SectionGroup` 컴포넌트를 작성하였습니다.
+
+```tsx
+const SectionGroup: React.FC<SectionGroupProps> = ({ id, children }) => {
+  return (
+    <div id={id} css={styles.sectionGroupRoot}>
+      {children}
+    </div>
+  );
+};
+```
+
+그리고 위 컴포넌트를 활용해 아래와 같이 루트 페이지에 포함되는 내용을 섹션 별로 구분했습니다.
+
+```tsx
+const HomepageContent: React.FC = () => {
+  return (
+    <>
+      <SectionGroup id="About">
+        <AboutMe />
+        <MeInANutshell />
+      </SectionGroup>
+      <SectionGroup id="Career">
+        <Education />
+        <Experience />
+      </SectionGroup>
+      {/* ... More Sections */}
+    </>
+  );
+};
+```
+
+#### 사용자의 현재 위치를 알아야 한다.
+
+사용자의 현재 위치는 [이전에 작성한 useScroll() 훅](/posts/portfolio-landing#usescroll)을 활용해 쉽게 구할 수 있었습니다.
+
+```tsx
+const SectionGroup: React.FC<SectionGroupProps> = ({ id, children }) => {
+  const { y } = useScroll();
+  return (
+    <div id={id} css={styles.sectionGroupRoot}>
+      {children}
+    </div>
+  );
+};
+```
+
+#### 사용자의 위치가 어느 섹션에 해당하는지 알아야 한다.
+
+사용자의 위치가 어느 섹션에 해당하는지 알아내기 위해서는 먼저 각 섹션의 위치를 알아야 했습니다.
+구체적으로, 각 섹션의 시작 위치, 끝 위치, 너비, 높이를 알아야 했습니다.
+
+이를 위해 `useRef()` 훅을 활용해 `div` 컴포넌트에 각 섹션의 시작 위치, 끝 위치, 너비, 높이를 얻을 수 있게끔 이를 속성으로 추가하여, `ref.current.offset*` 프로퍼리를 통해 이를 얻을 수 있었습니다. 이에 처음에는 `useState()`와 `useEffect()` 훅을 활용해 렌더링된 `div` 컴포넌트의 위치 속성을 얻으려 했습니다.
+
+```ts
+const [rect, setRect] = useState({ width: 0, height: 0, top: 0, left: 0 });
+useEffect(() => {
+  if (ref.current) {
+    setRect({
+      width: ref.current.offsetWidth,
+      height: ref.current.offsetHeight,
+      top: ref.current.offsetTop,
+      left: ref.current.offsetLeft,
+    });
+  }
+}, [ref.current]);
+```
+
+그러나 이러한 방법은, 화면의 크기가 변하면 위치 속성이 맞지 않아, `window.addEventListener("resize", ...)`를 이용해 속성을 업데이트해야 했습니다.
+
+##### `useResponsiveRect()`
+
+한편 위의 `ref.current.offset*` 프로퍼티를 state로 옮기는 코드를 봐도 알 수 있듯이, 코드가 꽤나 길고 가독성이 떨어지는 형태였기에, 이를 `useResponsiveRect()` 라는 훅으로 추상화, 모듈화하여 사용하는 방향이 훨씬 깔끔하겠다고 판단하고 이를 구현하였습니다.
+
+:::note
+
+`subscribe()`, `unsubscribe()` 함수의 구현은 [여기](/posts/portfolio-landing#usescroll)를 참조하세요.
+
+:::
+
+```ts
+// src/hooks/useResponsiveRect/rectangle.ts
+class Rect {
+  constructor(
+    public readonly width: number,
+    public readonly height: number,
+    public readonly top: number,
+    public readonly right: number,
+    public readonly bottom: number,
+    public readonly left: number,
+  ) {}
+
+  get size() {
+    return this.width * this.height;
+  }
+
+  public static fromElementOffset(element: HTMLElement) {
+    return new Rect(
+      element.offsetWidth,
+      element.offsetHeight,
+      element.offsetTop,
+      element.offsetLeft + element.offsetWidth,
+      element.offsetTop + element.offsetHeight,
+      element.offsetLeft,
+    );
+  }
+
+  public static zero() {
+    return new Rect(0, 0, 0, 0, 0, 0);
+  }
+}
+
+// src/hooks/useResponsiveRect/index.ts
+const useResponsiveRect = (ref: React.MutableRefObject<HTMLDivElement>) => {
+  const [rect, setRect] = useState<Rect>(Rect.zero());
+  useInterval(
+    () => {
+      if (!ref) return;
+      setRect(Rect.fromElementOffset(ref.current));
+    },
+    rect.size === 0 ? 500 : null,
+  );
+
+  const resetRect = () => {
+    setRect(Rect.zero());
+  };
+
+  useEffectOnce(() => {
+    subscribe("resize", resetRect);
+    return () => {
+      unsubscribe("resize", resetRect);
+    };
+  });
+
+  return rect;
+};
+```
+
+`Rect` 객체를 구현해 위치 속성과 관련한 반복적인 코드를 캡슐화하였습니다. 이 객체로 정의된 `rect` State는 `subscribe("resize", resetRect)` 를 통해 초기화되고, 이는 `rect.size === 0`을 `true`로 만들어 `useInterval()` 훅을 트리거해 위치 속성이 변경된 것을 상태에 반영하도록 하였습니다.
+
+##### `new CustomEvent("shortcuts-section-changed", ...)`
+
+위에서 구현한 `useResponsiveRect()` 훅을 활용해 각 섹션의 위치 속성을 안정적으로 얻을 수 있게 되었고, `useScroll()` 훅과 함께 활용해 사용자의 현재 위치가 어느 섹션에 해당하는지 알아낼 수 있게 되었습니다.
+
+이제 이를 `Shortcuts` 컴포넌트에 전달해야 했습니다. 이를 위해 처음에는 React.Context API나 Redux를 활용해 전역 상태로 관리하려 했습니다.
+
+그러나 위의 방법은 다소 많은 코드가 필요했으며, 풀려는 문제에 비해 구현의 복잡도를 너무 높인다는 생각이 들었습니다.
+이에 이보다 조금 더 단순하고 직관적인 [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) API를 활용하는 편이 더 적합하다고 판단하였습니다.
+
+이에 `SectionGroup` 컴포넌트에 유저의 스크롤 위치에 따라 `new CustomEvent("shortcuts-section-changed", ...)`를 발생시키는 코드를 추가하였습니다.
+
+```tsx
+// src/events/values.ts
+const shortcuts = {
+  sectionChanged: "shortcuts-section-changed",
+};
+
+// src/events/helpers.ts
+const dispatch = (eventName: string, ...args: any[]) => {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent(eventName, { detail: args }));
+};
+
+// src/page-contents/Home/Layout/SectionGroup/index.tsx
+const SectionGroup: React.FC<SectionGroupProps> = ({ id, children }) => {
+  const sectionGroupRef = useRef<HTMLDivElement>(null);
+  const rect = useResponsiveRect(sectionGroupRef);
+  const { y } = useScroll();
+  const navbarHeight = useNavbarHeight();
+
+  useEffect(() => {
+    if (y >= rect.top - navbarHeight && y < rect.bottom - navbarHeight) {
+      dispatch(events.shortcuts.sectionChanged, id);
+    }
+  }, [y, rect.top, rect.bottom, navbarHeight]);
+
+  return (
+    <div id={id} ref={sectionGroupRef} css={styles.sectionGroupRoot}>
+      {children}
+    </div>
+  );
+};
+```
+
+## Result & Conclusion
+
+최종적으로 처음에 제시한 코드 처럼 위의 `SectionGroup`에서 `dispatch`하는 `shortcuts-section-changed` 이벤트를 `Shortcuts` 컴포넌트에서 구독하고, 이를 통해 현재 보고 있는 섹션을 하이라이트하는 기능을 구현하였습니다.
+
+```tsx
+const Shortcuts: React.FC = () => {
+  const navbarHeight = useNavbarHeight();
+
+  const [currentSection, setCurrentSection] = useState<Shortcut>(
+    values.shortcuts[0],
+  );
+  const updateCurrentSection = (event: CustomEvent<[Shortcut]>) => {
+    const shortcut = event?.detail[0];
+    if (!shortcut) return;
+    setCurrentSection(shortcut);
+  };
+
+  // From `usehooks-ts`
+  useEffectOnce(() => {
+    subscribe(events.shortcuts.sectionChanged, updateCurrentSection);
+    return () => {
+      unsubscribe(events.shortcuts.sectionChanged, updateCurrentSection);
+    };
+  });
+  return (
+    <div className="container" css={styles.container(navbarHeight)}>
+      <Pills className="pills pills--block">
+        {values.shortcuts.map((shortcut) => (
+          <PillItem
+            key={`pill_item--${shortcut.replace(" ", "")}`}
+            onClick={() =>
+              (window.location.href = `#${shortcut.replace(" ", "")}`)
+            }
+            className={clsx(
+              "pills__item",
+              currentSection === shortcut.replace(" ", "") &&
+                "pills__item--active",
+            )}
+          >
+            {shortcut}
+          </PillItem>
+        ))}
+      </Pills>
+    </div>
+  );
+};
+```
+
+작성자는 이번 구현을 진행하면서 개인적으로는 깔끔하다고 생각되는 마음에 드는 코드를 작성했다고 느껴 만족스러웠습니다. 또한 위와 같은 구현을 진행하면서 코드를 캡슐화하고, 모듈화하는 것이 코드를 매우 간결하게 만들고, 유지보수를 용이하게 만든다는 것을 다시 한번 느낄 수 있었습니다.

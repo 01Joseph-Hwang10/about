@@ -13,15 +13,6 @@ const article = css`
     flex-direction: row;
     margin-bottom: 30px;
   }
-
-  // 1200px is arbitrary value.
-  // We need to define more reasonable value.
-  //
-  // TODO: 노트북보다 더 큰 모니터로 접속했을 때
-  // 컨텐츠 배치가 자연스러운지 확인하기
-  @media screen and (min-width: 1200px) {
-    margin-top: 200px;
-  }
 `;
 
 const description = css`

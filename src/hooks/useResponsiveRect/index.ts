@@ -10,7 +10,7 @@ const useResponsiveRect = (ref: React.MutableRefObject<HTMLDivElement>) => {
       if (!ref) return;
       setRect(Rect.fromElementOffset(ref.current));
     },
-    rect.width === 0 || rect.height === 0 ? 500 : null,
+    rect.size === 0 ? 500 : null,
   );
 
   const resetRect = () => {

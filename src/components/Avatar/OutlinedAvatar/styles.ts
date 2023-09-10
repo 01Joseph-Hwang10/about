@@ -3,6 +3,8 @@ import { css } from "@emotion/react";
 const wrapper = (size: string) => css`
   max-width: ${size};
   max-height: ${size};
+  width: 100%;
+  height: 100%;
 `;
 
 const image = (border?: string) => css`

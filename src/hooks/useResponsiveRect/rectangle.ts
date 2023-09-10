@@ -9,6 +9,10 @@ class Rect {
     public readonly left: number,
   ) {}
 
+  get size() {
+    return this.width * this.height;
+  }
+
   public static fromElementOffset(element: HTMLElement) {
     return new Rect(
       element.offsetWidth,

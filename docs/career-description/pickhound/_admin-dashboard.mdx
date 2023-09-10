@@ -1,7 +1,7 @@
 import Tags from "@site/src/components/Tag/Tags";
 import values from "./values";
 
-#### Redux를 활용한 React Component & Web Component (via StencilJS) 상태 연동
+#### Redux를 활용한 FLUX/MVC 기반의 React Component & Web Component (via StencilJS) 상태 연동
 
 <Tags
   metadata={["general", "frontend-agnostic", "standbylab"]}
@@ -11,14 +11,34 @@ import values from "./values";
 
 - Redux를 활용해 React Component와 StencilJS Web Component의 상태 연동하여 상품 추천 팝업 배너 디자인 수정 페이지 구현
   - OOP에 기반해 StencilJS Web Component의 style을 관리하는 `Banner Manager` 객체 작성
+    - `MVC` 패턴을 기반으로 한 React 디자인 수정 페이지와의 상태 연동
     - `structedClone`을 활용해 상태 업데이트 반영
-  - React, `@reduxjs/toolkit`을 활용한 `FLUX` 패턴을 기반으로 디자인 수정 페이지 구현
+  - React, `@reduxjs/toolkit`을 활용해 `FLUX` 패턴을 기반으로 디자인 수정 페이지 구현
 
 :::tip
 
 아래 링크에서 위와 관련한 더 자세한 내용을 확인할 수 있습니다.
 
 https://01joseph-hwang10.github.io/posts/react-stenciljs-integration
+
+:::
+
+#### Figma Admin Dashboard Kit에 기반한 디자인 시스템 구현
+
+<Tags
+  metadata={["frontend-agnostic", "standbylab"]}
+  tags={["frontend", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- [Figma Admin Dashboard Kit](https://www.saasdesign.io/figma-admin-dashboard-kit/)에 기반해 플러그인의 어드민 대시보드 개발을 위한 디자인 시스템 구현.
+- 활용성과 재사용성이 높은 React 컴포넌트를 작성하기 위해 깊이 고민하고 노력함.
+
+:::tip
+
+아래 링크에서 위와 관련한 더 자세한 내용을 확인할 수 있습니다.
+
+https://01joseph-hwang10.github.io/posts/admin-dashboard-ui-kit-implementation
 
 :::
 
@@ -52,10 +72,10 @@ https://01joseph-hwang10.github.io/posts/react-stenciljs-integration
 - 이러한 문제를 해결하고자 `Admin Dashboard`의 Auth Flow를 테스트하기 위해 Cypress를 활용한 테스트 작성함.
 - => Iteration 속도 향상. 개발 생산성 향상.
 
-#### Code Split과 Suspense 컴포넌트를 활용한 초기 로딩 UX 개선
+#### Code Split과 `<React.Suspense />`를 활용한 초기 로딩 UX 개선
 
 <Tags
-  metadata={["general", "frontend-agnostic", "standbylab"]}
+  metadata={["frontend-agnostic", "standbylab"]}
   tags={["frontend", "improvement", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
@@ -150,4 +170,4 @@ const AppRouter = () => {
 
 ##### See Also
 
-- [`AppRouter`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#code-split과-suspense-컴포넌트를-활용한-초기-로딩-ux-개선)
+- [`AppRouter`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#code-split과-reactsuspense-를-활용한-초기-로딩-ux-개선)
