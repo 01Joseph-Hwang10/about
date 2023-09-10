@@ -12,8 +12,28 @@ import values from "../values";
 - 정해진 가로세로비의 이미지를 화면 너비에 따라 크기가 정해지는 쇼케이스 카드에 가장 크게 fit 하기 위해 `max-width: 100%; max-height: 100%;` 를 적용함.
   - `이미지의 가로세로비 < 쇼케이스 카드의 가로세로비` => 쇼케이스 카드의 높이를 기준으로 fit.
   - `이미지의 가로세로비 > 쇼케이스 카드의 가로세로비` => 쇼케이스 카드의 너비를 기준으로 fit.
-- 쇼케이스 카드의 빈 영역은 `before` pseudo selector와 `background-image`, `position`, `filter` 프로퍼티를 이용해 블러처리된 이미지로 fill.
+- 쇼케이스 카드의 빈 영역은 `before` Pseudo Selector와 `background-image`, `position`, `filter` 프로퍼티를 이용해 블러처리된 이미지로 Fill.
 
 ##### See Also
 
 - [Showcase Example](https://01joseph-hwang10.github.io/#Projects)
+
+#### 매끄러운 유저 경험을 고려한 `NavBar` Swizzling 및 Light/Dark 모드 지원
+
+<Tags
+  metadata={["frontend-agnostic", "standbylab"]}
+  tags={["frontend", "feature"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- "창문"이라는 컨셉으로 `Light/Dark` 모드에서 같지만 시간대만 다른 도시 풍경 이미지를 배경으로 사용.
+- 기존의 `background-color` 가 존재하는 `NavBar` 컴포넌트를 Swizzle 하여 도시 풍경 이미지를 조금 더 개방감있게 표시.
+  - CSS Media Query, 속성 선택자, React Hook 등을 활용하여 구현
+
+:::tip
+
+아래 링크에서 위와 관련한 더 자세한 내용을 확인할 수 있습니다.
+
+https://01joseph-hwang10.github.io/posts/portfolio-landing
+
+:::

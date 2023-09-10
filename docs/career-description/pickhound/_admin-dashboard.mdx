@@ -1,7 +1,7 @@
 import Tags from "@site/src/components/Tag/Tags";
 import values from "./values";
 
-#### React Component & Web Component (via StencilJS) 상태 연동
+#### Redux를 활용한 React Component & Web Component (via StencilJS) 상태 연동
 
 <Tags
   metadata={["general", "frontend-agnostic", "standbylab"]}
@@ -9,18 +9,16 @@ import values from "./values";
   tagColorScheme={values.tagColorScheme}
 />
 
-- Redux와 `@reduxjs/toolkit`을 활용해 React Component와 StencilJS Web Component의 상태 연동하여 상품 추천 팝업 배너 디자인 수정 페이지 구현
+- Redux를 활용해 React Component와 StencilJS Web Component의 상태 연동하여 상품 추천 팝업 배너 디자인 수정 페이지 구현
   - OOP에 기반해 StencilJS Web Component의 style을 관리하는 `Banner Manager` 객체 작성
     - `structedClone`을 활용해 상태 업데이트 반영
-  - `createSlice` API를 사용해 Web Component와 React 상태 관리에
-  - React, RTK Query, `react-redux`를 활용해 배너 디자인 에디터 구현
-- React, Redux, Web Component의 작동 방식에 관한 이해를 크게 높일 수 있었음.
+  - React, `@reduxjs/toolkit`을 활용한 `FLUX` 패턴을 기반으로 디자인 수정 페이지 구현
 
 :::tip
 
 아래 링크에서 위와 관련한 더 자세한 내용을 확인할 수 있습니다.
 
-https://01joseph-hwang10.github.io/posts/2023/08/29/react-stenciljs-integration
+https://01joseph-hwang10.github.io/posts/react-stenciljs-integration
 
 :::
 

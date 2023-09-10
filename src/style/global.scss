@@ -41,3 +41,13 @@
 html {
   scroll-behavior: smooth;
 }
+
+article[itemprop="blogPost"] {
+  h2[itemprop="headline"] {
+    [data-theme="dark"] & {
+      a {
+        color: var(--ifm-font-color-base);
+      }
+    }
+  }
+}
