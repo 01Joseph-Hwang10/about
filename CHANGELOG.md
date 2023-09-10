@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.31 (2023-09-10)
+
+
+### :mega: Other
+
+* edit introduction content ([21a4923](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/21a4923e0c749c94e83c004ae334feca99536789))
+
 ### 0.1.30 (2023-09-10)
 
 
