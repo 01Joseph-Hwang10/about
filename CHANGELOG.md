@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.29 (2023-09-10)
+
+
+### :construction_worker: Continuous Integration
+
+* remove puppeteer & minor fix on ci scripts ([4d2904f](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/4d2904f99a8173008211cf0523ef93be0e2a9e1f))
+
 ### 0.1.28 (2023-09-09)
 
 
