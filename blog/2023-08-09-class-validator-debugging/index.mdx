@@ -1,0 +1,325 @@
+---
+title: 공유 DTO 패키지와 NestJS ValidationPipe
+slug: /class-validator-debugging
+authors: joseph
+tags: [NestJS, Decorator, class-validator, "@shepherd23"]
+---
+
+작성자는 [쉐퍼드23](https://shepherd23.com)의 Product Manager & Software Engineer로 재직하며
+[카페24](https://www.cafe24.com/) 플랫폼을 대상으로 하는 Contextual Bandit 기반의
+개인화 상품 추천 플러그인 [PickHound](https://store.cafe24.com/kr/apps/17367)의 개발 부문을 담당한 바가 있습니다. (See: [경력 기술서 - PickHound](/docs/career-description/pickhound))
+
+작성자는 NestJS를 이용해 메인 백엔드 서비스를 개발하며, 공식 Documentation에서 권장하는 `class-validator`, `class-transformer`, `ValidationPipe`를 이용한 DTO 유효성 검사를 적극적으로 활용하고 있습니다. (See: [Validation - NestJS](https://docs.nestjs.com/techniques/validation))
+
+한편, 작성자는 [Lerna](https://lerna.js.org/)와 [NestJS CLI](https://docs.nestjs.com/cli/monorepo)를 이용해 Monorepo 구조로 프로젝트를 구성하고, 클라이언트 단에서 활용할 수 있는 DTO 패키지를 별도로 분리하여 관리하고 있습니다. 그러나 이 과정에서, `@IsInt()` 등으로 타입이 엄격히 정해진 프로퍼티에 `string`이 들어가도 이를 막지 않는 등 NestJS의 `ValidationPipe`가 제대로 작동하지 않는 문제를 발견했습니다.
+
+본 글에서는 이러한 문제를 해결하기 위해 작성자가 시도한 방법들을 기술합니다.
+
+<!-- truncate-->
+
+## 문제의 원인 파악
+
+문제를 해결하려면 이에 앞서 원인을 먼저 파악해야 했습니다.
+
+### 문제의 구체화
+
+위에서 언급했듯이 패키지 공유를 위해 모노리포를 공유했고, `core` 패키지에서는 메인 서버 개발을, `shared` 패키지에서는 클라이언트 단과 공유할 DTO 모음 패키지를 개발하고 있었습니다.
+
+작성자는 여기서 `ValidationPipe`가 `core` 패키지에 있는 DTO에는 제대로 작동하지만, `shared` 패키지에 있는 DTO에는 제대로 작동하지 않는 문제를 발견했습니다. `shared` 패키지의 DTO는 프로퍼티에 어떤 `class-validator` 데코레이터를 추가해도 `ValidationPipe`가 이를 무시하고, 아무 값이라도 프로퍼티에 할당되면 이를 통과시켜버리는 것이었습니다.
+
+이에, 작성자는 `ValidationPipe`의 작동 원리가 정확히 무엇인지를 파악해 무엇이 `core` 패키지와 `shared` 패키지의 DTO를 구분하는 요인이 되었는지를 찾고자 했습니다.
+
+### `ValidationPipe`
+
+NestJS는 `class-validator`, `class-transformer`를 이용해 DTO의 유효성을 검사하고 주어진 타입으로 변환합니다. 이는 공식 Documentation에 나오는 내용인데, 이것이 구체적으로 어떻게 이루어지는지를 알아보기 위해 [ValidationPipe](https://github1s.com/nestjs/nest/blob/HEAD/packages/common/pipes/validation.pipe.ts)의 코드를 뜯어봤습니다.
+
+코드의 작동방식은 생각보다 단순하고 깔끔했습니다. 기본적으로 `ValidationPipe` 객체는 `class-validator`와 `class-transformer` 패키지를 아래와 같이 그대로 불러와 사용하는 것이었습니다.
+
+```ts
+@Injectable()
+export class ValidationPipe implements PipeTransform<any> {
+  /* ... Properties */
+
+  constructor(@Optional() options?: ValidationPipeOptions) {
+    /* ... Routines */
+
+    classValidator = this.loadValidator(options.validatorPackage);
+    classTransformer = this.loadTransformer(options.transformerPackage);
+  }
+
+  protected loadValidator(
+    validatorPackage?: ValidatorPackage,
+  ): ValidatorPackage {
+    return (
+      validatorPackage ??
+      loadPackage("class-validator", "ValidationPipe", () =>
+        require("class-validator"),
+      )
+    );
+  }
+
+  protected loadTransformer(
+    transformerPackage?: TransformerPackage,
+  ): TransformerPackage {
+    return (
+      transformerPackage ??
+      loadPackage("class-transformer", "ValidationPipe", () =>
+        require("class-transformer"),
+      )
+    );
+  }
+
+  /* ... Methods */
+}
+```
+
+이에, `class-validator`와 `class-transformer`의 문제일 확률이 높겠다는 예상이 있어 두 패키지의 코드를 뜯어보았습니다.
+
+### `class-validator` & `class-transformer`
+
+[class-validator](https://github.com/typestack/class-validator)와 [class-transformer](https://github.com/typestack/class-transformer)는 Typescript의 [Decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) 기능을 적극 활용해 DTO의 유효성 검사와 타입 변환을 수행하는 패키지입니다.
+
+이 두개의 패키지는 둘 다 `MetadataStorage`라는 객체를 구현해 Typescript 컴파일 타임에 실행되는 데코레이터 함수에서 이 객체의 메서드를 호출해 프로퍼티에 추가된 데코레이터를 저장합니다. 일례로 `class-validator`의 [@IsInt()](https://github1s.com/typestack/class-validator/blob/HEAD/src/decorator/typechecker/IsInt.ts) 데코레이터의 작동방식은 아래와 같습니다.
+
+#### `IsInt`는 `ValidateBy` 함수를 호출합니다.
+
+이때 `validator.validate`의 인자로 `isInt`함수를 전달합니다.
+
+```ts
+export function isInt(val: unknown): val is Number {
+  return typeof val === "number" && Number.isInteger(val);
+}
+
+export function IsInt(
+  validationOptions?: ValidationOptions,
+): PropertyDecorator {
+  return ValidateBy(
+    {
+      name: IS_INT,
+      validator: {
+        validate: (value, args): boolean => isInt(value),
+        defaultMessage: buildMessage(
+          (eachPrefix) => eachPrefix + "$property must be an integer number",
+          validationOptions,
+        ),
+      },
+    },
+    validationOptions,
+  );
+}
+```
+
+#### `ValidateBy`는 `registerDecorator`를 호출합니다.
+
+이때 `ValidateBy`의 첫 번째 인자인 `ValidateByOptions`를 `registerDecorator`의 인자로 전달합니다.
+
+```ts
+function ValidateBy(
+  options: ValidateByOptions,
+  validationOptions?: ValidationOptions,
+): PropertyDecorator {
+  return function (object: object, propertyName: string): void {
+    registerDecorator({
+      name: options.name,
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: options.constraints,
+      validator: options.validator,
+    });
+  };
+}
+```
+
+#### `registerDecorator`는 `MetadataStorage`에 데코레이터 메타데이터를 저장합니다.
+
+`MetadataStorage`는 Singleton으로 관리되는 객체로 `getMetadataStorage`를 통해 객체를 얻을 수 있습니다.
+
+`registerDecorator`는 `MetadataStorage.addValidationMetadata`를 호출해 최종적으로 라이브러리 내부적인 메모리에 데코레이터 메타데이터를 저장합니다.
+
+```ts
+function registerDecorator(options: ValidationDecoratorOptions): void {
+  /* ... Constraint Logics */
+
+  const validationMetadataArgs: ValidationMetadataArgs = {
+    type:
+      options.name && ValidationTypes.isValid(options.name)
+        ? options.name
+        : ValidationTypes.CUSTOM_VALIDATION,
+    name: options.name,
+    target: options.target,
+    propertyName: options.propertyName,
+    validationOptions: options.options,
+    constraintCls: constraintCls,
+    constraints: options.constraints,
+  };
+  getMetadataStorage().addValidationMetadata(
+    new ValidationMetadata(validationMetadataArgs),
+  );
+}
+```
+
+### Singleton
+
+이때, `MetadataStorage`가 Singleton이라는 점에 집중했습니다. Singleton 객체로 구현했다는 것은 라이브러리가 모든 메타데이터를 하나의 객체에서 저장하고 있을 때 작성자가 원하는 대로 프로퍼티에 얹은 데코레이터가 작동한다는 것을 의미했습니다.
+
+이 사실은 바로 위에서 언급한 [`ValidationPipe`의 구현 코드](#validationpipe)와도 일맥상통했습니다. `loadValidator`와 `loadTransformer`는 `ValidationPipe`의 생성자에서 호출되는데, 이때 `ValidationPipe`의 생성자는 `ValidationPipeOptions`를 인자로 받습니다. 이 인자는 `validatorPackage`와 `transformerPackage`라는 프로퍼티를 가지는데, 이 프로퍼티들은 만약 정의될 경우 `ValidationPipe`의 생성자에서 `loadValidator`와 `loadTransformer`의 인자로 전달되고, 정의되지 않을 경우 해당 환경에서 사용 가능한 `class-validator`와 `class-transformer`를 불러옵니다.
+
+이에, 작성자는 모노리포를 구성하고 있는 상황에서 `core` 패키지와 `shared` 패키지가 같은 `class-validator`, `class-transformer`를 사용하고 있는지를 살펴봤고, 예상한대로 두 패키지는 각각 별도의 `class-validator`, `class-transformer`를 사용하고 있었습니다.
+
+## 해결 방안
+
+### `ValidationPipe` Way: `load*`
+
+위와 같은 문제를 파악하고, 작성자는 처음으로는 `ValidationPipe`의 `loadValidator`, `loadTransformer`와 같이 `class-validator`, `class-transformer` 패키지를 직접 주입하게끔 하는 방법을 시도하면 문제를 해결할 수 있겠다고 생각했습니다.
+
+이에, 작성자는 아래와 같이 `register*` 함수를 작성하여 커스텀 `class-*`를 주입할 수 있도록 하고, `shared` 패키지에서는 `load*`를 이용해 `class-*` 패키지를 불러오게끔 했습니다.
+
+```ts
+export const registerClassValidator = (pkg: () => any) => {
+  classValidator = pkg();
+};
+
+export const registerClassTransformer = (pkg: () => any) => {
+  classTransformer = pkg();
+};
+
+export const loadClassValidator = (): typeof import("class-validator") => {
+  if (!classValidator) {
+    warnPackageNotRegistered("class-validator");
+    return require("class-validator");
+  }
+  return classValidator;
+};
+
+export const loadClassTransformer = (): typeof import("class-transformer") => {
+  if (!classTransformer) {
+    warnPackageNotRegistered("class-transformer");
+    return require("class-transformer");
+  }
+  return classTransformer;
+};
+
+/**
+ * @description
+ * Returns the class-validator package.
+ * If the package is not registered, it will return the default package.
+ */
+export const validator = (): ClassValidator => loadClassValidator();
+
+/**
+ * @description
+ * Returns the class-transformer package.
+ * If the package is not registered, it will return the default package.
+ */
+export const transformer = (): ClassTransformer => loadClassTransformer();
+```
+
+그러나 이 방식은 문제를 해결하기는 하나, DX 측면에서 굉장히 좋지 못한 해결 방안이었습니다. 기존의 방식과는 다르게, 항상 `loadValidator`, `loadTransformer`를 호출해야 했기 때문입니다. 이를 각각 `validator`, `transformer`로 이름을 바꿔보기도 하였지만, 여전히 코드 작성이 매우 반복적이고 비효율적인 부분이 있었습니다.
+
+<details>
+<summary>validator()/transformer()를 활용한 코드 예시</summary>
+<div markdown="1">
+
+```ts
+export class GetRecommendationsInput extends CommonInput {
+  /**
+   * @description
+   * 소비자의 ID입니다.
+   */
+  @validator().IsString()
+  customerId: string;
+
+  /**
+   * @description
+   * 현재 소비자가 보고 있는 상품의 상품 번호입니다.
+   * 이 프로퍼티는 상세페이지에서 추천 요청을 보내는 경우에만 정의되며, 이 외의 경우에는 정의되지 않습니다.
+   * 이 프로퍼티는 상품 추천 과정에서 @type {GetRecommendationsPayload}의 `clickedProductNo`에 할당됩니다.
+   */
+  @validator().IsInt()
+  @validator().IsOptional()
+  viewingProduct?: number;
+
+  /**
+   * @description
+   * 추천 상품의 개수입니다.
+   */
+  @validator().IsInt()
+  @validator().IsOptional()
+  count?: number;
+
+  /**
+   * @description
+   * 상품 추천 시 활용할 루트 클릭 상품 번호입니다.
+   * 루트 클릭과 관련한 설명은 사내 노션 문서 `PickHound > Overview & Guides > Brief Specification` 을 참고해주세요.
+   */
+  @validator().IsInt()
+  rootClickProductNo: number;
+
+  /**
+   * @description
+   * 해당 소비자의 세션 시작 시간입니다.
+   * null일 경우 세션 시작 시간이 없음을 의미하며,
+   * 이는 사용자가 처음 세션에 접속했음을 의미합니다.
+   */
+  @validator().IsInt()
+  @validator().IsOptional()
+  sessionStartingTime?: number;
+}
+```
+
+</div>
+</details>
+
+### Workaround: Use `peerDependencies`
+
+이러한 문제 상황에서 문득, 다른 모노리포를 구성한 오픈소스 프로젝트는 이를 어떻게 해결했을까? 라는 의문이 들었습니다.
+
+특히 `class-validator`와 `class-transformer`를 적극 활용하는 NestJS 프로젝트는 이러한 문제를 이미 겪어보지 않았을까? 하는 생각이 들었습니다. 이에 NestJS의 소스 코드를 차근차근 살펴보기 시작했습니다.
+
+소스 코드를 뜯어보던 중에 `packages/*` 아래에 있는 `package.json`에 `peerDependencies`와 `peerDependenciesMeta`가 정의되어 있음을 알게 되었습니다. 일례로 `@nestjs/common` 패키지는 NestJS는 `class-validator`와 `class-transformer`를 `peerDependencies`로 정의하고, 이를 `peerDependenciesMeta`를 통해 `optional`로 정의하고 있었습니다. ([Reference](https://github1s.com/nestjs/nest/blob/HEAD/packages/common/package.json))
+
+이전부터 `npm i`로 패키지 설치 시 패키지간 호환성 문제로 `peerDependencies`를 몇 번 본적이 있어 대강 이 키워드는 알고 있었지만, 이 `peerDependencies`가 정확히 어떤 역할을 하는지에 대한 정확한 감은 없었습니다. 이에, `peerDependencies`에 대해 좀 더 자세히 알아보기로 했습니다.
+
+#### `peerDependencies`란?
+
+`peerDependencies`는 `dependencies`와 `devDependencies`와 다르게 자동적으로 설치되는 패키지가 아니고, `peerDependencies`를 정의한 패키지를 사용하는 호스트 툴이나 라이브러리에서 패키지를 직접 설치해야 합니다 ([Reference](https://docs.npmjs.com/cli/v10/configuring-npm/package-json#peerdependencies)). 이러한 특성 때문에 패키지간 호환성 문제를 중요하게 다루는 오픈소스 라이브러리에서 `peerDependencies`를 적극 활용하는 것으로 보이고 ([Reference](https://www.geeksforgeeks.org/difference-between-dependencies-devdependencies-and-peerdependencies/)), 이는 NestJS의 `peerDependencies`를 통해서도 확인할 수 있었습니다.
+
+NestJS는 이러한 `peerDependencies`를 통해 각 패키지가 사용하는 `class-validator`, `class-transformer`가 하나의 `MetadataStorage`를 사용하도록 모노리포를 설계한 것이었습니다.
+
+이에 작성자도 `@nestjs/common`의 `package.json`처럼 `class-validator`와 `class-transformer`를 `peerDependencies`로 지정하여 모노리포 내의 모든 패키지가 하나의 `MetadataStorage`를 사용하도록 했습니다.
+
+```json
+{
+  "name": "<package-name>",
+  "version": "0.7.14",
+  /* ... Properties */
+  "dependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "reflect-metadata": "^0.1.12"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^9.2.1",
+    "@nestjs/core": "^9.2.1",
+    "@types/node": "^18.16.3",
+    "concurrently": "^7.4.0",
+    "typescript": "^5.0.4"
+  },
+  "peerDependencies": {
+    "class-transformer": "^0.5.0",
+    "class-validator": "^0.14.0",
+    "reflect-metadata": "^0.1.10"
+  }
+}
+```
+
+이로써 [처음에 사용한 방법](#validationpipe-way-load)보다 훨씬 간결하고 효율적인 방법으로 문제를 해결할 수 있었습니다.
+
+## 결론
+
+이번 글에서는 NestJS의 `ValidationPipe`가 제대로 작동하지 않는 문제를 발견하고, 이를 해결하기 위해 작성자가 시도한 방법들을 기술했습니다.
+
+이번 글에서 기술한 일련의 디버깅 과정을 통해, 싱글톤 패턴을 사용하는 패키지를 사용할 적에 싱글톤의 목적을 와해하는 모노리포 상황에서의 주의 사항에 관해 확실히 머릿 속에 각인할 수 있었습니다.
+또한 `npm` 라이브러리를 퍼블리싱 할 때 타 패키지와의 호환성 이슈를 인지하고 종속성을 구성하는 방법에 대해 배울 수 있었습니다.
+여기에 더해 Typescript 데코레이터의 구체적인 작동 방식에 관해서도 확실히 이해할 수 있었습니다.

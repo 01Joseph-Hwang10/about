@@ -1,6 +1,28 @@
 import Tags from "@site/src/components/Tag/Tags";
 import values from "./values";
 
+#### `class-validator` 데코레이터 디버깅 및 소스 코드 분석
+
+<Tags
+  metadata={["backend-agnostic", "standbylab"]}
+  tags={["backend", "troubleshooting", "@shepherd23"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- 모노리포 구성으로 클라이언트와 공유가 필요한 DTO를 공통 라이브러리로 분리해 사용중인 상황.
+- `class-validator`를 통해 Decorate 된 공통 라이브러리의 DTO가 NestJS의 ValidationPipe 에 의해 타입이 검증되지 않는 문제 발견.
+  - `class-validator`의 작동 방식을 알기 위해 소스 코드를 들여다보는 과정에서 내부적으로 `MetadataStorage` 객체를 이용해 Typescript -> Javascript 컴파일 과정에서 데코레이터 정보를 저장하고, 모노리포 내부의 라이브러리가 각각 별도의 `class-validator` 패키지를 설치하고 있어 발생하는 문제임을 확인.
+- `class-validator`를 `peerDependencies`로 추가해 모든 패키지가 하나의 `MetadataStorage` 객체를 공유하도록 함.
+- => 디버깅 과정을 통해 모노리포 상황이나 `npm` 패키지 퍼블리싱 상황에서 패키지 간의 호환성 이슈를 상기해야함을 머릿 속에 각인함.
+
+:::tip
+
+아래 링크에서 위와 관련한 더 자세한 내용을 확인할 수 있습니다.
+
+https://01joseph-hwang10.github.io{/posts/class-validator-debugging
+
+:::
+
 #### 상품 정보에 대한 Caching 구현
 
 <Tags
@@ -11,8 +33,8 @@ import values from "./values";
 
 - 추천에 필요한 상품 정보를 Firestore에서 가져오는 과정에서 발생하는 불필요한 읽기 과정을 줄이기 위해 인메모리 캐시 도입.
   - 상품 정보에 대한 캐싱 및 캐시 무효화 기능을 제공하는 NestJS 모듈 `ActionProviderModule` 구현.
-- 도큐먼트 읽기 횟수 `3천만/일 -> 150만/일`로 감소
-- => 매우 큰 비용 절감 효과
+- 도큐먼트 읽기 횟수 `30,000,000/일 -> 1,500,000/일`로 감소
+  - => 매우 큰 비용 절감 효과
 
 <details>
 <summary>ActionProviderService</summary>
@@ -94,8 +116,8 @@ export class ActionProviderService {
 
 ##### See Also
 
-- [PickHound](https://01joseph-hwang10.github.io/docs/career-description/pickhound)
-- [ActionProviderService](https://01joseph-hwang10.github.io/docs/career-description/pickhound#상품-정보에-대한-caching-구현)
+- PickHound: https://01joseph-hwang10.github.io/docs/career-description/pickhound
+- `ActionProviderService`: https://01joseph-hwang10.github.io/docs/career-description/pickhound#상품-정보에-대한-caching-구현
 
 #### Firestore 복합 인덱스 관리를 위한 명시적 메서드 네이밍 컨벤션 수립
 
@@ -106,7 +128,8 @@ export class ActionProviderService {
 />
 
 - Firestore를 도입하고 여러 필드를 기준으로 쿼리를 수행하는 경우가 늘어나면서, 복합 인덱스에 포함된 프로퍼티, 정렬 기준 등을 혼동하는 경우가 빈번히 발생.
-- => 모든 프로퍼티 이름을 포함하는 네이밍 컨벤션을 통해 복합 인덱스 관리를 명시적으로 하도록 함.
+- 모든 프로퍼티 이름을 포함하는 네이밍 컨벤션을 통해 복합 인덱스 관리를 명시적으로 하도록 함.
+- => 복합 인덱스가 필요한 쿼리를 수행하는 데 발생하는 휴먼 에러 발생률 감소, 복합 인덱스가 필요한 쿼리 구현에 필요한 시간 감소.
 
 :::note
 
@@ -169,7 +192,9 @@ Insert link here
 
 - 데이터 요청이 필요한 API의 Leaky Bucket Policy로 인해 1초에 2회 수준으로 API 호출이 제한됨.
 - 각 상품의 상세 정보를 하나씩 전부 요청해야 하는 상황에서 단순 API 호출로는 HTTP 429 에러 발생.
-- => LeakyBucketClient 클래스를 구현해 호출의 빈도를 제한하고, 429 에러 발생 시 재시도하는 로직을 구현해 이슈 해결.
+- LeakyBucketClient 클래스를 구현해 호출의 빈도를 제한하고, 429 에러 발생 시 리퀘스트 재시도.
+  - HTTP 에러 코드별로 `Exception` 클래스를 만들고 `instanceof` 연산자를 활용해 에러를 구분하고 대기 시간을 조절.
+- => 상품 추천에 필요한 데이터인 상품의 상세 정보를 전부 요청하는 작업을 가능케 함.
 
 <details>
 <summary>LeakyBucketClient</summary>
@@ -243,6 +268,45 @@ class LeakyBucketClient<T> {
 
     // Decrement current limit
     this.currentAPIUsage -= decrementGoal;
+  }
+
+  /**
+   * @description
+   * We consider 502 and 429 errors as overflow errors.
+   * While considering 502 as overflow error is not strictly correct,
+   * we consider 502 as overflow error because it is highly likely that
+   * 502 error is caused by the same reason as 429 error.
+   */
+  private async safeExecute<T>(
+    request: () => Promise<AxiosResponse<T>>,
+  ): Promise<LeakyBucketFetchResponse<T>> {
+    try {
+      const result = await request();
+      this.currentAPIUsage = await this.getAPIUsageFromHeaders(result.headers);
+      return {
+        success: true,
+        data: result.data,
+        overflow: false,
+        badGateway: false,
+      };
+    } catch (error) {
+      this.currentAPIUsage = await this.getAPIUsageFromHeaders(error.headers);
+      if (error instanceof TooManyRequestsException)
+        return {
+          success: false,
+          data: null,
+          overflow: true,
+          badGateway: false,
+        };
+      if (error instanceof BadGatewayException)
+        return {
+          success: false,
+          data: null,
+          overflow: false,
+          badGateway: true,
+        };
+      throw error;
+    }
   }
 
   /**
@@ -338,45 +402,6 @@ class LeakyBucketClient<T> {
 
     return this.results;
   }
-
-  /**
-   * @description
-   * We consider 502 and 429 errors as overflow errors.
-   * While considering 502 as overflow error is not strictly correct,
-   * we consider 502 as overflow error because it is highly likely that
-   * 502 error is caused by the same reason as 429 error.
-   */
-  private async safeExecute<T>(
-    request: () => Promise<AxiosResponse<T>>,
-  ): Promise<LeakyBucketFetchResponse<T>> {
-    try {
-      const result = await request();
-      this.currentAPIUsage = await this.getAPIUsageFromHeaders(result.headers);
-      return {
-        success: true,
-        data: result.data,
-        overflow: false,
-        badGateway: false,
-      };
-    } catch (error) {
-      this.currentAPIUsage = await this.getAPIUsageFromHeaders(error.headers);
-      if (error instanceof TooManyRequestsException)
-        return {
-          success: false,
-          data: null,
-          overflow: true,
-          badGateway: false,
-        };
-      if (error instanceof BadGatewayException)
-        return {
-          success: false,
-          data: null,
-          overflow: false,
-          badGateway: true,
-        };
-      throw error;
-    }
-  }
 }
 ```
 
@@ -385,7 +410,7 @@ class LeakyBucketClient<T> {
 
 ##### See Also
 
-- [`LeakyBucketClient`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#leaky-bucket이-적용된-엔드포인트를-위한-http-client-구현)
+- `LeakyBucketClient`: https://01joseph-hwang10.github.io/docs/career-description/pickhound#leaky-bucket이-적용된-엔드포인트를-위한-http-client-구현
 
 #### Bandit Engine 서비스와의 연동을 위한 HTTP Client 구현
 
@@ -668,9 +693,7 @@ export const objectFromSnakeToCamel = <
 
 ##### See Also
 
-- [`BanditClient`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#bandit-engine-서비스와의-연동을-위한-http-client-구현)
-- [`objectFromCamelToSnake`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#bandit-engine-서비스와의-연동을-위한-http-client-구현)
-- [`objectFromSnakeToCamel`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#bandit-engine-서비스와의-연동을-위한-http-client-구현)
+- `BanditClient`, `objectFromCamelToSnake`, `objectFromSnakeToCamel`: https://01joseph-hwang10.github.io/docs/career-description/pickhound#bandit-engine-서비스와의-연동을-위한-http-client-구현
 
 ##### Related
 
@@ -686,8 +709,9 @@ export const objectFromSnakeToCamel = <
 
 - 기존에는 모든 서비스를 Google Cloud Run을 이용해서 배포했음.
   - 데이터 요청이 필요한 API의 Leaky Bucket Policy로 인해, 상품 정보를 자사 Firestore DB로 가져오는 프로세스가 길어지면서 Cloud Run의 프로세스 제한 시간인 1시간을 초과하는 문제 발생.
-- => GCE 인스턴스 그룹과 Cloud Load Balancer를 활용해 긴 프로세스를 담당하는 Worker 인프라를 구축하여 이슈 해결.
+- GCE 인스턴스 그룹과 Cloud Load Balancer를 활용해 긴 프로세스를 담당하는 Worker 인프라를 구축하여 이슈 해결.
   - Cloud Build Substitution Variable 과 Docker Build Args를 활용해, Cloud Run과 Worker 인프라 배포 코드 공유.
+- => Cloud Build, GCE 인스턴스 그룹, GCLB와 구글 관리형 SSL 등 Cloud Computing에 관한 이해도와 Docker, Bash script 등 DevOps 기술에 관한 이해도 크게 향상.
 
 <details>
 <summary>cloudbuild.yaml</summary>
@@ -700,7 +724,6 @@ export const objectFromSnakeToCamel = <
 # - _DEPLOY_TO: 'GCR' | 'GCE' | 'None'
 # - _SERVICE_NAME: service name (Service name used among GCP. It's the name related with Container Registry)
 # - _INSTANCE_GROUP_NAME: GCE instance group name (only needed when deploy to GCE)
-# - _INSTANCE_TEMPLATE_NAME: GCE instance template name (only needed when deploy to GCE)
 
 steps:
   # Pull the cached image
@@ -745,7 +768,6 @@ steps:
       - "IMAGE_URL=${_IMAGE_URL}:${COMMIT_SHA}"
       - "REGION=${_DEPLOY_REGION}"
       - "PROJECT_ID=${PROJECT_ID}"
-      - "INSTANCE_TEMPLATE_NAME=${_INSTANCE_TEMPLATE_NAME}"
       - "INSTANCE_GROUP_NAME=${_INSTANCE_GROUP_NAME}"
     args:
       - ./ci/api/deploy.sh
@@ -783,7 +805,6 @@ tags:
 # - IMAGE_URL: image url (GCR image url)
 # - REGION: region to deploy (only required when "DEPLOY_TO" is 'GCR')
 # - INSTANCE_GROUP_NAME: instance group name (only required when "DEPLOY_TO" is 'GCE')
-# - INSTANCE_TEMPLATE_NAME: instance template name or prefix (only required when "DEPLOY_TO" is 'GCE')
 
 # Exit on any error
 set -e
@@ -804,15 +825,6 @@ fi
 # If DEPLOY_TO is 'GCE', deploy to GCE
 if [ "$DEPLOY_TO" == "GCE" ]; then
   echo "Deploying to GCE"
-  # Retrieve a name of the previous instance template
-  INSTANCE_TEMPLATE_NAME=$(
-      gcloud compute instance-templates list \
-          --filter="name~'${INSTANCE_TEMPLATE_NAME}*'" \
-          --sort-by="~creationTimestamp" \
-          --limit=1 \
-          --format="value(NAME)"
-  )
-
   # Replace VMs
   # We replace VMs as we need to update the docker image inside the template.
   # Replacing VMs will update the docker image inside the template.
@@ -894,9 +906,7 @@ CMD npm run $PROJECT:start:prod
 
 ##### See Also
 
-- [`cloudbuild.yaml`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#긴-프로세스를-담당하는-worker-인프라-구축)
-- [`deploy.sh`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#긴-프로세스를-담당하는-worker-인프라-구축)
-- [`Dockerfile`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#긴-프로세스를-담당하는-worker-인프라-구축)
+- `cloudbuild.yaml`, `deploy.sh`, `Dockerfile`: https://01joseph-hwang10.github.io/docs/career-description/pickhound#긴-프로세스를-담당하는-worker-인프라-구축
 
 ##### Related
 
@@ -946,3 +956,7 @@ export class MallSnapshotService implements OnApplicationShutdown {
 
 </div>
 </details>
+
+##### See Also
+
+- `MallSnapshotService.onApplicationShutdown`: https://01joseph-hwang10.github.io/docs/resume/backend-agnostic#gce-instance-group-autoscaler-의-instance-termination으로-인한-프로세스-중단-문제-해결

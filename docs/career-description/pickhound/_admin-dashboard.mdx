@@ -9,11 +9,14 @@ import values from "./values";
   tagColorScheme={values.tagColorScheme}
 />
 
-- Redux를 활용해 React Component와 StencilJS Web Component의 상태 연동하여 상품 추천 팝업 배너 디자인 수정 페이지 구현
-  - OOP에 기반해 StencilJS Web Component의 style을 관리하는 `Banner Manager` 객체 작성
-    - `MVC` 패턴을 기반으로 한 React 디자인 수정 페이지와의 상태 연동
-    - `structedClone`을 활용해 상태 업데이트 반영
-  - React, `@reduxjs/toolkit`을 활용해 `FLUX` 패턴을 기반으로 디자인 수정 페이지 구현
+- React와 StencilJS로 빌드된 Web Component의 상태 관리 방식이 다르기 때문에 각각의 경우에 맞는 상태 관리를 구현해야 했음.
+- React, `@reduxjs/toolkit`의 `createSlice()` API를 활용해 `FLUX` 패턴을 기반으로 디자인 수정 페이지 구현
+- `MVC` 패턴에 기반해 StencilJS Web Component의 style을 관리하는 `Banner Manager` 객체 작성
+  - 스타일 객체를 `M`, `Redux Slice`를 `V`에 대응하게끔 구현하고 `C`에 해당하는 `Banner Manager` 객체를 작성.
+  - `structedClone`을 활용한 [새로운 Object Reference 생성으로 상태 업데이트](https://stenciljs.com/docs/properties#mutable-arrays-and-objects)
+- `FLUX` 중 `Store`에 해당하는 `Redux Slice`를 `MVC` 중 `V`에 대응하여 두 컴포넌트의 상태를 연동.
+- => 간결하고 직관적인, 유지보수에 용이한 상태 관리 코드 작성.
+- => 디자인 패턴을 더 유연하게 바라보고 적재적소에 응용할 수 있는 시각을 함양.
 
 :::tip
 
@@ -32,7 +35,10 @@ https://01joseph-hwang10.github.io/posts/react-stenciljs-integration
 />
 
 - [Figma Admin Dashboard Kit](https://www.saasdesign.io/figma-admin-dashboard-kit/)에 기반해 플러그인의 어드민 대시보드 개발을 위한 디자인 시스템 구현.
-- 활용성과 재사용성이 높은 React 컴포넌트를 작성하기 위해 깊이 고민하고 노력함.
+- 간결하고 직관적인 React 컴포넌트를 작성하기 위해 깊이 고민하고 노력함.
+  - => `<Callout />` 컴포넌트를 통해 5분만에 서비스 사용자를 위한 새로운 메시지 배너 작성 후 배포.
+  - => `<RoundedCard />` 와 `<Container />`, `<HeadingWithLine />`을 활용해 간결한 코드로 UI의 영역을 구분.
+  - => `colors` 상수 선언을 [Figma Admin Dashboard Kit](https://www.saasdesign.io/figma-admin-dashboard-kit/) 디자인 시스템의 색상을 일관성 있게 관리 및 활용.
 
 :::tip
 
@@ -80,8 +86,10 @@ https://01joseph-hwang10.github.io/posts/admin-dashboard-ui-kit-implementation
   tagColorScheme={values.tagColorScheme}
 />
 
-- 컴포넌트를 활용해 MUI, D3등 다소 무거운 라이브러리 활용으로 `Admin Dashboard`의 번들 크기가 커지는 문제가 있었음.
-- => Code Split과 `React.Suspense` 를 활용해 초기 로딩 UX 개선.
+- MUI, D3등 다소 무거운 라이브러리 활용으로 `Admin Dashboard`의 번들 크기가 커지는 문제가 있었음.
+- Code Split과 `React.Suspense` 를 활용해 초기 로딩 UX 개선.
+  - 별도로 분리된 번들이 다운로드 되는 동안 `fallback` 인자로 `<Loader fill />`를 전달해 로딩 화면을 렌더링.
+  - => 초기 로딩 화면을 렌더링하는 동안 사용자가 멈춰있는 빈 화면을 보는 것을 방지.
 
 <details>
 <summary>AppRouter</summary>
@@ -170,4 +178,4 @@ const AppRouter = () => {
 
 ##### See Also
 
-- [`AppRouter`](https://01joseph-hwang10.github.io/docs/career-description/pickhound#code-split과-reactsuspense-를-활용한-초기-로딩-ux-개선)
+- `AppRouter`: https://01joseph-hwang10.github.io/docs/career-description/pickhound#code-split과-reactsuspense-를-활용한-초기-로딩-ux-개선

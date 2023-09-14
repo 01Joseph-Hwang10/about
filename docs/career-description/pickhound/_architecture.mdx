@@ -17,7 +17,7 @@ graph LR
 
   recommendation_api --> |"Feedback (Reward)"| bandit_engine
   bandit_engine --> |Recommendation| recommendation_api
-  recommendation_api <--> |Document Read/Write| firestore
+  recommendation_api <--> |Data Read/Write| firestore
   dashboard <--> |Plugin Config| recommendation_api
   scripts --> |"Feedback (Reward)"| recommendation_api
   recommendation_api --> |Recommendation| scripts
