@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkabout=self.webpackChunkabout||[]).push([[7818],{48937:a=>{a.exports=JSON.parse('{"label":"class-validator","permalink":"/posts/tags/class-validator","allTagsPath":"/posts/tags","count":1}')}}]);

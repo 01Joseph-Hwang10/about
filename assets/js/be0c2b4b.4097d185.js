@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkabout=self.webpackChunkabout||[]).push([[3193],{69795:s=>{s.exports=JSON.parse('{"label":"NestJS","permalink":"/posts/tags/nest-js","allTagsPath":"/posts/tags","count":1}')}}]);

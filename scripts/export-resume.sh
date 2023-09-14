@@ -79,6 +79,8 @@ echo "[$FILENAME] Removing first pages..."
 
 qpdf --empty --pages "$_outputPDFFilename" 2-z -- "$FILENAME"
 
+rm "$_outputPDFFilename"
+
 echo "[$FILENAME] Move file to appropriate directory..."
 
 # Path to the PDF file you want to upload
@@ -86,6 +88,3 @@ FILEPATH="files/resume/$FILENAME"
 
 mv "$FILENAME" "$FILEPATH"
 
-echo "[$FILENAME] Cleaning up..."
-
-rm "$_outputPDFFilename"
