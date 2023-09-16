@@ -86,5 +86,10 @@ echo "[$FILENAME] Move file to appropriate directory..."
 # Path to the PDF file you want to upload
 FILEPATH="files/resume/$FILENAME"
 
+if [ -d "./static" ]; then
+  echo "[$FILENAME] Looks like we are in development mode. Moving file to static directory..."
+  FILEPATH="static/$FILEPATH"
+fi
+
 mv "$FILENAME" "$FILEPATH"
 

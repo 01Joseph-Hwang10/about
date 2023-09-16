@@ -13,7 +13,7 @@ import values from "./values";
 - `class-validator`를 통해 Decorate 된 공통 라이브러리의 DTO가 NestJS의 ValidationPipe 에 의해 타입이 검증되지 않는 문제 발견.
   - `class-validator`의 작동 방식을 알기 위해 소스 코드를 들여다보는 과정에서 내부적으로 `MetadataStorage` 객체를 이용해 Typescript -> Javascript 컴파일 과정에서 데코레이터 정보를 저장하고, 모노리포 내부의 라이브러리가 각각 별도의 `class-validator` 패키지를 설치하고 있어 발생하는 문제임을 확인.
 - `class-validator`를 `peerDependencies`로 추가해 모든 패키지가 하나의 `MetadataStorage` 객체를 공유하도록 함.
-- => 디버깅 과정을 통해 모노리포 상황이나 `npm` 패키지 퍼블리싱 상황에서 패키지 간의 호환성 이슈를 상기해야함을 머릿 속에 각인함.
+- => 디버깅 과정을 통해 모노리포 상황이나 `npm` 패키지 퍼블리싱 상황에서 패키지 간의 호환성 이슈를 고려한 공유 라이브러리 구성.
 
 :::tip
 
@@ -32,9 +32,8 @@ https://01joseph-hwang10.github.io{/posts/class-validator-debugging
 />
 
 - 추천에 필요한 상품 정보를 Firestore에서 가져오는 과정에서 발생하는 불필요한 읽기 과정을 줄이기 위해 인메모리 캐시 도입.
-  - 상품 정보에 대한 캐싱 및 캐시 무효화 기능을 제공하는 NestJS 모듈 `ActionProviderModule` 구현.
-- 도큐먼트 읽기 횟수 `30,000,000/일 -> 1,500,000/일`로 감소
-  - => 매우 큰 비용 절감 효과
+- 상품 정보에 대한 캐싱 및 캐시 무효화 기능을 제공하는 NestJS 모듈 `ActionProviderModule` 구현.
+- => 도큐먼트 읽기 횟수 `30,000,000/일 -> 1,500,000/일`로 감소 -> 매우 큰 비용 절감 효과
 
 <details>
 <summary>ActionProviderService</summary>
