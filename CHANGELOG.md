@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.34 (2023-09-16)
+
+
+### :mega: Other
+
+* edit resume content ([1e406b3](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/1e406b3a5467b23acc3d1ae6aa65a0dc05948cc2))
+
 ### 0.1.33 (2023-09-16)
 
 

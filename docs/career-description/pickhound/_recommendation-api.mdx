@@ -13,7 +13,7 @@ import values from "./values";
 - `class-validator`를 통해 Decorate 된 공통 라이브러리의 DTO가 NestJS의 ValidationPipe 에 의해 타입이 검증되지 않는 문제 발견.
   - `class-validator`의 작동 방식을 알기 위해 소스 코드를 들여다보는 과정에서 내부적으로 `MetadataStorage` 객체를 이용해 Typescript -> Javascript 컴파일 과정에서 데코레이터 정보를 저장하고, 모노리포 내부의 라이브러리가 각각 별도의 `class-validator` 패키지를 설치하고 있어 발생하는 문제임을 확인.
 - `class-validator`를 `peerDependencies`로 추가해 모든 패키지가 하나의 `MetadataStorage` 객체를 공유하도록 함.
-- => 디버깅 과정을 통해 모노리포 상황이나 `npm` 패키지 퍼블리싱 상황에서 패키지 간의 호환성 이슈를 고려한 공유 라이브러리 구성.
+- => 디버깅 과정을 통해 모노리포 상황이나 `npm` 패키지 퍼블리싱 상황에서 패키지 간의 호환성 이슈를 고려한 공유 라이브러리 구성이 중요함을 배움.
 
 :::tip
 
@@ -711,7 +711,7 @@ export const objectFromSnakeToCamel = <
 - GCE 인스턴스 그룹과 Cloud Load Balancer를 활용해 긴 프로세스를 담당하는 Worker 인프라를 구축하여 이슈 해결.
   - Cloud Build Substitution Variable 과 Docker Build Args를 활용해, Cloud Run과 Worker 인프라 배포 코드 공유.
 - => Cloud Build와 Docker를 이용한 CI/CD 자동화로 인력 소비 최소화 및 GCE Instance Group과 GCLB를 활용한 시스템의 유연성 확보.
-- => 외부 API의 제약사항을 고려한 Worker 인프라 구축과정에서 실제 프로덕션 환경에서의 문제 해결 능력 향상
+- => 인프라 구축 과정에서 외부 API의 제약사항을 고려한 Worker 인프라 구축과정에서 실제 프로덕션 환경에서의 문제 해결 능력 향상
 
 <details>
 <summary>cloudbuild.yaml</summary>
