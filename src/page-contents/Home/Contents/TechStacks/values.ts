@@ -101,7 +101,6 @@ const supportingStacks: Record<FeaturedStack["key"], SupportingStack> = {
       "Cloud Compute Engine",
       "Docker",
       "Linux",
-      "Github",
     ],
     seed: 3,
   },
