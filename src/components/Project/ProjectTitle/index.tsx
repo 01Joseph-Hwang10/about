@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styles from "./styles";
 import clsx from "clsx";
+import useIsDarkMode from "@site/src/hooks/useIsDarkMode";
 
 interface ProjectTitleProps {
   title: string;
@@ -10,6 +11,7 @@ interface ProjectTitleProps {
 }
 
 const ProjectTitle: React.FC<ProjectTitleProps> = ({ title, link }) => {
+  const isDarkMode = useIsDarkMode();
   return (
     <h3
       className={clsx(
@@ -20,7 +22,10 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({ title, link }) => {
     >
       {title}
       <a href={link} target="_blank" rel="noreferrer" css={styles.link}>
-        <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+        <FontAwesomeIcon
+          color={styles.iconColor(isDarkMode)}
+          icon={faArrowUpRightFromSquare}
+        />
       </a>
     </h3>
   );

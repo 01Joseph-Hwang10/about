@@ -10,9 +10,7 @@ const skillTags = [
 export type SkillTag = (typeof skillTags)[number];
 
 const skillTagTextColor = (isDarkMode?: boolean) =>
-  isDarkMode
-    ? "var(--ifm-font-color-base)"
-    : "var(--ifm-color-primary-contrast-background)";
+  isDarkMode ? "var(--ifm-font-color-base)" : "var(--ifm-color-emphasis-0)";
 
 const skillTagColors: Record<SkillTag, TagColorScheme> = {
   communication: {
