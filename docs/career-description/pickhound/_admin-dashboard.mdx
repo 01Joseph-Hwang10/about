@@ -16,8 +16,8 @@ import values from "./values";
   - 스타일 객체를 `M`, `Redux Slice`를 `V`에 대응하게끔 구현하고 `C`에 해당하는 `Banner Manager` 객체를 작성.
   - `structedClone`을 활용한 [새로운 Object Reference 생성으로 상태 업데이트](https://stenciljs.com/docs/properties#mutable-arrays-and-objects)
 - `FLUX` 중 `Store`에 해당하는 `Redux Slice`를 `MVC` 중 `V`에 대응하여 두 컴포넌트의 상태를 연동.
-- => 간결하고 직관적인, 유지보수에 용이한 상태 관리 코드 작성.
-- => 디자인 패턴을 더 유연하게 바라보고 적재적소에 응용할 수 있는 시각을 함양.
+- => 적절한 코드 패턴의 적용으로 간결하고 직관적인, 유지보수에 용이한 상태 관리 코드 작성.
+- => MVC, FLUX의 각 요소와 요소 간의 상호작용에 관한 구체적인 이해 함양.
 
 :::tip
 
@@ -90,7 +90,7 @@ https://01joseph-hwang10.github.io/posts/admin-dashboard-ui-kit-implementation
 - MUI, D3등 다소 무거운 라이브러리 활용으로 `Admin Dashboard`의 번들 크기가 커지는 문제가 있었음.
 - Code Split과 `React.Suspense` 를 활용해 초기 로딩 UX 개선.
   - 별도로 분리된 번들이 다운로드 되는 동안 `fallback` 인자로 `<Loader fill />`를 전달해 로딩 화면을 렌더링.
-  - => 초기 로딩 화면을 렌더링하는 동안 사용자가 멈춰있는 빈 화면을 보는 것을 방지.
+- => 초기 로딩 화면을 렌더링하는 동안 사용자가 멈춰있는 빈 화면을 보는 것을 방지 -> 사용자 경험 향상의 효과.
 
 <details>
 <summary>AppRouter</summary>
