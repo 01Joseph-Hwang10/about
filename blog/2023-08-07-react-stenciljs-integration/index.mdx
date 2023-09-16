@@ -242,17 +242,19 @@ export const DefaultBannerDesignSlice = createSlice({
   reducers: {
     setTitle: (state, action: PayloadAction<State["title"]>) => {
       // Update state for react component
-      state.title = action.payload;
+      const title = action.payload;
+      state.title = title;
 
       // Update banner state for stenciljs web component
       const banner = state.banner;
-      if (banner.interactive && state.title.length !== 0) {
+      if (banner.interactive && title.length !== 0) {
         banner.setTitle(title);
       }
     },
     setColor: (state, action: PayloadAction<State["color"]>) => {
       // Update state for react component
-      state.color = action.payload;
+      const color = action.payload;
+      state.color = color;
 
       // Update banner state for stenciljs web component
       const banner = state.banner;

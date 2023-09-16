@@ -178,8 +178,10 @@ flowchart LR
 />
 
 - 기존에는 비개발 인원이 개발 상황을 파악하기 위해 개발자에게 직접 문의하거나, 개발자가 이미 코드 주석으로 작성된 내용을 Notion에 다시 작성하는 등의 비효율이 존재했음.
-- 이에 Swagger, Typedoc, Sphinx 등의 툴을 활용해 도큐멘테이션을 생성하고, 노션 페이지와 도큐멘테이션 페이지의 웹 링크를 연계하여 중복 작업을 최소화함.
+- 이에 Swagger, Typedoc, Sphinx 등의 툴을 활용해 도큐멘테이션을 생성하고, 노션 페이지와 도큐멘테이션 페이지의 웹 링크를 연계하는 도큐멘테이션 작성 컨벤션 수립.
+- => 중복 작업 최소화로 작업의 효율성 향상
 - [static-webpage-with-auth](https://hub.docker.com/r/josephhwang02/static-webpage-with-auth) 를 개발해 `Google Cloud Run`에 배포하여 사내 인원만 접근할 수 있도록 구성.
+- => 비교적 적은 개발 자원 소비로 Netlify의 유료 솔루션 등을 사용하지 않고도 사내 인원만 접근할 수 있는 도큐멘테이션 페이지 구축.
 
 ##### See Also
 
