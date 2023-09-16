@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.35 (2023-09-16)
+
+
+### :mega: Other
+
+* edit introduction margin botton ([119dd4f](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/119dd4ffd53d2b2013c4e71bc2272984292f82f2))
+
 ### 0.1.34 (2023-09-16)
 
 
