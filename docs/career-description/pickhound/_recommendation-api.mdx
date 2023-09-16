@@ -13,7 +13,7 @@ import values from "./values";
 - `class-validator`를 통해 Decorate 된 공통 라이브러리의 DTO가 NestJS의 ValidationPipe 에 의해 타입이 검증되지 않는 문제 발견.
   - `class-validator`의 작동 방식을 알기 위해 소스 코드를 들여다보는 과정에서 내부적으로 `MetadataStorage` 객체를 이용해 Typescript -> Javascript 컴파일 과정에서 데코레이터 정보를 저장하고, 모노리포 내부의 라이브러리가 각각 별도의 `class-validator` 패키지를 설치하고 있어 발생하는 문제임을 확인.
 - `class-validator`를 `peerDependencies`로 추가해 모든 패키지가 하나의 `MetadataStorage` 객체를 공유하도록 함.
-- => 디버깅 과정을 통해 모노리포 상황이나 `npm` 패키지 퍼블리싱 상황에서 패키지 간의 호환성 이슈를 고려한 공유 라이브러리 구성이 중요함을 배움.
+- => 디버깅 과정을 통해 **_모노리포 상황이나 `npm` 패키지 퍼블리싱 상황에서 패키지 간의 호환성 이슈를 고려한 공유 라이브러리 구성이 중요함_**을 배움.
 
 :::tip
 
@@ -33,7 +33,7 @@ https://01joseph-hwang10.github.io{/posts/class-validator-debugging
 
 - 추천에 필요한 상품 정보를 Firestore에서 가져오는 과정에서 발생하는 불필요한 읽기 과정을 줄이기 위해 인메모리 캐시 도입.
 - 상품 정보에 대한 캐싱 및 캐시 무효화 기능을 제공하는 NestJS 모듈 `ActionProviderModule` 구현.
-- => 도큐먼트 읽기 횟수 `30,000,000/일 -> 1,500,000/일`로 감소 -> 매우 큰 비용 절감 효과
+- _**=> 도큐먼트 읽기 횟수 `30,000,000/일 -> 1,500,000/일`로 감소 -> 매우 큰 비용 절감 효과**_
 
 <details>
 <summary>ActionProviderService</summary>
@@ -128,7 +128,8 @@ export class ActionProviderService {
 
 - Firestore를 도입하고 여러 필드를 기준으로 쿼리를 수행하는 경우가 늘어나면서, 복합 인덱스에 포함된 프로퍼티, 정렬 기준 등을 혼동하는 경우가 빈번히 발생.
 - 모든 프로퍼티 이름을 포함하는 네이밍 컨벤션을 통해 복합 인덱스 관리를 명시적으로 하도록 함.
-- => 복합 인덱스가 필요한 쿼리를 수행하는 데 발생하는 휴먼 에러 발생률 감소, 복합 인덱스가 필요한 쿼리 구현에 필요한 시간 감소.
+- => 복합 인덱스가 필요한 쿼리를 수행하는 데 발생하는 _**휴먼 에러 발생률 감소 (컨벤션 수립 전 휴먼 에러 11번 -> 수립 후 2번)**_
+- => 복합 인덱스가 필요한 쿼리 구현에 필요한 시간 감소.
 
 :::note
 
@@ -410,6 +411,7 @@ class LeakyBucketClient<T> {
 ##### See Also
 
 - `LeakyBucketClient`: https://01joseph-hwang10.github.io/docs/career-description/pickhound#leaky-bucket이-적용된-엔드포인트를-위한-http-client-구현
+- 긴 프로세스를 담당하는 Worker 인프라 구축 및 배포 자동화
 
 #### Bandit Engine 서비스와의 연동을 위한 HTTP Client 구현
 
@@ -694,23 +696,19 @@ export const objectFromSnakeToCamel = <
 
 - `BanditClient`, `objectFromCamelToSnake`, `objectFromSnakeToCamel`: https://01joseph-hwang10.github.io/docs/career-description/pickhound#bandit-engine-서비스와의-연동을-위한-http-client-구현
 
-##### Related
-
-- [긴 프로세스를 담당하는 Worker 인프라 구축](#긴-프로세스를-담당하는-worker-인프라-구축)
-
-#### 긴 프로세스를 담당하는 Worker 인프라 구축
+#### 긴 프로세스를 담당하는 Worker 인프라 구축 및 배포 자동화
 
 <Tags
   metadata={["general", "backend-agnostic", "standbylab"]}
-  tags={["devops", "feature", "@shepherd23"]}
+  tags={["devops", "feature", "automation", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
 
 - 기존에는 모든 서비스를 Google Cloud Run을 이용해서 배포했음.
   - 데이터 요청이 필요한 API의 Leaky Bucket Policy로 인해, 상품 정보를 자사 Firestore DB로 가져오는 프로세스가 길어지면서 Cloud Run의 프로세스 제한 시간인 1시간을 초과하는 문제 발생.
-- GCE 인스턴스 그룹과 Cloud Load Balancer를 활용해 긴 프로세스를 담당하는 Worker 인프라를 구축하여 이슈 해결.
-  - Cloud Build Substitution Variable 과 Docker Build Args를 활용해, Cloud Run과 Worker 인프라 배포 코드 공유.
-- => Cloud Build와 Docker를 이용한 CI/CD 자동화로 인력 소비 최소화 및 GCE Instance Group과 GCLB를 활용한 시스템의 유연성 확보.
+- 프로세스 제한 시간이 없는 GCE 인스턴스 그룹과 Cloud Load Balancer를 활용한 Worker 인프라를 구축하여 이슈 해결.
+  - Cloud Build Substitution Variable 과 Docker Build Args를 활용해, Cloud Run과 Worker 인프라 배포 코드 일반화.
+- => Cloud Build와 Docker를 이용한 _**CI/CD 자동화로 인력 소비 최소화**_ 및 GCE Instance Group과 GCLB를 활용한 _**시스템의 유연성 확보**_.
 - => 인프라 구축 과정에서 외부 API의 제약사항을 고려한 Worker 인프라 구축과정에서 실제 프로덕션 환경에서의 문제 해결 능력 향상
 
 <details>

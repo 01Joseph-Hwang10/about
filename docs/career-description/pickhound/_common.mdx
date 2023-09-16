@@ -11,7 +11,7 @@ import values from "./values";
 
 - 약 1달에 걸쳐 다양한 분야에 종사하는 12명의 쇼핑몰 관리자를 대상으로 인터뷰 진행함.
 - 인터뷰를 통한 피드백 수집으로 쇼핑몰의 규모에 따른 서비스의 수요, 운영 방식의 차이 등을 파악할 수 있었음.
-- => 정리한 피드백을 바탕으로 불필요한 개발 단계는 제거하여 사내 자원의 소비를 최소화
+- => 정리한 피드백에 기반한 _**불필요한 개발 단계 제거로 사내 개발 자원 낭비 방지.**_
 
 :::tip
 
@@ -21,19 +21,19 @@ https://01joseph-hwang10.github.io/posts/deep-interview
 
 :::
 
-#### 모노리포 구성, 패키지 버져닝 및 프로젝트 간 공통 모듈 공유
+#### Lerna에 기반한 모노리포 구성 및 프로젝트 관리
 
 <Tags
-  metadata={["general", "frontend-agnostic", "backend-agnostic"]}
+  metadata={["general", "frontend-agnostic", "backend-agnostic", "standbylab"]}
   tags={["automation", "improvement", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
 
-- Lerna, Python Module을 활용해 Monorepo 구성 (Recommendation API, Bandit Engine, Banner Manager)
-- Lerna, `standard-version`을 활용한 패키지 버전 관리 (모든 프로젝트)
-- 공유가 필요한 코드는 따로 패키지로 분리해 다른 리포지토리에서도 사용 가능하도록 구성 (Recommendation API, Banner Manager)
-  - 공유 패키지 빌드 프로세스 구성 및 Github Actions, Google Artifact Registry를 활용해 자동 배포
-  - => 비효율적인 복사 붙여넣기 방식의 코드 공유를 최소화.
+- Lerna를 활용한 모노리포 구성, 패키지 버저닝 및 `commitlint`를 활용한 커밋 메시지 규칙 적용.
+  - Github Actions, Bash Script, Husky를 활용해 버저닝 자동화 및 커밋 메시지 규칙 강제.
+- 공유가 필요한 코드는 따로 패키지로 분리해 및 Google Artifact Registry를 활용해 private `npm` 패키지 배포.
+- => _**프로젝트 관리 체계화 및 자동화**_
+- => _**비효율적인 복사 붙여넣기 방식의 코드 공유를 최소화.**_
 
 ##### Related
 
@@ -113,29 +113,32 @@ flowchart LR
 </div>
 </details>
 
-#### Jest, Pytest를 활용한 TDD로 개발 흐름 효율화
+#### Jest, Pytest, Cypress를 활용한 TDD로 개발 흐름 효율화
 
 <Tags
-  metadata={["general", "backend-agnostic"]}
-  tags={["backend", "devops", "@shepherd23"]}
+  metadata={["general", "backend-agnostic", "standbylab"]}
+  tags={["frontend", "backend", "improvement", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
 
 - Jest, Pytest를 활용해 주요 엔드포인트 및 서비스 로직에 대한 Unit/E2E 테스트 작성.
 - Insomnia 등의 툴을 이용한 수동 테스트 시보다 훨씬 효율적인 개발 흐름을 구성할 수 있었음
-  - => 기존 수동으로 테스트를 진행했을 때와 비교해 작업 시간 약 90% 감소. (기존 약 20분 → TDD 도입 후 최대 2분)
-  - => 다른 팀과 버그 수정 관련한 불필요한 대화가 오고 가는 빈도 약 80% 감소. (기존 평균 4 ~ 5회 → TDD 도입 후 0 ~ 1회)
+  - _**=> 기존 수동으로 테스트를 진행했을 때와 비교해 작업 시간 약 90% 감소. (기존 약 20분 → TDD 도입 후 최대 2분)**_
+  - _**=> 다른 팀과 버그 수정 관련한 불필요한 대화가 오고 가는 빈도 약 80% 감소. (기존 평균 4 ~ 5회 → TDD 도입 후 0 ~ 1회)**_
+- Cypress를 활용해 복잡한 인증/인가 로직을 포함하는 컴포넌트에 대한 Unit 테스트 작성.
+  - => 테스트를 통한 Iteration 속도 향상으로 빠른 기능 구현 및 버그 수정.
 
-#### 사내 내부 도큐멘테이션 배포를 위한 Private File Server 구축
+#### 정적 웹페이지 보호를 위한 Express 애플리케이션 개발
 
 <Tags
-  metadata={["general", "frontend-agnostic", "backend-agnostic"]}
+  metadata={["general", "frontend-agnostic", "backend-agnostic", "standbylab"]}
   tags={["backend", "devops", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
 
 - 정적 웹페이지를 회사 내부 인원만 열람할 수 있도록 하는 Private File Server 구축.
 - [static-webpage-with-auth](https://hub.docker.com/r/josephhwang02/static-webpage-with-auth) 로 도커라이즈 하여 여러 도큐멘테이션 페이지에 쉽게 적용할 수 있도록 만듬.
+- _**=> 비교적 적은 개발 자원 소비로 Netlify의 유료 솔루션 등을 사용하지 않고도 사내 인원만 접근할 수 있는 도큐멘테이션 페이지 구축.**_
 
 ##### See Also
 
@@ -169,7 +172,7 @@ flowchart LR
 - GCL의 Logging Query Language 를 이용해 알림을 받을 필요가 없는 로그를 필터링하는 기능을 추가함.
 - => 불필요한 알림 방지.
 
-#### 코드주석과 Notion을 연계한 사내 도큐멘테이션 작성 효율화
+#### 코드주석과 Notion을 연계한 사내 도큐멘테이션 작성 효율화 및 생성 자동화
 
 <Tags
   metadata={["general", "backend-agnostic", "frontend-agnostic", "standbylab"]}
@@ -179,9 +182,8 @@ flowchart LR
 
 - 기존에는 비개발 인원이 개발 상황을 파악하기 위해 개발자에게 직접 문의하거나, 개발자가 이미 코드 주석으로 작성된 내용을 Notion에 다시 작성하는 등의 비효율이 존재했음.
 - 이에 Swagger, Typedoc, Sphinx 등의 툴을 활용해 도큐멘테이션을 생성하고, 노션 페이지와 도큐멘테이션 페이지의 웹 링크를 연계하는 도큐멘테이션 작성 컨벤션 수립.
-- => 중복 작업 최소화로 개발 효율성 향상
-- [static-webpage-with-auth](https://hub.docker.com/r/josephhwang02/static-webpage-with-auth) 를 개발해 `Google Cloud Run`에 배포하여 사내 인원만 접근할 수 있도록 구성.
-- => 비교적 적은 개발 자원 소비로 Netlify의 유료 솔루션 등을 사용하지 않고도 사내 인원만 접근할 수 있는 도큐멘테이션 페이지 구축.
+  - Github Actions, Cloud Build, Cloud Run을 활용해 도큐멘테이션 페이지 배포 자동화.
+- _**=> 중복되는 주석 작성을 최소화하고, 개발 인원의 개입 없이도 비개발 인원이 개발 상황을 파악할 수 있도록 함.**_
 
 ##### See Also
 

@@ -2,7 +2,7 @@ import Tags from "@site/src/components/Tag/Tags";
 import ImageIcon from "@site/src/components/Icon/ImageIcon";
 import values from "./values";
 
-#### Redux를 활용한 FLUX/MVC 기반의 React Component & Web Component (via StencilJS) 상태 연동
+#### Redux를 이용한 FLUX/MVC 기반의 React & StencilJS 상태 연동
 
 <Tags
   metadata={["general", "frontend-agnostic", "standbylab"]}
@@ -17,6 +17,7 @@ import values from "./values";
   - `structedClone`을 활용한 [새로운 Object Reference 생성으로 상태 업데이트](https://stenciljs.com/docs/properties#mutable-arrays-and-objects)
 - `FLUX` 중 `Store`에 해당하는 `Redux Slice`를 `MVC` 중 `V`에 대응하여 두 컴포넌트의 상태를 연동.
 - => 적절한 코드 패턴의 적용으로 간결하고 직관적인, 유지보수에 용이한 상태 관리 코드 작성.
+  - => 확장성 있는 코드 작성으로 _**유저가 피드백한 배너의 위치 변경 기능을 하루 만에 구현, 테스트 및 배포할 수 있었음.**_
 - => MVC, FLUX의 각 요소와 요소 간의 상호작용에 관한 구체적인 이해 함양.
 
 :::tip
@@ -37,9 +38,9 @@ https://01joseph-hwang10.github.io/posts/react-stenciljs-integration
 
 - [Figma Admin Dashboard Kit](https://www.saasdesign.io/figma-admin-dashboard-kit/)에 기반해 플러그인의 어드민 대시보드 개발을 위한 디자인 시스템 구현.
 - 간결하고 직관적인 React 컴포넌트를 작성하기 위해 깊이 고민하고 노력함.
-  - => `<Callout />` 컴포넌트를 통해 5분만에 서비스 사용자를 위한 새로운 메시지 배너 작성 후 배포.
+  - => _**`<Callout />` 컴포넌트를 통해 10분만에 서비스 사용자를 위한 새로운 메시지 배너 작성 후 배포.**_
   - => `<RoundedCard />` 와 `<Container />`, `<HeadingWithLine />`을 활용해 간결한 코드로 UI의 영역을 구분.
-  - => `colors` 상수 선언을 [Figma Admin Dashboard Kit](https://www.saasdesign.io/figma-admin-dashboard-kit/) 디자인 시스템의 색상 팔레트를 일관성 있게 관리 및 활용.
+  - => `colors` 상수로 [Figma Admin Dashboard Kit](https://www.saasdesign.io/figma-admin-dashboard-kit/) 디자인 시스템의 색상 팔레트를 일관성 있게 관리 및 활용.
 
 :::tip
 

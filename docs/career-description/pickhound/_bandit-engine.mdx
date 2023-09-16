@@ -27,17 +27,17 @@ import values from "./values";
 - 기존의 코드베이스와의 호환성을 유지하기 위해 기존 코드베이스에 존재하는 엔드포인트를 새로운 엔드포인트로 Redirect 하도록 구현함.
 - => 서비스 간의 업데이트 속도 차이로 인해 발생하는 서비스의 일시적인 장애 없이 코드베이스 이관할 수 있었음.
 
-#### 데코레이터 패턴을 활용한 AI 팀의 업무 효율화
+#### 데코레이터 패턴을 활용한 AI 팀과의 협업 효율화
 
 <Tags
-  metadata={["general", "backend-agnostic"]}
+  metadata={["general", "backend-agnostic", "standbylab"]}
   tags={["backend", "improvement", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
 
 - 데코레이터 패턴을 활용해 각 엔드포인트의 핸들러 함수를 데코레이터로 감싸 에러 핸들링, 인증 등의 공통된 로직을 분리함.
 - => 웹과 관련한 코드를 데코레이터를 통해 추상화하여 웹에 익숙하지 않은 AI 팀의 업무 효율화.
-- => 신입 AI 팀원도 별도의 웹 관련 교육 없이 바로 업무에 참여 가능한 수준.
+- _**=> 신입 AI 팀원도 별도의 웹 관련 교육 없이 바로 업무에 참여 가능한 수준으로 문제 단순화.**_
 
 <details>
 <summary>Before</summary>
