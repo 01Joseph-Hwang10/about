@@ -50,7 +50,8 @@ section.introduction p {
   font-size: 0.65rem;
 }
 
-.theme-admonition p {
+.theme-admonition p,
+section.introduction p {
   margin-bottom: 0.5rem;
 }
 
