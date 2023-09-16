@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.33 (2023-09-16)
+
+
+### :bug: Bug Fix
+
+* remove duplicates at tech stack ([26ae3d5](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/26ae3d5ef3412a79c032c6d29f32b41a33ad4dbd))
+
 ### 0.1.32 (2023-09-14)
 
 
