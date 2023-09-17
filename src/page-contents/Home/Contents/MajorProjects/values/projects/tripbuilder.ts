@@ -1,7 +1,7 @@
 import { MajorProject } from "../../types";
 
 const description: MajorProject["description"] = `
-TripBuilder는 동명의 회사 [TripBuilder](#Career__Experience)에서 개발한 AI 기반 여행계획 추천 애플리케이션입니다.
+TripBuilder는 동명의 회사 [TripBuilder](https://www.tripbuilder.co.kr/)에서 개발한 AI 기반 여행계획 추천 애플리케이션입니다.
 처음으로 비전이 같은 팀원이 모여 시작한 창업 프로젝트로, 초기 스타트업에서의 실제 협업을 경험할 수 있었습니다.
 특히 개발 측면에서, 코드 컨벤션과 커밋 컨벤션을 작성하여 팀원들과 공유하고, 브랜칭, PR, 코드 리뷰 등을 진행하며 소프트웨어 개발의 협업 흐름을 자세히 배울 수 있었습니다. 또한 부분적인 TDD를 진행하면서 유닛 테스트에 용이한 모듈화된 테스트 코드를 작성하는 등 코드 작성에 있어서도 많은 것을 배울 수 있었습니다.
 `;

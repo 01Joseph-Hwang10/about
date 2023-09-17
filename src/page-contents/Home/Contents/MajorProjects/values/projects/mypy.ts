@@ -31,6 +31,7 @@ const links: MajorProject["links"] = [
 ];
 
 const mypy: MajorProject = {
+  id: "mypy",
   title: "MYPY",
   description,
   images,

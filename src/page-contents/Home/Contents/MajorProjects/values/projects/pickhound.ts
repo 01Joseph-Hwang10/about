@@ -1,7 +1,7 @@
 import { MajorProject } from "../../types";
 
 const description: MajorProject["description"] = `
-PickHound는 [쉐퍼드23](#Career__Experience)에서 개발한 Cafe24 온라인 쇼핑몰을 대상으로 하는 상품 추천 플러그인입니다.
+PickHound는 [쉐퍼드23](https://www.shepherd23.com/)에서 개발한 Cafe24 온라인 쇼핑몰을 대상으로 하는 상품 추천 플러그인입니다.
 [Contextual Bandit](https://towardsdatascience.com/contextual-bandits-and-reinforcement-learning-6bdfeaece72a)에 기반해 팝업 배너를 통해 각 쇼핑몰의 상품을 사용자 개인의 선호, 취향 등을 고려한 개인화 상품 추천을 제공합니다.
 베타 테스팅 단계를 거치고 있으며, 현재 60곳 이상의 실사용 고객사의 25k 가량의 쇼핑몰 방문객에게 상품 추천 서비스를 제공하고 있습니다.
 서비스의 개발, 운영을 총체적으로 담당하면서, 심층 인터뷰 및 고객 데이터 수집을 통한 피드백 수집, 플러그인 및 추천 시스템 개발 및 유지보수, 서비스 운영을 진행하고 있습니다.
