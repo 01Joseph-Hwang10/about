@@ -43,6 +43,9 @@ while [ $# -gt 0 ]; do
   shift
 done
 
+# Replace ~ with $HOME if present
+OUT_DIR=${OUT_DIR/#\~/$HOME}
+
 # Replace slashes with dashes
 RESUME_TYPE=${RESUME_URL//\//-}
 
