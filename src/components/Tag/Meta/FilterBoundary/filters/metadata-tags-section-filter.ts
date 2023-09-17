@@ -17,9 +17,12 @@ export class MetadataTagsSectionFilter implements ContentFilter {
     this.nodeToEraseRef = nodeToErase;
   }
 
-  apply(node, i) {
+  apply(node: HTMLElement, i: number) {
     // Stop erasing when <h4> or higher is found
-    if (["H1", "H2", "H3", "H4"].includes(node.tagName)) this.eraseMode = false;
+    const shouldStop =
+      ["H1", "H2", "H3", "H4"].includes(node.tagName) || // Stop if <h4> or higher is found
+      node.classList.contains("orphanable"); // Stop if orphanable <div> is found
+    if (shouldStop) this.eraseMode = false;
 
     // When this.eraseMode is on, erase current node
     if (this.eraseMode) {

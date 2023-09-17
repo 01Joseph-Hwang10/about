@@ -70,9 +70,28 @@ import AboutCommon from "../../career-description/about/_common.mdx";
 
 ## 개발/업무 경험
 
+<!-- START COMMENT
+
+지원자격
+- 산업기능요원 보충역 자격으로 신규 편입/전직 가능하신 분
+- 컴퓨터 관련 학과 전공 혹은 그에 상응하는 전문지식을 보유하신 분
+- 하나 이상의 프로그래밍 언어를 능숙하게 사용하실 수 있는 분
+- 논리적인 사고로 문제를 해결할 수 있는 분
+- 팀워크를 중요시하며, 원활한 협업 능력이 있는 분
+
+우대사항
+- TypeScript + React 또는 Express 를 활용한 서비스 개발 경험이 있으신 분
+- Spring Boot(Kotlin/Java)를 이용한 웹 애플리케이션 개발 경험이 있으신 분
+- ML을 활용한 서비스 개발 경험이 있으신 분
+- 대량의 데이터를 다뤄보신 경험이 있으신 분
+- 프로그래밍 관련 대회 수상이력이 있으신 분
+- 문제 해결 능력이 뛰어나신 분
+
+END COMMENT-->
+
 <FilterBoundary
   filters={[
-    new MetadataTagsSectionFilter("standbylab"),
+    new MetadataTagsSectionFilter("engine-studio"),
     new SubsectionFilter(["Related"]),
     new OrphanSectionFilter(),
   ]}
@@ -95,8 +114,10 @@ import AboutCommon from "../../career-description/about/_common.mdx";
     title="01joseph-hwang10.github.io"
     link="https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io"
     description={
-      majorProjectValues.majorProjects.find((project) => project.id === "about")
-        .description
+      majorProjectValues.majorProjects.find(
+        // Disable format
+        (project) => project.id === "about",
+      ).description
     }
   />
   <AboutCommon />

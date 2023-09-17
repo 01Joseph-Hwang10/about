@@ -18,6 +18,7 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({ title, link }) => {
         "anchor",
         "anchorWithStickyNavbar_node_modules-@docusaurus-theme-classic-lib-theme-Heading-styles-module",
       )}
+      css={styles.heading}
     >
       {title}
       <a href={link} target="_blank" rel="noreferrer" css={styles.link}>
