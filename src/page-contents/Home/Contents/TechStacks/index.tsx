@@ -27,7 +27,7 @@ const TechStacks: React.FC = () => {
       >
         <div className="stack-container" css={styles.stackContainer}>
           {values.featuredStacks
-            .filter((stack) => !stack.disable)
+            .filter((stack) => !stack.disabled)
             .map((stack, index) => (
               <StackItem
                 key={`featured-stack--${index}`}

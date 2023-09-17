@@ -54,7 +54,7 @@ export class Skillsets {
       const featuredStack = techStackValues.featuredStacks.find(
         (stack) => stack.key === key,
       );
-      if (!featuredStack?.disable) {
+      if (!featuredStack?.disabled) {
         this.values.push(featuredStack.name);
       }
       this.values.push(...value.words);

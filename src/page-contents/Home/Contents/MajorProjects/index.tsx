@@ -12,9 +12,14 @@ const MajorProjects = () => {
         message: "주요 프로젝트",
       })}
     >
-      {values.majorProjects.map((project, index) => (
-        <ProjectShowcase key={`project-showcase--${index}`} project={project} />
-      ))}
+      {values.majorProjects
+        .filter((project) => !project.disabled)
+        .map((project, index) => (
+          <ProjectShowcase
+            key={`project-showcase--${index}`}
+            project={project}
+          />
+        ))}
     </SectionLayout>
   );
 };

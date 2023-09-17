@@ -26,6 +26,7 @@ const links: MajorProject["links"] = [
 ];
 
 const tripbuilder: MajorProject = {
+  id: "tripbuilder",
   title: "TripBuilder",
   description,
   images,

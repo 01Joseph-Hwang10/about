@@ -35,7 +35,7 @@ const SoftSkills = () => {
       )}
       <div ref={softSkillGridRef} css={styles.grid}>
         {values.skills
-          .filter((skill) => !skill.disable)
+          .filter((skill) => !skill.disabled)
           .map((skill, index) => (
             <SkillCard key={`soft-skill--${index}`} skill={skill} />
           ))}

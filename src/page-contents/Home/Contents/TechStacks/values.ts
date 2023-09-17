@@ -1,7 +1,7 @@
 export interface FeaturedStack {
   key: string;
   name: string;
-  disable?: boolean;
+  disabled?: boolean;
 }
 
 const featuredStacks: FeaturedStack[] = [
@@ -10,8 +10,8 @@ const featuredStacks: FeaturedStack[] = [
   { key: "react", name: "React" },
   { key: "nestjs", name: "NestJS" },
   { key: "gcp", name: "Cloud Computing" },
-  { key: "utility", name: "Utility", disable: true },
-  { key: "communication", name: "Communication", disable: true },
+  { key: "utility", name: "Utility", disabled: true },
+  { key: "communication", name: "Communication", disabled: true },
 ];
 
 const icons: Record<string, string> = {

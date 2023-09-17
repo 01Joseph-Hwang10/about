@@ -5,7 +5,7 @@ import styles from "./styles";
 import clsx from "clsx";
 import useIsDarkMode from "@site/src/hooks/useIsDarkMode";
 
-interface ProjectTitleProps {
+export interface ProjectTitleProps {
   title: string;
   link: string;
 }
@@ -18,7 +18,6 @@ const ProjectTitle: React.FC<ProjectTitleProps> = ({ title, link }) => {
         "anchor",
         "anchorWithStickyNavbar_node_modules-@docusaurus-theme-classic-lib-theme-Heading-styles-module",
       )}
-      css={styles.heading}
     >
       {title}
       <a href={link} target="_blank" rel="noreferrer" css={styles.link}>

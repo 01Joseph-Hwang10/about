@@ -45,6 +45,7 @@ const links: MajorProject["links"] = [
 ];
 
 const pickhound: MajorProject = {
+  id: "pickhound",
   title: "PickHound",
   description,
   images,

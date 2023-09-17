@@ -12,6 +12,7 @@ export interface ImageMetadata {
 }
 
 export interface MajorProject {
+  id: string;
   title: string;
   description: string;
   /**
@@ -21,4 +22,5 @@ export interface MajorProject {
    */
   images: ImageMetadata[];
   links: ProjectLink[];
+  disabled?: boolean;
 }

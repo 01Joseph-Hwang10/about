@@ -35,6 +35,7 @@ const links: MajorProject["links"] = [
 ];
 
 const learnque: MajorProject = {
+  id: "learnque",
   title: "LearnQue",
   description,
   images,

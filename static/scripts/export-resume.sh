@@ -1,8 +1,48 @@
 #!/bin/bash
 
+# Raise error when any command fails
 set -e
 
+if [ "$1" == "--help" ] || [ $# -eq 0 ]
+then
+  echo "Usage: ./export-resume.sh <resume-url> [options]"
+  echo ""
+  echo "Options:"
+  echo "  --help: Display this help message"
+  echo "  --out-dir <dir>: Output directory. Defaults to 'files/resume'"
+  echo "  --webpage-url <url>: URL of the webpage to export. If not defined, it will use '\$WEBPAGE_URL' environment variable"
+  echo ""
+  echo "Example: ./export-resume.sh frontend-agnostic"
+  exit 1
+fi
+
+# Variable definitions
 RESUME_URL=$1
+
+# Remove first argument
+shift
+
+# Default values
+OUT_DIR="files/resume"
+
+# Iterate over all arguments
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --out-dir)
+      OUT_DIR="$2"
+      ;;
+    --webpage-url)
+      WEBPAGE_URL="$2"
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
+  shift
+  shift
+done
+
 # Replace slashes with dashes
 RESUME_TYPE=${RESUME_URL//\//-}
 
@@ -55,6 +95,10 @@ section.introduction p {
   margin-bottom: 0.5rem;
 }
 
+.theme-admonition-note p {
+  margin-bottom: 0;
+}
+
 .metadata-tags span { /* Smaller tags */
   font-size: 0.5rem;
   line-height: 1;
@@ -85,13 +129,5 @@ rm "$_outputPDFFilename"
 
 echo "[$FILENAME] Move file to appropriate directory..."
 
-# Path to the PDF file you want to upload
-FILEPATH="files/resume/$FILENAME"
-
-if [ -d "./static" ]; then
-  echo "[$FILENAME] Looks like we are in development mode. Moving file to static directory..."
-  FILEPATH="static/$FILEPATH"
-fi
-
-mv "$FILENAME" "$FILEPATH"
+mv "$FILENAME" "$OUT_DIR"
 

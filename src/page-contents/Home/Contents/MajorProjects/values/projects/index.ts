@@ -1,4 +1,5 @@
 import { MajorProject } from "../../types";
+import about from "./about";
 import flglance from "./flglance";
 import learnque from "./learnque";
 import pickhound from "./pickhound";
@@ -9,6 +10,7 @@ const majorProjects: MajorProject[] = [
   learnque,
   tripbuilder,
   flglance,
+  about,
 ];
 
 export default majorProjects;

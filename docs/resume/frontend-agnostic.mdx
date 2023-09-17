@@ -13,7 +13,8 @@ import {
   SubsectionFilter,
   OrphanSectionFilter,
 } from "@site/src/components/Tag/Meta/FilterBoundary/filters";
-import ProjectTitle from "@site/src/components/Project/ProjectTitle";
+import ProjectOverview from "@site/src/components/Project/ProjectOverview";
+import majorProjectValues from "@site/src/page-contents/Home/Contents/MajorProjects/values";
 
 import Overview from "./partials/_overview.mdx";
 import Education from "./partials/_education.mdx";
@@ -77,23 +78,37 @@ https://raw.githubusercontent.com/01Joseph-Hwang10/01joseph-hwang10.github.io/gh
     new OrphanSectionFilter(),
   ]}
 >
-  <ProjectTitle
+  <ProjectOverview
     title="PickHound"
     link="https://01joseph-hwang10.github.io/docs/career-description/pickhound"
+    description={
+      majorProjectValues.majorProjects.find(
+        (project) => project.id === "pickhound",
+      ).description
+    }
   />
   <AdminDashboard />
   <BannerManager />
   <PickHoundCommon />
   <RecommendationAPI />
   <BanditEngine />
-  <ProjectTitle
+  <ProjectOverview
     title="01joseph-hwang10.github.io"
     link="https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io"
+    description={
+      majorProjectValues.majorProjects.find((project) => project.id === "about")
+        .description
+    }
   />
   <AboutCommon />
-  <ProjectTitle
+  <ProjectOverview
     title="LearnQue"
     link="https://01joseph-hwang10.github.io/docs/career-description/learnque"
+    description={
+      majorProjectValues.majorProjects.find(
+        (project) => project.id === "learnque",
+      ).description
+    }
   />
   <LearnQueExperience />
 </FilterBoundary>

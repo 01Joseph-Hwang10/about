@@ -45,7 +45,7 @@ export interface SkillSummary {
   link?: string;
   tags: SkillTag[];
   type: "achievement" | "utility";
-  disable?: boolean;
+  disabled?: boolean;
 }
 
 const skills: SkillSummary[] = [
@@ -102,31 +102,31 @@ const skills: SkillSummary[] = [
     title: "경기콘텐츠진흥원 주관 2021 애자일 해커톤 우수상",
     tags: ["service-planning", "communication"],
     type: "achievement",
-    disable: true,
+    disabled: true,
   },
   {
     title: "한국관광공사 & 카카오 주관 2021 관광데이터 활용 공모전 장려상",
     tags: ["project-management", "service-planning"],
     type: "achievement",
-    disable: true,
+    disabled: true,
   },
   {
     title: "2021 울산지역대학 YOUTH 창업우수 아이디어 경진대회 대상",
     tags: ["project-management", "service-planning"],
     type: "achievement",
-    disable: true,
+    disabled: true,
   },
   {
     title: "3rd PATHHACK : 쉬운 해커톤 스폰서상",
     tags: ["service-planning", "communication"],
     type: "achievement",
-    disable: true,
+    disabled: true,
   },
   {
     title: "JUNCTION ASIA 2022 참가자",
     tags: ["service-planning", "communication"],
     type: "achievement",
-    disable: true,
+    disabled: true,
   },
 ];
 

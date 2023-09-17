@@ -38,6 +38,7 @@ const links: MajorProject["links"] = [
 ];
 
 const flglance: MajorProject = {
+  id: "flglance",
   title: "FLGlance",
   description,
   images,

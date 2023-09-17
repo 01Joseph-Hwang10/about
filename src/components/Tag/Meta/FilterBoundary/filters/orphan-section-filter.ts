@@ -10,10 +10,14 @@ export class OrphanSectionFilter implements ContentFilter {
     this.nodeToEraseRef = nodeToErase;
   }
 
-  apply(node, i) {
-    if (node.tagName !== "H3") return;
+  apply(node: HTMLElement, i: number) {
+    if (!this.isOrphanable(node)) return;
     const nextItem = this.childrenRef.item(i + 1) as HTMLElement | null;
-    if (nextItem && nextItem.tagName !== "H3") return;
+    if (nextItem && !this.isOrphanable(nextItem)) return;
     this.nodeToEraseRef.add(node);
+  }
+
+  private isOrphanable(node: HTMLElement) {
+    return node.classList.contains("orphanable");
   }
 }
