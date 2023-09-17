@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.40 (2023-09-17)
+
+
+### :mega: Other
+
+* tweak style ([f1112e9](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/f1112e911c5aebbc4f7258ba456944dd4a52127f))
+
 ### 0.1.39 (2023-09-17)
 
 
