@@ -35,7 +35,16 @@ const description = css`
   }
 `;
 
+const background = css`
+  margin-top: -6rem;
+  height: calc(100% + 12rem);
+  @media screen and (min-width: ${mobileWidth}px) {
+    height: 75%;
+  }
+`;
+
 export default {
   article,
   description,
+  background,
 };

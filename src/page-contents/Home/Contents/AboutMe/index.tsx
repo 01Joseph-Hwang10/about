@@ -5,8 +5,6 @@ import styles from "./styles";
 import OutlinedAvatar from "@site/src/components/Avatar/OutlinedAvatar";
 import PaintBackground from "@site/src/components/PaintBackground";
 import useIsDarkMode from "@site/src/hooks/useIsDarkMode";
-import { css } from "@emotion/react";
-import { mobileWidth } from "@site/src/style/values";
 import values from "./values";
 import Markdown from "@site/src/components/Markdown";
 
@@ -23,13 +21,7 @@ const AboutMe = () => {
       <PaintBackground
         isDarkMode={isDarkMode}
         skewY={-3}
-        css={css`
-          margin-top: -6rem;
-          height: calc(100% + 12rem);
-          @media screen and (min-width: ${mobileWidth}px) {
-            height: 75%;
-          }
-        `}
+        css={styles.background}
       />
       <article className="about-me-article" css={styles.article}>
         <OutlinedAvatar size="230px" src="/img/my-picture.jpg" />

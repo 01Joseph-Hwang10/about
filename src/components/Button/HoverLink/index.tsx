@@ -1,5 +1,6 @@
-import { SerializedStyles, css } from "@emotion/react";
+import { SerializedStyles } from "@emotion/react";
 import React, { useState } from "react";
+import styles from "./styles";
 
 interface HoverLinkProps {
   href: string;
@@ -15,13 +16,7 @@ const HoverLink: React.FC<HoverLinkProps> = ({
   children,
   target = "_blank",
   rel = "noreferrer",
-  css: customCss = css`
-    transition: all var(--ifm-transition-fast)
-      var(--ifm-transition-timing-default);
-    &:hover {
-      transform: scale(1.05);
-    }
-  `,
+  css: customCss = styles.defaultStyle,
 }) => {
   const [onHover, setOnHover] = useState(false);
   return (
