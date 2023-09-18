@@ -1,9 +1,9 @@
 import { MajorProject } from "../../types";
 
 const description: MajorProject["description"] = `
-MYPY는 개인 프로젝트로, 간단한 파이썬 스크립트를 UI를 가진 애플리케이션으로 변환해주는 애플리케이션이자 이를 제공하는 웹 서비스입니다.
-"웹 개발에 관한 지식이 없는 ML 엔지니어나 Python 프로그래머도 쉽게 파이썬 스크립트를 UI가 포함된 애플리케이션을 만들 수 있도록 할 수 없을까?" 라는 생각에서 시작했습니다.
-처음에 목표했던 그림보다는 많이 부족한 결과물이었지만, 프로젝트를 진행하면서 Python의 동작 방식과 네트워크 통신에 관한 기초적인 이해를 크게 높일 수 있었습니다.
+MYPY는 Django와 Next.js를 이용해 개발한 개인 프로젝트로, 간단한 파이썬 스크립트를 UI를 가진 애플리케이션으로 변환해주는 애플리케이션이자 이를 제공하는 웹 서비스입니다.
+"웹 개발에 관한 지식이 없는 ML 엔지니어나 Python 프로그래머도 쉽게 파이썬 스크립트를 UI가 포함된 애플리케이션을 만들 수 있도록 할 수 없을까?" 라는 생각에서 시작된 프로젝트입니다.
+애플리케이션은 기본적인 Data Type에 대한 Input/Output을 지원하여 사용자가 Python 빌트인 \`input()\` 함수를 이용해 원하는 Input/Output을 지정해 Python 스크립트를 배포하면 이를 간단한 Input/Output Form을 포함하는 UI가 있는 애플리케이션으로 변환합니다.
 `;
 
 const images: MajorProject["images"] = [

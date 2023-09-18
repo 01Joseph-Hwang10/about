@@ -7,26 +7,49 @@
 </head>
 
 <div className="info-entry">
-  <span>이메일: joseph95501@gmail.com</span>
-  <span>휴대폰: 010-9049-9550</span>
-  <span>
-    포트폴리오:{" "}
-    <a
-      href="https://01joseph-hwang10.github.io/"
-      target="_blank"
-      rel="noreferrer"
-    >
-      https://01joseph-hwang10.github.io/
-    </a>
-  </span>
-  <span>
-    Github:{" "}
-    <a
-      href="https://github.com/01Joseph-Hwang10/"
-      target="_blank"
-      rel="noreferrer"
-    >
-      https://github.com/01Joseph-Hwang10/
-    </a>
-  </span>
+  {/* Enabled properties by default */}
+  {(props.email === undefined || props.email) && (
+    <span>이메일: joseph95501@gmail.com</span>
+  )}
+  {(props.phone === undefined || props.phone) && (
+    <span>휴대폰: 010-9049-9550</span>
+  )}
+  {(props.portfolio === undefined || props.portfolio) && (
+    <span>
+      포트폴리오:{" "}
+      <a
+        href="https://01joseph-hwang10.github.io/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        https://01joseph-hwang10.github.io/
+      </a>
+    </span>
+  )}
+  {(props.github === undefined || props.github) && (
+    <span>
+      Github:{" "}
+      <a
+        href="https://github.com/01Joseph-Hwang10/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        https://github.com/01Joseph-Hwang10/
+      </a>
+    </span>
+  )}
+  {/* Disabled properties by default */}
+  {(props.leetcode === true) && (
+    <span>
+      LeetCode:{" "}
+      <a
+        href="https://leetcode.com/01Joseph-Hwang10/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        https://leetcode.com/01Joseph-Hwang10/
+      </a>
+    </span>
+  )}
+
 </div>

@@ -15,6 +15,7 @@ export interface MajorProject {
   id: string;
   title: string;
   description: string;
+  brief?: string;
   /**
    * @description
    * URL of images to display.

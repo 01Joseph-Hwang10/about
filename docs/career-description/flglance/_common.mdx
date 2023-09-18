@@ -1,0 +1,22 @@
+import Tags from "@site/src/components/Tag/Tags";
+import values from "../values";
+
+#### PostgreSQL DB 어댑터와 Alpine Linux 이미지 간의 호환성 문제 해결
+
+<Tags
+  metadata={["general", "backend-agnostic", "checker", "mighty-it"]}
+  tags={["backend", "devops", "troubleshooting"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- PostgreSQL을 사용하는 Django 애플리케이션에서 DB 어댑터로 사용하는 `psycopg2`의 빌드 과정에서 `Error: pg_config executable not found` 에러 발생.
+- 해결을 위해 StackOverflow에 질문을 올렸으나, 답변이 없어 결국 3일 간의 디버깅을 거쳐 직접 해결
+  - 디버깅을 통해 Alpine Linux에 `psycopg2`를 빌드하기 위한 빌드툴이 존재하지 않아 발생하는 문제임을 확인
+  - De-facto Python 도커 이미지를 사용하여 에러 해결
+- => 디버깅으로 얻은 솔루션을 StackOverflow에 [Self Answer](https://stackoverflow.com/questions/66254669/why-psycopg2-keep-spitting-out-this-error/66261371)로 작성
+- => 현재 6k 이상의 조회수를 기록하고 있는 만큼 많은 사람들에게 도움이 되었음을 생각하면 매우 보람찬 경험이었음.
+
+##### See Also
+
+- 디버깅 내용 상세: https://github.com/01Joseph-Hwang10/To-Do_Glass#why-psycopg2-keep-spitting-out-this-error
+- StackOverflow 질문: https://stackoverflow.com/questions/66254669/why-psycopg2-keep-spitting-out-this-error/66261371

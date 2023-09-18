@@ -38,6 +38,10 @@ import BanditEngine from "../../career-description/pickhound/_bandit-engine.mdx"
 
 import AboutCommon from "../../career-description/about/_common.mdx";
 
+<>{/* Survey Experience */}</>
+
+import SurveyCommon from "../../career-description/survey/_common.mdx";
+
 :::tip
 
 본 이력서는 다운로드 불가능합니다.
@@ -116,6 +120,16 @@ END COMMENT-->
   <RecommendationAPI />
   <BanditEngine />
   <PickhoundCommon />
+  <ProjectOverview
+    title="여행 고? 시뮬레이션"
+    link="https://github.com/01Joseph-Hwang10/hackathon_frontend"
+    description={
+      majorProjectValues.majorProjects.find(
+        (project) => project.id === "survey",
+      ).description
+    }
+  />
+  <SurveyCommon />
   <ProjectOverview
     title="01joseph-hwang10.github.io"
     link="https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io"

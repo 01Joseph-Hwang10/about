@@ -1,0 +1,23 @@
+import Tags from "@site/src/components/Tag/Tags";
+import values from "../values";
+
+#### Next.js `<Head />`, `useRouter()`를 활용한 검색 엔진 최적화 (SEO) 및 애널리틱스 (Analytics) 적용
+
+<Tags
+  metadata={["general", "frontend-agnostic", "checker", "mighty-it"]}
+  tags={["frontend", "feature"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- `next/document`의 `<Document />` 컴포넌트를 상속하고 `render()` 메서드 Override.
+- `next/head`의 `<Head />`를 사용해 SEO 및 애널리틱스 적용.
+  - keywords, description, canonical 등의 메타 태그 삽입.
+  - Google Analytics 등의 애널리틱스 스크립트 삽입.
+    - `next/router`의 `useRouter()`를 사용해 `router.events.on('routeChangeComplete', handleRouteChange)`를 통해 페이지 이동 시 애널리틱스 이벤트 전송.
+- _**=> SEO 태그 적용으로 "트립빌더", "여행성향 분석" 키워드로 구글 검색 시 설문 페이지가 상위에 노출되는 성과.**_
+
+:::caution FYI
+
+작성자 퇴사 이후, 트립빌더는 작성자가 개발한 코드를 기반으로 위 여행성향 분석 설문 페이지를 새로 제작하여 사용 중입니다. 현재 "트립빌더", "여행성향 분석" 키워드로 구글 검색 시 상위에 노출되는 설문 페이지는 해당 기업에서 새로 제작한 설문 페이지임을 참고 부탁드립니다.
+
+:::

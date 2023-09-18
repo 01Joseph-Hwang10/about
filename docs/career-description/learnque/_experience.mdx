@@ -37,7 +37,7 @@ https://drive.google.com/file/d/1HczhzUcrE3G31cn9tiu6fXh3vUofvIdq/view?usp=shari
 #### Observer 패턴을 활용한 상태 관리
 
 <Tags
-  metadata={["frontend-agnostic"]}
+  metadata={["none"]}
   tags={["frontend", "improvement", "@labis"]}
   tagColorScheme={values.tagColorScheme}
 />
@@ -90,7 +90,7 @@ class _EventRegistry {
 #### OOP를 활용한 블록 코드의 블록 정의 개발
 
 <Tags
-  metadata={["frontend-agnostic"]}
+  metadata={["none"]}
   tags={["frontend", "feature", "@labis"]}
   tagColorScheme={values.tagColorScheme}
 />
@@ -102,3 +102,65 @@ class _EventRegistry {
 
 - Observer Pattern @ dbcav3: https://github.com/01Joseph-Hwang10/dbcav3#observer-pattern
 - Block Definition Source Code: https://github.com/01Joseph-Hwang10/dbcav3/tree/main/src/modules/block-definitions
+
+#### ESP32와 `react-native-ble-plx`를 활용한 드론 블루투스 통신부 개발
+
+<Tags
+  metadata={["general", "frontend-agnostic"]}
+  tags={["frontend", "feature", "@labis"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- `react-native-ble-plx`의 제공 API가 Bluetooth 연결 가능한 디바이스를 활용하는데 있어 비교적 저수준의 API만 제공해 코드가 복잡해지는 문제가 있었음.
+- Prototype extension을 통해 `react-native-ble-plx`의 API를 확장하고, 이를 활용해 ESP32와의 블루투스 통신부를 깔끔하게 구현함.
+- => Javascript가 prototype based language라는 특성을 활용해 라이브러리의 API를 확장함으로써 코드의 복잡성을 줄임.
+
+<details>
+<summary>Prototype Extension Example: Device</summary>
+<div markdown="1">
+
+```ts
+import { CustomSnackBars } from "@src/components/common/utilities/snackbars";
+import { Nullable } from "@src/utils/types";
+import { Device, Characteristic } from "react-native-ble-plx";
+
+declare module "react-native-ble-plx" {
+  // eslint-disable-next-line no-shadow
+  interface Device {
+    exploit(): Promise<Nullable<Device>>;
+    allCharacteristics(): Promise<Characteristic[]>;
+    use(characteristicUUID: string): Promise<Nullable<Characteristic>>;
+  }
+}
+
+Device.prototype.exploit = async function () {
+  try {
+    await this.connect();
+    await this.discoverAllServicesAndCharacteristics();
+    return this;
+  } catch (error) {
+    CustomSnackBars.somethingWentWrong();
+    return null;
+  }
+};
+
+Device.prototype.allCharacteristics = async function () {
+  const services = await this.services();
+  const characteristics: Characteristic[] = [];
+  for (const service of services) {
+    characteristics.push(...(await service.characteristics()));
+  }
+  return characteristics;
+};
+
+Device.prototype.use = async function (characteristicUUID: string) {
+  const characteristics = await this.allCharacteristics();
+  // console.log(characteristics);
+  return characteristics.find(
+    (characteristic) => characteristic.uuid === characteristicUUID,
+  );
+};
+```
+
+</div>
+</details>

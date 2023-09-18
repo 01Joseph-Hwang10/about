@@ -50,13 +50,13 @@ import AboutCommon from "../../career-description/about/_common.mdx";
 
 <section className="introduction" markdown="1">
 
-2년차 주니어 개발자 황현규입니다. 웹 애플리케이션 개발과 SaaS 창업에 관심이 많습니다.
+2년차 주니어 개발자 황현규입니다. 웹 애플리케이션 개발과 SaaS에 관심이 많습니다.
 
-창업 아이템을 내 손으로 직접 구현하기 위해 개발을 시작했으며, 다수의 해커톤 및 창업 활동에서 활약하면서 나의 아이디어를 직접 구현하는 과정에서 개발에 대한 흥미와 재미를 느껴 개발에 몰두하고 있습니다.
+SaaS 아이디어를 직접 구현하기 위해 개발을 시작했으며, 다수의 해커톤 및 스타트업에서 활약하면서 나의 아이디어를 직접 구현하는 과정에서 개발에 대한 흥미와 재미를 느껴 현재에도 개발에 몰두하고 있습니다.
 
 최소의 자원으로 최대의 효과를 추구하는 린 방법론에 크게 공감하며, 개발을 할때도 어떻게 하면 더 적은 코드로 더 많은 일을 할 수 있을지 고민합니다. 기능 구현에 불필요한 단계가 있는지 주기적으로 살피며, 무엇을 하는지에 대한 뚜렷한 목적을 가지고 업무를 진행합니다.
 
-지속가능한 개발을 지향하며, 유지보수가 용이하고 확장성이 뛰어난 프로그램을 작성하기 위한 사유 과정을 즐깁니다. 또한 명시적인 변수/함수 네이밍, 모듈화, 다양한 디자인 패턴을 통해 간결하고 직관적인 코드를 작성하기 위해 노력하며, 팀원이 처음 보는 코드라도 금방 이해하고 기여할 수 있게끔 노력합니다.
+지속가능한 개발을 지향하며, 유지보수가 용이하고 확장성이 뛰어난 프로그램을 작성하기 위한 사유 과정을 즐깁니다. 명시적인 변수/함수 네이밍, 모듈화, 다양한 디자인 패턴을 통해 간결하고 직관적인 코드를 작성하기 위해 노력하며, 팀원이 처음 보는 코드라도 금방 이해하고 기여할 수 있게끔 노력합니다.
 
 </section>
 
@@ -105,19 +105,17 @@ END COMMENT-->
       ).description
     }
   />
+  <PickhoundCommon />
   <AdminDashboard />
   <BannerManager />
   <RecommendationAPI />
   <BanditEngine />
-  <PickhoundCommon />
   <ProjectOverview
     title="01joseph-hwang10.github.io"
     link="https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io"
     description={
-      majorProjectValues.majorProjects.find(
-        // Disable format
-        (project) => project.id === "about",
-      ).description
+      majorProjectValues.majorProjects.find((project) => project.id === "about")
+        .description
     }
   />
   <AboutCommon />

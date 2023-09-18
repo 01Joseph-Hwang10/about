@@ -4,20 +4,19 @@ import values from "./values";
 #### 모델 파라미터 압축을 통한 성능 향상
 
 <Tags
-  metadata={["backend-agnostic"]}
+  metadata={["engine-studio"]}
   tags={["backend", "optimization", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
 
-- Bandit Model의 파라미터가 너무 커 HTTP 413 에러를 반환하는 문제를 발견함.
-- 이에 `np.float32`, gzip 을 도입하고 파라미터를 압축, 압축해제하는 로직을 추가함.
-- => 모델 파라미터 크기 10배 축소
-- => 상품 추천 응답 시간 2배 증가
+- `pickle`과 `base64`를 활용한 Bandit Model 파라미터 직렬화 과정에서 데이터의 크기가 너무 커 HTTP 413 에러를 반환하는 문제를 발견함.
+- `numpy.array`가 기본으로 `np.float64` 데이터 타입을 사용하는 것을 확인하고 `np.float32`, gzip 을 도입하고 파라미터를 압축, 압축해제하는 로직을 추가함.
+- => 모델 파라미터 크기 10배 축소, 상품 추천 응답 시간 2배 증가
 
 #### 점진적인 코드베이스 이관을 통한 서비스 장애 방지
 
 <Tags
-  metadata={["backend-agnostic"]}
+  metadata={["none"]}
   tags={["backend", "improvement", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
@@ -30,14 +29,22 @@ import values from "./values";
 #### 데코레이터 패턴을 활용한 AI 팀과의 협업 효율화
 
 <Tags
-  metadata={["general", "backend-agnostic", "standbylab"]}
+  metadata={[
+    "general",
+    "backend-agnostic",
+    "standbylab",
+    "engine-studio",
+    "checker",
+    "mighty-it",
+  ]}
   tags={["backend", "improvement", "@shepherd23"]}
   tagColorScheme={values.tagColorScheme}
 />
 
 - 데코레이터 패턴을 활용해 각 엔드포인트의 핸들러 함수를 데코레이터로 감싸 에러 핸들링, 인증 등의 공통된 로직을 분리함.
-- => 웹과 관련한 코드를 데코레이터를 통해 추상화하여 웹에 익숙하지 않은 AI 팀의 업무 효율화.
-- _**=> 신입 AI 팀원도 별도의 웹 관련 교육 없이 바로 업무에 참여 가능한 수준으로 문제 단순화.**_
+- `TypedDict`를 활용한 DTO 작성 및 Python Type Hint 기능을 활용해 각 핸들러 함수의 인자와 반환값을 명시함.
+- => 웹과 관련한 요청/응답 로직을 데코레이터를 통해 추상화하여 단순한 IPO (Input-Process-Output) 프로그램으로 문제를 단순화.
+- _**=> 신입 AI 팀원도 별도의 웹 관련 교육 없이 바로 업무에 참여 가능한 수준으로 웹에 익숙하지 않은 AI 팀의 업무 효율화.**_
 
 <details>
 <summary>Before</summary>

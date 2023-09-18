@@ -4,7 +4,7 @@ import values from "../values";
 #### 고정된 이미지 가로세로비와 CSS 브라우저 호환성을 고려한 반응형 쇼케이스 이미지 구현
 
 <Tags
-  metadata={["frontend-agnostic", "standbylab", "engine-studio"]}
+  metadata={["standbylab", "engine-studio", "mighty-it"]}
   tags={["frontend", "feature", "UI/UX", "publishing"]}
   tagColorScheme={values.tagColorScheme}
 />
@@ -22,7 +22,13 @@ import values from "../values";
 #### 깔끔한 UI/UX를 위한 Docusaurus 소스 코드 Customize
 
 <Tags
-  metadata={["frontend-agnostic", "standbylab", "engine-studio"]}
+  metadata={[
+    "frontend-agnostic",
+    "standbylab",
+    "engine-studio",
+    "checker",
+    "mighty-it",
+  ]}
   tags={["frontend", "feature", "UI/UX"]}
   tagColorScheme={values.tagColorScheme}
 />
@@ -45,7 +51,13 @@ https://01joseph-hwang10.github.io/posts/portfolio-landing
 #### CSS `position: sticky`와 JS `CustomEvent` API를 활용한 바로가기 툴바 구현
 
 <Tags
-  metadata={["frontend-agnostic", "standbylab"]}
+  metadata={[
+    "frontend-agnostic",
+    "standbylab",
+    "engine-studio",
+    "checker",
+    "mighty-it",
+  ]}
   tags={["frontend", "feature", "improvement"]}
   tagColorScheme={values.tagColorScheme}
 />
@@ -66,7 +78,7 @@ https://01joseph-hwang10.github.io/posts/portfolio-shortcuts
 #### Safari와 Chrome의 `max-*` 프로퍼티의 동작 차이 해결
 
 <Tags
-  metadata={["frontend-agnostic", "standbylab"]}
+  metadata={["standbylab"]}
   tags={["frontend", "troubleshooting", "publishing"]}
   tagColorScheme={values.tagColorScheme}
 />
@@ -76,3 +88,21 @@ https://01joseph-hwang10.github.io/posts/portfolio-shortcuts
   - Safari는 childNodes의 `width`, `height` 프로퍼티에 대해 조금 더 엄격함 -> 지정한 `max-width`, `max-height`까지 stretch하지 않음.
 - `max-*` 프로퍼티와 함께 `width`, `height` 프로퍼티를 `100%`로 지정해 두 브라우저에서 동일한 표현을 보장.
 - => 당연하다 여긴 CSS 프로퍼티도 브라우저마다 동작 방식이 다를 수 있음을 배움. 여러 브라우저를 활용한 테스트의 중요성을 상기함.
+
+#### 유사 난수 생성기를 이용한 `WordCloud` 단어 위치 설정
+
+<Tags
+  metadata={["engine-studio"]}
+  tags={["frontend", "feature", "UI/UX"]}
+  tagColorScheme={values.tagColorScheme}
+/>
+
+- 주요 기술스택과 관련한 스택을 단어가 배경에 산재되어있는 형태로 표시하는 UI를 기획.
+  - 그러나 많은 관련 스택의 위치를 직접 설정하는 것은 매우 비효율적인 방법이었음.
+- JS `Math.random` API를 활용해 각 단어의 위치를 랜덤하게 설정하려 했으나, 단어들의 위치가 일관되지 않고 겹치는 문제가 발생.
+  - => `seedrandom` 라이브러리의 유사 난수 생성기 (`PRNG`)를 활용해 적절한 Seed 값을 설정해 각 단어의 위치를 설정.
+- => 약 40개 가량 되는 단어들의 위치를 랜덤하게 설정하면서도 _**각 단어들이 서로 겹치지 않고 산재되어있는 형태의 UI를 빠르고 효율적으로 구현.**_
+
+##### See Also
+
+- WordCloud Example: https://01joseph-hwang10.github.io/#Skillsets
