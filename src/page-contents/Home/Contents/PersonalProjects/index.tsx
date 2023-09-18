@@ -3,23 +3,18 @@ import SectionLayout from "../../Layout/SectionLayout";
 import PaintBackground from "@site/src/components/PaintBackground";
 import useIsDarkMode from "@site/src/hooks/useIsDarkMode";
 import ProjectCarousel from "./ProjectCarousel";
-import { useQuery } from "react-query";
 import ProjectCard from "./ProjectCard";
 import Spinner from "@site/src/components/Spinner";
 import styles, { PersonalProjectsWrapper } from "./styles";
 import values from "./values";
-import { GET_REPOS_QUERY_KEY, getRepos } from "@site/src/api/get-repos";
 import ErrorSpan from "@site/src/components/Error/ErrorSpan";
 import useIsMobile from "@site/src/hooks/useIsMobile";
+import useGetRepos from "@site/src/hooks/api/useGetRepos";
 
 const PersonalProjects = () => {
   const isMobile = useIsMobile();
   const isDarkMode = useIsDarkMode();
-  const {
-    data: repos,
-    isLoading,
-    isError,
-  } = useQuery(GET_REPOS_QUERY_KEY, getRepos);
+  const { data: repos, isLoading, isError } = useGetRepos();
 
   return (
     <SectionLayout>

@@ -1,20 +1,15 @@
 import React from "react";
 import SectionLayout from "../../Layout/SectionLayout";
 import { translate } from "@docusaurus/Translate";
-import { useQuery } from "react-query";
-import { GET_REPOS_QUERY_KEY, getRepos } from "@site/src/api/get-repos";
 import Spinner from "@site/src/components/Spinner";
 import ErrorSpan from "@site/src/components/Error/ErrorSpan";
 import values from "./values";
 import OpenSourceCard from "./OpenSourceCard";
 import styles from "./styles";
+import useGetRepos from "@site/src/hooks/api/useGetRepos";
 
 const OpenSources = () => {
-  const {
-    data: repos,
-    isLoading,
-    isError,
-  } = useQuery(GET_REPOS_QUERY_KEY, getRepos);
+  const { data: repos, isLoading, isError } = useGetRepos();
 
   return (
     <SectionLayout
