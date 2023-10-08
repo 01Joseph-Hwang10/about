@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.42 (2023-10-08)
+
+
+### :bug: Bug Fix
+
+* typo on phone number ([7eb2148](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/7eb2148f2745b6f955505865d71eeaca248d730c))
+
 ### 0.1.41 (2023-09-18)
 
 
