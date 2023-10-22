@@ -1,12 +1,6 @@
 import React from "react";
 import Markdown from "../../Markdown";
-import AdmonitionNoteIcon from "./AdmonitionNoteIcon";
-import styles, {
-  AdmonitionContent,
-  AdmonitionHeading,
-  AdmonitionIcon,
-  AdmonitionNote,
-} from "./styles";
+import styles, { AdmonitionContent, AdmonitionNote } from "./styles";
 
 export interface ProjectDescriptionProps {
   description: string;
@@ -18,12 +12,6 @@ const ProjectDescription: React.FC<ProjectDescriptionProps> = ({
   return (
     <AdmonitionNote>
       <div></div> {/* Placeholder */}
-      <AdmonitionHeading>
-        <AdmonitionIcon>
-          <AdmonitionNoteIcon />
-        </AdmonitionIcon>
-        노트
-      </AdmonitionHeading>
       <AdmonitionContent>
         <div></div> {/* Placeholder */}
         <div css={styles.markdownWrapper}>
