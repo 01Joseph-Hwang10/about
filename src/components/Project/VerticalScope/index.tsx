@@ -1,12 +1,38 @@
-import { css } from "@emotion/react";
 import React from "react";
+import styles from "./styles";
 
 interface Props {
   children?: React.ReactNode;
+  /**
+   * @description
+   * Whether to enable markdown syntax for the content
+   *
+   * @default true
+   */
   markdown?: boolean;
+  /**
+   * @description
+   * The content to be rendered in the aside
+   *
+   * This property takes precedence over
+   * {@link title}, {@link titleAttachment} and {@link subtitle}
+   */
   content?: React.ReactNode;
+  /**
+   * @description
+   * The title of the vertical scope.
+   */
   title?: string;
+  /**
+   * @description
+   * The attachment of the title
+   * which will be appended with a slash
+   */
   titleAttachment?: string;
+  /**
+   * @description
+   * The subtitle of the vertical scope
+   */
   subtitle?: string;
 }
 
@@ -19,66 +45,18 @@ const VerticalScope: React.FC<Props> = ({
   markdown = true,
 }) => {
   return (
-    <section
-      className="vertical-scope"
-      css={css`
-        display: grid;
-        grid-template-columns: 3fr 7fr;
-        margin-bottom: 5rem;
-      `}
-    >
-      <aside
-        css={css`
-          padding: 0;
-          padding-right: 1.5rem;
-        `}
-      >
-        <hr
-          css={css`
-            height: 1px;
-            margin: 0;
-            margin-bottom: 1rem;
-            padding: 0;
-          `}
-        />
+    <section className="vertical-scope" css={styles.container}>
+      <aside css={styles.aside}>
+        <hr css={styles.hr} />
         {content && content}
-        {!content && title && (
-          <h2
-            css={css`
-              margin: 0;
-              padding: 0;
-            `}
-          >
-            {title}
-          </h2>
-        )}
+        {!content && title && <h2 css={styles.title}>{title}</h2>}
         {titleAttachment && (
-          <span
-            css={css`
-              font-size: 1rem;
-              margin: 0;
-              margin-bottom: 0.5rem;
-              padding: 0;
-              font-weight: 400;
-            `}
-          >
+          <span css={styles.titleAttachment}>
             {"/ "}
             {titleAttachment}
           </span>
         )}
-        {!content && subtitle && (
-          <h6
-            css={css`
-              font-size: 0.8rem;
-              margin: 0;
-              margin-top: 0 !important;
-              padding: 0;
-              color: var(--ifm-color-emphasis-600) !important;
-            `}
-          >
-            {subtitle}
-          </h6>
-        )}
+        {!content && subtitle && <h6 css={styles.subtitle}>{subtitle}</h6>}
       </aside>
       {/* @ts-ignore */}
       <div markdown={Number(markdown)}>{children}</div>
