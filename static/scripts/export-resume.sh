@@ -112,6 +112,11 @@ section.introduction p {
   box-shadow: unset; /* Remove shadow from nutshell items */
   border: 1px solid var(--ifm-color-emphasis-200); /* Add border instead */
 }
+
+#hr-on-career { /* Manual extension for that header for proper paging */
+  width: 100%;
+  height: 5rem;
+}
 """
 
 npx docs-to-pdf \

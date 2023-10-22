@@ -24,39 +24,18 @@
     }
   }
   
-  // Make company links seem like links
-  strong.company-link:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  
-  // No margins for experience contents
-  div.experience > ul > li > p {
-    margin: 0;
-  }
-
-  // Resize icons and texts for me-in-a-nutshell items
-  .card.me-in-a-nutshell-item {
-    .icon > div {
-      width: 3rem;
-      height: 3rem;
-  
-      .google-icon {
-        font-size: 2rem !important;
-      }
-    }
-  
-    h3 {
-      font-size: 1rem;
-    }
-  
-    p {
-      font-size: 0.75rem;
-    }
-  }
-  
   // Re-color headers
   h1, h2, h3, h4, h5, h6 {
     color: var(--ifm-color-primary-contrast-foreground);
+  }
+
+  // Margin for headers
+  h2.anchor {
+    margin-top: 4rem;
+  }
+
+  // No margin bottom for last vertical scope
+  .vertical-scope:last-of-type {
+    margin-bottom: 0;
   }
 }
