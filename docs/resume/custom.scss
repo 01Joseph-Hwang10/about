@@ -1,6 +1,9 @@
 
+// Apply for every markdown elements
 .markdown {
 
+  // Specific handling for info-entry classed elements
+  // which are right under my name
   .info-entry {
     display: flex;
     flex-direction: column;
@@ -14,21 +17,25 @@
     }
   }
   
+  // Remove unnecessary icons and titles for admonition elements
   .theme-admonition-note, .theme-admonition-info {
     div:first-child {
       display: none;
     }
   }
   
+  // Make company links seem like links
   strong.company-link:hover {
     text-decoration: underline;
     cursor: pointer;
   }
   
+  // No margins for experience contents
   div.experience > ul > li > p {
     margin: 0;
   }
 
+  // Resize icons and texts for me-in-a-nutshell items
   .card.me-in-a-nutshell-item {
     .icon > div {
       width: 3rem;
@@ -46,5 +53,10 @@
     p {
       font-size: 0.75rem;
     }
+  }
+  
+  // Re-color headers
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--ifm-color-primary-contrast-foreground);
   }
 }

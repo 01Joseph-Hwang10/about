@@ -1,24 +1,40 @@
 
+// Apply for markdown elements
 .markdown {
+
+  // Use 👉 as a prefix for h4
+  // for more readability
   h4 {
     font-size: 1.1rem;
-    margin-top: 2rem !important;
+    margin-top: 2rem;
     &:before {
       content: "👉";
       margin-right: 0.5rem;
     }
   }
-
-  h1, h2, h3, h4, h5, h6 {
-    color: var(--ifm-color-primary);
   
-    [data-theme="dark"] & {
-      color: var(--ifm-font-color-base);
-    }
-  }
-
+  // To hide mermaid error messages
   div[id^="dmermaid-svg-"] {
     display: none;
+  }
+
+  .vertical-scope {
+    h4 {
+      // Margin bottom for better readability
+      margin-bottom: 1.5rem;
+
+      // Margin top for better readability,
+      // except for the first h4
+      margin-top: 0;
+      &:not(:first-child) {
+        margin-top: 3rem;
+      }
+      // No prefix for h4 in vertical-scope elements
+      &:before {
+        content: "";
+        margin-right: 0;
+      }
+    }
   }
 
 }
