@@ -10,9 +10,9 @@ then
   echo "Options:"
   echo "  --help: Display this help message"
   echo "  --out-dir <dir>: Output directory. Defaults to 'files/resume'"
-  echo "  --webpage-url <url>: URL of the webpage to export. If not defined, it will use '\$WEBPAGE_URL' environment variable"
+  echo "  --webpage-url <url>: URL of the webpage to export. If not defined, it will use '\$WEBPAGE_URL' environment variable. Note that you must omit the trailing slash, and otherwise it will fail."
   echo ""
-  echo "Example: ./export-resume.sh frontend-agnostic"
+  echo "Example: ./export-resume.sh frontend-agnostic --webpage-url http://localhost:3000"
   exit 1
 fi
 
@@ -61,7 +61,7 @@ _excludeSelectors=".margin-vert--xl a,[class^='tocCollapsible'],.breadcrumbs,.th
 _outputPDFFilename="docs-to-pdf-$RESUME_TYPE.pdf"
 _paginationSelector="h1" # Just a dummy selector to disable pagination
 _paperFormat="A4"
-# _pdfMargin="100,100,100,100"
+_pdfMargin="100,50,100,50"
 
 _cssStyle="""
 .markdown h4 {
@@ -90,12 +90,12 @@ li,
 .theme-admonition p,
 .theme-admonition a,
 section.introduction p {
-  font-size: 0.65rem;
+  font-size: 0.85rem;
 }
 
 .theme-admonition p,
 section.introduction p {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.65rem;
 }
 
 .theme-admonition-note p {
@@ -112,6 +112,11 @@ section.introduction p {
   box-shadow: unset; /* Remove shadow from nutshell items */
   border: 1px solid var(--ifm-color-emphasis-200); /* Add border instead */
 }
+
+#hr-on-career { /* Manual extension for that header for proper paging */
+  width: 100%;
+  height: 5rem;
+}
 """
 
 npx docs-to-pdf \
@@ -122,6 +127,7 @@ npx docs-to-pdf \
   --cssStyle="$_cssStyle" \
   --outputPDFFilename="$_outputPDFFilename" \
   --paperFormat="$_paperFormat" \
+  --pdfMargin="$_pdfMargin" \
   --disableTOC
 
 echo "[$FILENAME] Removing first pages..."
@@ -130,7 +136,19 @@ qpdf --empty --pages "$_outputPDFFilename" 2-z -- "$FILENAME"
 
 rm "$_outputPDFFilename"
 
-echo "[$FILENAME] Move file to appropriate directory..."
+echo "[$FILENAME] Moving file to appropriate directory..."
 
-mv "$FILENAME" "$OUT_DIR"
+if [ ! -d "$OUT_DIR" ]; then
+  mkdir -p "$OUT_DIR"
+fi
+
+_fileAbsPath=$(readlink -f "$FILENAME")
+_fileDirAbsPath=$(dirname "$_fileAbsPath")
+
+if [ "$(readlink -f "$_fileDirAbsPath")" == "$(readlink -f "$OUT_DIR")" ]; then
+  echo "$FILENAME already placed in the desired directory. Skipping move operation..."
+else
+  mv "$FILENAME" "$OUT_DIR"
+  echo "[$FILENAME] File moved to $OUT_DIR"
+fi
 
