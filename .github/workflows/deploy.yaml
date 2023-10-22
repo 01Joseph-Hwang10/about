@@ -169,13 +169,17 @@ jobs:
           echo "Configuring resume exporter..."
           chmod +x ./scripts/export-resume.sh
 
+          # Export resumes
+          #
+          # Currently we got only one resume.
+          #
+          # If you got more than one resume, you can add more export commands here
+          # chaining with single ampersand (&) for parallel execution.
+          #
+          # But keep in mind that you should wait for all exports to finish 
+          # with `wait` command before committing and pushing changes.
           echo "Exporting resume..."
-          ./scripts/export-resume.sh general &
-          ./scripts/export-resume.sh frontend-agnostic &
-          ./scripts/export-resume.sh backend-agnostic &
-          ./scripts/export-resume.sh project-management-agnostic &
-
-          wait
+          ./scripts/export-resume.sh default
 
           # Commit and push changes
           COMMIT_MESSAGE="chore: update $FILENAME [no ci]"
