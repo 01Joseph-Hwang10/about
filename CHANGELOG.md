@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.43 (2023-10-22)
+
+
+### :bug: Bug Fix
+
+* css error on admonition ([9e38eb9](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/9e38eb9a4087d21806312d0dc83c56903e79c6f9))
+
 ### 0.1.42 (2023-10-08)
 
 
