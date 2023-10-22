@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.44 (2023-10-22)
+
+
+### :house: Code Refactoring
+
+* extract style codes ([9ae5eb4](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/9ae5eb4b2fab479a5d04734c0d3633b81e346f54))
+
 ### 0.1.43 (2023-10-22)
 
 
