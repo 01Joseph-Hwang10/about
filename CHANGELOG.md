@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.45 (2023-10-22)
+
+
+### :construction_worker: Continuous Integration
+
+* default resume exports ([54df001](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/54df0019aea31b7a0cfa66187025d4c25bebd83c))
+
 ### 0.1.44 (2023-10-22)
 
 
