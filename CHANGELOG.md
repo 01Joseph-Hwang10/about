@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.48 (2023-11-08)
+
+
+### :mega: Other
+
+* add link to open source card ([1511358](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/1511358999e6035864d9c548cc7d0bcc67ead3fd))
+
 ### 0.1.47 (2023-11-08)
 
 
