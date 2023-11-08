@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.47 (2023-11-08)
+
+
+### :mega: Other
+
+* no spacing between hr and career ([3a3af94](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/3a3af94b193541fe3d505ec0cc043bfe5afaf276))
+
 ### 0.1.46 (2023-11-08)
 
 
