@@ -115,7 +115,7 @@ section.introduction p {
 
 #hr-on-career { /* Manual extension for that header for proper paging */
   width: 100%;
-  height: 5rem;
+  height: 0;
 }
 """
 
