@@ -7,12 +7,16 @@ description: ""
 
 import "./custom.scss";
 
+import { QueryClientProvider } from "react-query";
+import { queryClient } from "@site/src/utils/queryUtils";
+
 import Overview from "./partials/_overview.mdx";
 import Education from "./partials/_education.mdx";
 import Achievements from "./partials/_achievements.mdx";
 
 import ProjectTitle from "@site/src/components/Project/ProjectTitle";
 import VerticalScope from "@site/src/components/Project/VerticalScope";
+import OpenSourceList from "@site/src/page-contents/Home/Contents/OpenSources/OpenSourceList.tsx";
 
 :::tip
 
@@ -40,6 +44,10 @@ https://raw.githubusercontent.com/01Joseph-Hwang10/01joseph-hwang10.github.io/gh
 
 </section>
 
+## 교육 사항
+
+<Education />
+
 ## 주요 기술
 
 :::info
@@ -52,7 +60,8 @@ https://raw.githubusercontent.com/01Joseph-Hwang10/01joseph-hwang10.github.io/gh
 
 ### UI/UX Development
 
-- React + `@reduxjs/toolkit` 기반의 SPA 개발 및 React Native / Flutter 기반 모바일 앱 개발
+- Typescript, React, `vite`, `@reduxjs/toolkit`, `RTK Query` 기반의 웹앱 개발
+- `emotion`, `tailwindcss`, `MUI` 등 적절한 CSS 라이브러리를 활용한 효율적인 UI 개발
 - StencilJS 기반 웹 컴포넌트 개발 및 Rollup, Github Actions 등을 활용한 번들링 & CI/CD 프로세스 구축
 
 ### Machine Learning Operations
@@ -79,13 +88,14 @@ https://raw.githubusercontent.com/01Joseph-Hwang10/01joseph-hwang10.github.io/gh
 #### 온라인 쇼핑몰을 위한 개인화 상품 추천 플러그인 PickHound 기획 및 개발 ([상세](https://01joseph-hwang10.github.io/docs/career-description/pickhound))
 
 - 심층 인터뷰를 통한 수요 파악 및 제품 방향성 수립으로 사내 개발 자원 낭비 방지 ([상세](https://01joseph-hwang10.github.io/docs/career-description/pickhound#%EC%8B%AC%EC%B8%B5-%EC%9D%B8%ED%84%B0%EB%B7%B0%EB%A5%BC-%ED%86%B5%ED%95%9C-%EC%88%98%EC%9A%94-%ED%8C%8C%EC%95%85-%EB%B0%8F-%EC%A0%9C%ED%92%88-%EB%B0%A9%ED%96%A5%EC%84%B1-%EC%88%98%EB%A6%BD))
-- `Figma Admin Dashboard Kit`에 기반한 디자인 시스템 구현으로 신속한 UI 개발 및 변경 사항 반영 ([상세](https://01joseph-hwang10.github.io/docs/career-description/pickhound#figma-admin-dashboard-kit%EC%97%90-%EA%B8%B0%EB%B0%98%ED%95%9C-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EA%B5%AC%ED%98%84))
+- `Figma Admin Dashboard Kit`에 기반한 선언형 디자인 시스템 구현으로 코드 유지보수성 향상 및 신속한 UI 변경 사항 반영 ([상세](https://01joseph-hwang10.github.io/docs/career-description/pickhound#figma-admin-dashboard-kit%EC%97%90-%EA%B8%B0%EB%B0%98%ED%95%9C-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EA%B5%AC%ED%98%84))
 - FLUX/MVC 기반의 React & StencilJS 상태 연동으로 유지보수성 향상 ([상세](https://01joseph-hwang10.github.io/docs/career-description/pickhound#redux%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-fluxmvc-%EA%B8%B0%EB%B0%98%EC%9D%98-react--stenciljs-%EC%83%81%ED%83%9C-%EC%97%B0%EB%8F%99))
 - Client Side 에러 트래킹을 위한 로깅 시스템 개발로 즉각적인 고객 문의 대응 ([상세](https://01joseph-hwang10.github.io/docs/career-description/pickhound#client-side-%EC%97%90%EB%9F%AC-%ED%8A%B8%EB%9E%98%ED%82%B9%EC%9D%84-%EC%9C%84%ED%95%9C-%EB%A1%9C%EA%B9%85-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EA%B0%9C%EB%B0%9C))
+- 번들 사이즈를 고려한 코드 스플릿 & 레이지 로딩으로 유저 경험 개선 ([상세](https://01joseph-hwang10.github.io/docs/career-description/pickhound#code-split%EA%B3%BC-reactsuspense-%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EC%B4%88%EA%B8%B0-%EB%A1%9C%EB%94%A9-ux-%EA%B0%9C%EC%84%A0))
 
 #### Contextual Bandit 기반 실시간 추천 시스템 구현을 위한 데이터 파이프라인 & 인프라 설계 및 최적화
 
-- `class-validator` 데코레이터 디버깅 및 소스 코드 분석 ([상세](https://01joseph-hwang10.github.io/docs/career-description/pickhound#class-validator-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0-%EB%94%94%EB%B2%84%EA%B9%85-%EB%B0%8F-%EC%86%8C%EC%8A%A4-%EC%BD%94%EB%93%9C-%EB%B6%84%EC%84%9D))
+- `class-validator`, `class-transformer` 데코레이터 디버깅 및 소스 코드 분석 ([상세](https://01joseph-hwang10.github.io/docs/career-description/pickhound#class-validator-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0-%EB%94%94%EB%B2%84%EA%B9%85-%EB%B0%8F-%EC%86%8C%EC%8A%A4-%EC%BD%94%EB%93%9C-%EB%B6%84%EC%84%9D))
 - 상품 정보에 대한 캐싱 구현으로 DB 비용 크게 절감 ([상세](https://01joseph-hwang10.github.io/docs/career-description/pickhound#%EC%83%81%ED%92%88-%EC%A0%95%EB%B3%B4%EC%97%90-%EB%8C%80%ED%95%9C-caching-%EA%B5%AC%ED%98%84))
 - Leaky Bucket이 적용된 엔드포인트를 위한 HTTP Client 구현으로 외부 API의 제약 사항에 대응 ([상세](https://01joseph-hwang10.github.io/docs/career-description/pickhound#leaky-bucket%EC%9D%B4-%EC%A0%81%EC%9A%A9%EB%90%9C-%EC%97%94%EB%93%9C%ED%8F%AC%EC%9D%B8%ED%8A%B8%EB%A5%BC-%EC%9C%84%ED%95%9C-http-client-%EA%B5%AC%ED%98%84))
 - "Type Safe"한 Cafe24 REST API 사용을 위한 HTTP Client 코드 생성기 개발로 외부 API 활용 효율화
@@ -113,6 +123,7 @@ https://raw.githubusercontent.com/01Joseph-Hwang10/01joseph-hwang10.github.io/gh
 
 - 서비스 기획을 위한 심층 인터뷰 진행으로 현장의 실질적인 Pain Point 파악 및 아이디어의 설득력 강화 ([상세](https://01joseph-hwang10.github.io/docs/career-description/learnque#%EC%84%9C%EB%B9%84%EC%8A%A4-%EA%B8%B0%ED%9A%8D%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%8B%AC%EC%B8%B5-%EC%9D%B8%ED%84%B0%EB%B7%B0-%EC%A7%84%ED%96%89))
 - 드론과의 블루투스 통신 기능을 포함하는 모바일 블록코딩 애플리케이션 개발로 시리얼 통신과 비트 연산에 관한 깊은 이해 함양 ([상세](https://01joseph-hwang10.github.io/docs/career-description/learnque#esp32%EC%99%80-react-native-ble-plx%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EB%93%9C%EB%A1%A0-%EB%B8%94%EB%A3%A8%ED%88%AC%EC%8A%A4-%ED%86%B5%EC%8B%A0%EB%B6%80-%EA%B0%9C%EB%B0%9C))
+- 옵저버 패턴을 활용한 컴포넌트간 데이터 통신으로 상태 관리 흐름 단순화 ([상세](https://01joseph-hwang10.github.io/docs/career-description/learnque#observer-%ED%8C%A8%ED%84%B4%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%9C-%EC%83%81%ED%83%9C-%EA%B4%80%EB%A6%AC))
 
 #### 설득력 있는 사업계획서, 피치덱 작성 등을 통해 각종 투자 프로그램 유치에 큰 기여 ([상세](https://01joseph-hwang10.github.io/docs/career-description/learnque#%EC%97%91%EC%85%80%EB%9F%AC%EB%A0%88%EC%9D%B4%ED%8C%85-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-%EC%9C%A0%EC%B9%98%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%82%AC%EC%97%85%EA%B3%84%ED%9A%8D%EC%84%9C-%EB%B0%8F-%ED%94%BC%EC%B9%98%EB%8D%B1-%EC%9E%91%EC%84%B1))
 
@@ -134,9 +145,15 @@ https://raw.githubusercontent.com/01Joseph-Hwang10/01joseph-hwang10.github.io/gh
 
 </VerticalScope>
 
-## 교육 사항
+## 오픈소스
 
-<Education />
+<QueryClientProvider client={queryClient}>
+  <OpenSourceList
+    repoToInclude={
+      new Set(["jtd-codebuild", "static-webpage-with-auth", "clsc"])
+    }
+  />
+</QueryClientProvider>
 
 ## 수상 및 기타
 

@@ -13,6 +13,7 @@ import { faTerminal } from "@fortawesome/free-solid-svg-icons";
 import CIcon from "@site/src/components/Icon/svg/CIcon";
 import CppIcon from "@site/src/components/Icon/svg/CppIcon";
 import FirebaseIcon from "@site/src/components/Icon/svg/FirebaseIcon";
+import JSONIcon from "@site/src/components/Icon/svg/JSONIcon";
 import JupyterIcon from "@site/src/components/Icon/svg/JupyterIcon";
 import PreactIcon from "@site/src/components/Icon/svg/PreactIcon";
 import TailwindCssIcon from "@site/src/components/Icon/svg/TailwindCssIcon";
@@ -23,7 +24,7 @@ const openSourceProjects = new Set([
   "static-webpage-with-auth",
   "clsc",
   "pclc",
-  "jupyter-c-kernel",
+  "jtd-codebuild",
   "jupyter-cpp-kernel",
   "gh-actions",
 ]);
@@ -86,6 +87,10 @@ const displayableTopics = {
     name: "tailwindcss",
     icon: TailwindCssIcon,
   },
+  json: <RepositoryTopic>{
+    name: "json",
+    icon: JSONIcon,
+  },
 };
 
 export type DisplayableTopic = keyof typeof displayableTopics;
@@ -117,6 +122,10 @@ const displayablePublicRepositories = {
   unknown: <PublicRepository>{
     name: "unknown",
     icon: faTerminal,
+  },
+  pypi: <PublicRepository>{
+    name: "pypi",
+    icon: faPython,
   },
 };
 

@@ -9,6 +9,7 @@ const getRepositoryType = (
   if (repositoryUrl.includes("npmjs.com")) return "npm";
   if (repositoryUrl.includes("docker.com")) return "dockerhub";
   if (repositoryUrl.includes("github.com")) return "github";
+  if (repositoryUrl.includes("pypi.org")) return "pypi";
   return "unknown";
 };
 
@@ -28,6 +29,10 @@ const getRepositoryThemeColor = (
     return isDarkMode
       ? "var(--ifm-color-secondary-contrast-background)"
       : "var(--ifm-color-secondary-darkest)";
+  if (type === "pypi")
+    return isDarkMode
+      ? "var(--ifm-color-primary-darkest)"
+      : "var(--ifm-color-primary-lightest)";
   return isDarkMode
     ? "var(--ifm-color-success-darkest)"
     : "var(--ifm-color-success-lightest)";
