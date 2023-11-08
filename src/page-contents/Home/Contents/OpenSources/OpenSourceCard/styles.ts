@@ -90,9 +90,14 @@ const contentWrapper = css`
 `;
 
 const title = css`
+  color: var(--ifm-color-primary-contrast-foreground);
   @media screen and (max-width: ${mobileWidth}px) {
     max-width: 85%;
   }
+`;
+
+const titleWrapper = css`
+  width: 100%;
 `;
 
 const description = css`
@@ -118,6 +123,7 @@ export default {
   repositoryWrapper,
   contentWrapper,
   title,
+  titleWrapper,
   description,
   topicsContainer,
 };

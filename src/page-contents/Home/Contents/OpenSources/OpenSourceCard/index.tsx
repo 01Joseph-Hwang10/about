@@ -24,9 +24,10 @@ const OpenSourceCard: React.FC<OpenSourceCardProps> = ({ repo }) => {
     publicRepoType,
     isDarkMode,
   );
+  const repoUrl = repo.homepage ?? repo.html_url;
   const onClick = () => {
     if (typeof window === "undefined") return;
-    window.open(repo.homepage || repo.html_url, "_blank");
+    window.open(repoUrl, "_blank");
   };
   return (
     <div
@@ -40,7 +41,14 @@ const OpenSourceCard: React.FC<OpenSourceCardProps> = ({ repo }) => {
         <PublicRepositoryIcon type={publicRepoType} />
       </div>
       <div css={styles.contentWrapper}>
-        <h2 css={styles.title}>{repo.name}</h2>
+        <a
+          href={repoUrl}
+          target="_blank"
+          rel="noreferrer"
+          css={styles.titleWrapper}
+        >
+          <h2 css={styles.title}>{repo.name}</h2>
+        </a>
         <p css={styles.description}>{repo.description}</p>
         <div css={styles.topicsContainer}>
           {repo.topics
