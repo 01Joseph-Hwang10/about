@@ -8,7 +8,6 @@ export class HrefFilter implements ContentFilter {
   }
 
   apply(node: HTMLAnchorElement) {
-    console.log(node);
     if (node.tagName !== "A") return;
     // Replace origin to `https://01joseph-hwang10.github.io`
     if (!node.href.startsWith("https")) return;
