@@ -18,7 +18,7 @@ class CppIcon extends MultitoneSVGIcon {
         width={this.width}
         height={this.height}
         viewBox={this.viewBox.toString()}
-        enable-background={`new ${this.viewBox.toString()}`}
+        enableBackground={`new ${this.viewBox.toString()}`}
         css={this.css}
       >
         <path

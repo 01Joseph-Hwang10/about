@@ -13,7 +13,8 @@ interface Props {
 const OpenSourceList: React.FC<Props> = ({
   repoToInclude = values.openSourceProjects,
 }) => {
-  const { data: repos, isLoading, isError } = useGetRepos();
+  const { data: repos, isLoading, isError, error } = useGetRepos();
+  console.log(error);
   return (
     <div className="wrapper">
       {isLoading && <Spinner fill />}

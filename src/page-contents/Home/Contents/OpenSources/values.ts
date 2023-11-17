@@ -26,7 +26,7 @@ const openSourceProjects = new Set([
   "pclc",
   "jtd-codebuild",
   "jupyter-cpp-kernel",
-  "gh-actions",
+  "cafe24api-client",
 ]);
 
 /**
