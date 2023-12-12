@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.51 (2023-12-12)
+
+
+### :rocket: New Features
+
+* add more tech stacks ([b03b441](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/b03b44141d8c1db70fc3d96f24e3957f9548c55a))
+
 ### 0.1.50 (2023-12-12)
 
 
