@@ -53,7 +53,17 @@ const VerticalScope: React.FC<Props> = ({
         {titleAttachment && (
           <span css={styles.titleAttachment}>
             {"/ "}
-            {titleAttachment}
+            {titleAttachment.split("&").map((attachment, index) => (
+              <>
+                {index > 0 && (
+                  <>
+                    <br />
+                    {"& "}
+                  </>
+                )}
+                {attachment}
+              </>
+            ))}
           </span>
         )}
         {!content && subtitle && <h6 css={styles.subtitle}>{subtitle}</h6>}
