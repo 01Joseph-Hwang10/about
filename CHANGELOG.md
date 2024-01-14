@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.53 (2024-01-14)
+
+
+### :mega: Other
+
+* remove navbar items ([c6b1ce5](https://github.com/01Joseph-Hwang10/01joseph-hwang10.github.io/commit/c6b1ce591070b3e90ce0c44e93b04436c7a8a636))
+
 ### 0.1.52 (2024-01-14)
 
 ### 0.1.51 (2023-12-12)
