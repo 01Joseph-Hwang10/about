@@ -20,8 +20,7 @@ const icons: Record<string, string> = {
   python:
     "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
   react: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg",
-  nestjs:
-    "https://camo.githubusercontent.com/5f54c0817521724a2deae8dedf0c280a589fd0aa9bffd7f19fa6254bb52e996a/68747470733a2f2f6e6573746a732e636f6d2f696d672f6c6f676f2d736d616c6c2e737667",
+  nestjs: "https://nestjs.com/img/logo-small.svg",
   gcp: "https://www.gstatic.com/pantheon/images/welcome/supercloud.svg",
 };
 
