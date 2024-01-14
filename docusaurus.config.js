@@ -40,11 +40,6 @@ const navbar = {
       label: "Resume",
       position: "left",
     },
-    {
-      to: "/docs/category/%EA%B2%BD%EB%A0%A5-%EA%B8%B0%EC%88%A0%EC%84%9C",
-      label: "Career Description",
-      position: "left",
-    },
     { to: "/posts", label: "Posts", position: "left" },
     {
       type: "localeDropdown",
