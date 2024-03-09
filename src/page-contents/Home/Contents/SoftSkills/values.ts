@@ -130,6 +130,8 @@ const skills: SkillSummary[] = [
   },
 ];
 
+export { skills, skillTags, skillTagTextColor, skillTagColors };
+
 export default {
   skills,
   skillTags,

@@ -11,9 +11,7 @@ const ProjectDescription: React.FC<ProjectDescriptionProps> = ({
 }) => {
   return (
     <AdmonitionNote>
-      <div></div> {/* Placeholder */}
       <AdmonitionContent>
-        <div></div> {/* Placeholder */}
         <div css={styles.markdownWrapper}>
           <Markdown>{description}</Markdown>
         </div>

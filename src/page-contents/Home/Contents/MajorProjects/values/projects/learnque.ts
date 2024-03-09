@@ -25,10 +25,6 @@ const images: MajorProject["images"] = [
 
 const links: MajorProject["links"] = [
   {
-    type: "career-description",
-    url: "/docs/career-description/learnque",
-  },
-  {
     type: "github",
     url: "https://github.com/01Joseph-Hwang10/dbcav3",
   },

@@ -1,9 +1,0 @@
-import softSkillValues from "@site/src/page-contents/Home/Contents/SoftSkills/values";
-
-<ul>
-  {softSkillValues.skills
-    .filter((skill) => skill.type === "achievement")
-    .map((value, index) => (
-      <li key={`achievement--${index}`}>{value.title}</li>
-    ))}
-</ul>

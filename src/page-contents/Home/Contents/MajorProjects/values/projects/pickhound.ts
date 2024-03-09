@@ -35,10 +35,6 @@ const images: MajorProject["images"] = [
 
 const links: MajorProject["links"] = [
   {
-    type: "career-description",
-    url: "/docs/career-description/pickhound",
-  },
-  {
     type: "live-demo",
     url: "https://store.cafe24.com/kr/apps/17367",
   },

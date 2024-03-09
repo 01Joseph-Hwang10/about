@@ -15,6 +15,8 @@ const educations: Education[] = [
   },
 ];
 
+export { educations };
+
 export default {
   educations,
 };

@@ -2,6 +2,9 @@ import React from "react";
 import MonotoneSVGIcon from "./base/MonotoneSVGIcon";
 import { ViewBox } from "./base/utils";
 
+/**
+ * @see https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Official_YAML_Logo.svg/1920px-Official_YAML_Logo.svg.png
+ */
 class YAMLIcon extends MonotoneSVGIcon {
   protected get viewBox(): ViewBox {
     return ViewBox.fromRect(512, 470.647);
