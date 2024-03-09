@@ -8,7 +8,7 @@ import styles, {
 import { ContactMethod } from "../values";
 import useIsMobile from "@site/src/hooks/useIsMobile";
 import useIsDarkMode from "@site/src/hooks/useIsDarkMode";
-import GoogleIcon from "@site/src/components/Icon/GoogleIcon";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface ContactCardProps {
   contact: ContactMethod;
@@ -24,11 +24,10 @@ const ContactCard: React.FC<ContactCardProps> = ({ contact }) => {
     <div css={styles.cardWrapper}>
       <div className="card" css={styles.card}>
         <ContactIconWrapper>
-          <GoogleIcon
-            name={contact.icon}
-            size={isMobile ? "4rem" : "6rem"}
+          <FontAwesomeIcon
+            icon={contact.icon}
+            size={contact.getSize(isMobile)}
             color={iconColor}
-            weight={100}
           />
         </ContactIconWrapper>
         <div css={styles.contentWrapper}>

@@ -2,8 +2,8 @@ import React from "react";
 import { Nutshell } from "./values";
 import styles, { GridItem } from "./styles";
 import CircleBackground from "@site/src/components/CircleBackground";
-import GoogleIcon from "@site/src/components/Icon/GoogleIcon";
 import useIsDarkMode from "@site/src/hooks/useIsDarkMode";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface MeInANutshellItemProps {
   nutshell: Nutshell;
@@ -18,9 +18,9 @@ const MeInANutshellItem: React.FC<MeInANutshellItemProps> = ({ nutshell }) => {
         size="6rem"
         linearGradient={styles.nutshell.gradient}
       >
-        <GoogleIcon
-          name={nutshell.icon}
-          size="4rem"
+        <FontAwesomeIcon
+          icon={nutshell.icon}
+          size="3x"
           color={isDarkMode ? undefined : "var(--ifm-card-background-color)"}
         />
       </CircleBackground>

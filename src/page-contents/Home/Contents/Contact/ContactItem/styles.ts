@@ -14,9 +14,9 @@ export const ContactCardContainer = styled.div`
 export const ContactIconWrapper = styled.div`
   width: 100%;
 
-  padding: 1rem 1rem 0 1rem;
+  padding: 1rem;
   @media screen and (min-width: ${mobileWidth}px) {
-    padding: 1rem;
+    padding: 1rem 1rem 0 1rem;
   }
 `;
 
