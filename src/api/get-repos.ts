@@ -1,3 +1,4 @@
+import qs from "qs";
 import axios from "axios";
 import { pipe } from "fp-ts/function";
 import { map, flatten } from "fp-ts/Array";
@@ -21,9 +22,10 @@ export interface GithubRepo {
 }
 
 export const getRepos = async (): Promise<GithubRepo[]> => {
+  const params = qs.stringify({ per_page: 100 });
   return pipe(
     ["01Joseph-Hwang10", "shepherd231"],
-    map((userId) => `https://api.github.com/users/${userId}/repos`),
+    map((userId) => `https://api.github.com/users/${userId}/repos?${params}`),
     map((url) => axios.get<GithubRepo[]>(url)),
     (tasks) => () => Promise.all(tasks),
     task.map(map(({ data }) => data)),
