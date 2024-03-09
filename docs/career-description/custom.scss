@@ -1,3 +1,7 @@
+// Hides career-description category in the sidebar
+.theme-doc-sidebar-item-category-level-1:last-of-type {
+  display: none;
+}
 
 // Apply for markdown elements
 .markdown {

@@ -18,11 +18,11 @@
   }
   
   // Remove unnecessary icons and titles for admonition elements
-  .theme-admonition-note, .theme-admonition-info {
-    div:first-child {
-      display: none;
-    }
-  }
+  // .theme-admonition-note, .theme-admonition-info {
+  //   div:first-child {
+  //     display: none;
+  //   }
+  // }
   
   // Re-color headers
   h1, h2, h3, h4, h5, h6 {
@@ -30,9 +30,9 @@
   }
 
   // Margin for headers
-  h2.anchor {
-    margin-top: 4rem;
-  }
+  // h2.anchor {
+  //   margin-top: 4rem;
+  // }
 
   // No margin bottom for last vertical scope
   .vertical-scope:last-of-type {
