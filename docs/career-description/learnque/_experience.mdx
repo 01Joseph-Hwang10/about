@@ -155,7 +155,6 @@ Device.prototype.allCharacteristics = async function () {
 
 Device.prototype.use = async function (characteristicUUID: string) {
   const characteristics = await this.allCharacteristics();
-  // console.log(characteristics);
   return characteristics.find(
     (characteristic) => characteristic.uuid === characteristicUUID,
   );
