@@ -18,6 +18,7 @@ import JupyterIcon from "@site/src/components/Icon/svg/JupyterIcon";
 import PreactIcon from "@site/src/components/Icon/svg/PreactIcon";
 import TailwindCssIcon from "@site/src/components/Icon/svg/TailwindCssIcon";
 import TypescriptIcon from "@site/src/components/Icon/svg/TypescriptIcon";
+import YAMLIcon from "@site/src/components/Icon/svg/YAMLIcon";
 import SVGIcon from "@site/src/components/Icon/svg/base/SVGIcon";
 
 const openSourceProjects = new Set([
@@ -93,6 +94,10 @@ const displayableTopics = {
   json: <RepositoryTopic>{
     name: "json",
     icon: JSONIcon,
+  },
+  yaml: <RepositoryTopic>{
+    name: "yaml",
+    icon: YAMLIcon,
   },
 };
 

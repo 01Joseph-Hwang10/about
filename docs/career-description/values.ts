@@ -16,7 +16,7 @@ const tags = [
   "@tripbuilder",
 ] as const;
 
-export type Tag = (typeof tags)[number] | string;
+export type Tag = (typeof tags)[number] | "UI/UX" | "publishing";
 
 const greyColorScheme: TagColorScheme = {
   backgroundColor: "var(--ifm-color-secondary-darkest)",

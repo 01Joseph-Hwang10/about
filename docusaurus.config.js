@@ -2,8 +2,9 @@
 // Note: type annotations allow type checking and IDEs autocompletion
 
 // Theme config: https://docusaurus.io/docs/api/themes/configuration
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const {
+  themes: { github: lightCodeTheme, dracula: darkCodeTheme },
+} = require("prism-react-renderer");
 
 // Custom values.
 

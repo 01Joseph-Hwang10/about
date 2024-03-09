@@ -14,7 +14,6 @@ const OpenSourceList: React.FC<Props> = ({
   repoToInclude = values.openSourceProjects,
 }) => {
   const { data: repos, isLoading, isError } = useGetRepos();
-  console.log(repos.map((repo) => repo.name));
   return (
     <div className="wrapper">
       {isLoading && <Spinner fill />}

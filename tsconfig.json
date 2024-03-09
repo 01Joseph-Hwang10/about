@@ -4,8 +4,15 @@
   "compilerOptions": {
     "baseUrl": ".",
     "resolveJsonModule": true,
-    "lib": ["DOM", "ES2021"],
+    "lib": [
+      "DOM",
+      "ES2021"
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "@emotion/react",
     "module": "Node16",
-    "types": ["./types"],
+    "types": [
+      "./types"
+    ],
   }
 }
