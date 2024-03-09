@@ -24,7 +24,7 @@ const AboutMe = () => {
         css={styles.background}
       />
       <article className="about-me-article" css={styles.article}>
-        <OutlinedAvatar size="230px" src="/img/my-picture-small.jpg" />
+        <OutlinedAvatar size="230px" src="/img/my-picture.jpg" />
         <div css={styles.description}>
           <Markdown>{values.description}</Markdown>
         </div>

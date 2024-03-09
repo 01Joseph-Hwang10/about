@@ -27,6 +27,9 @@ const openSourceProjects = new Set([
   "jtd-codebuild",
   "jupyter-cpp-kernel",
   "cafe24api-client",
+  "dotty-dictionary",
+  "yaml-replace",
+  "git-remote-get",
 ]);
 
 /**
