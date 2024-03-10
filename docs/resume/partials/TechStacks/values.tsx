@@ -12,6 +12,7 @@ import {
   IconProps,
 } from "./styles";
 import ReactQueryIcon from "@site/src/components/Icon/svg/ReactQueryIcon";
+import NodeJSIcon from "@site/src/components/Icon/svg/NodeJSIcon";
 
 interface TechStack {
   key: string;
@@ -213,7 +214,13 @@ const moreStacks: TechStack[] = [
     key: "nodejs",
     name: "Node.js",
     homepage: "https://nodejs.org/",
-    logo: "devicon-nodejs-plain",
+    logo: (props) => (
+      <NodeJSIcon
+        size={iconSize}
+        sizeBase="height"
+        color={getMonotoneIconColor(props)}
+      />
+    ),
     highlight: true,
   },
   {
