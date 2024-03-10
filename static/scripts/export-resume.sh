@@ -61,7 +61,7 @@ _excludeSelectors=".margin-vert--xl a,[class^='tocCollapsible'],.breadcrumbs,.th
 _outputPDFFilename="docs-to-pdf-$RESUME_TYPE.pdf"
 _paginationSelector="h1" # Just a dummy selector to disable pagination
 _paperFormat="A4"
-_pdfMargin="100,50,100,50"
+_pdfMargin="50,50,50,50"
 
 _cssStyle="""
 .markdown h4 {
