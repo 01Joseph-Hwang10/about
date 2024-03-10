@@ -5,13 +5,13 @@ import StencilJSIcon from "@site/src/components/Icon/svg/StencilJSIcon";
 import StyledComponentsIcon from "@site/src/components/Icon/svg/StyledComponentsIcon";
 import RecoilIcon from "@site/src/components/Icon/svg/RecoilIcon";
 import PayloadCMSIcon from "@site/src/components/Icon/svg/PayloadCMSIcon";
-import TypescriptIcon from "@site/src/components/Icon/svg/TypescriptIcon";
 import {
   iconSize,
   getDuotoneIconColors,
   getMonotoneIconColor,
   IconProps,
 } from "./styles";
+import ReactQueryIcon from "@site/src/components/Icon/svg/ReactQueryIcon";
 
 interface TechStack {
   key: string;
@@ -24,17 +24,53 @@ interface TechStack {
 
 const moreStacks: TechStack[] = [
   {
+    key: "html",
+    name: "HTML",
+    homepage: "https://developer.mozilla.org/en-US/docs/Web/HTML",
+    logo: "devicon-html5-plain",
+  },
+  {
+    key: "css",
+    name: "CSS",
+    homepage: "https://developer.mozilla.org/en-US/docs/Web/CSS",
+    logo: "devicon-css3-plain",
+  },
+  {
+    key: "scss",
+    name: "SCSS",
+    homepage: "https://sass-lang.com/",
+    logo: "devicon-sass-original",
+    disable: true,
+  },
+  {
+    key: "tailwindcss",
+    name: "Tailwind CSS",
+    homepage: "https://tailwindcss.com/",
+    logo: "devicon-tailwindcss-plain",
+    disable: true,
+  },
+  {
+    key: "javascript",
+    name: "JavaScript",
+    homepage: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+    logo: "devicon-javascript-plain",
+  },
+  {
     key: "typescript",
     name: "TypeScript",
     homepage: "https://www.typescriptlang.org/",
-    logo: (props) => (
-      <TypescriptIcon size={iconSize} colors={getDuotoneIconColors(props)} />
-    ),
+    logo: "devicon-typescript-plain",
     highlight: true,
   },
   {
+    key: "npm",
+    name: "npm",
+    homepage: "https://www.npmjs.com/",
+    logo: "devicon-npm-original-wordmark",
+  },
+  {
     key: "pnpm",
-    name: "Pnpm",
+    name: "pnpm",
     homepage: "https://pnpm.io/",
     logo: "devicon-pnpm-plain",
   },
@@ -47,10 +83,10 @@ const moreStacks: TechStack[] = [
     ),
   },
   {
-    key: "rollup",
-    name: "Rollup",
-    homepage: "https://rollupjs.org/",
-    logo: "devicon-rollup-plain",
+    key: "webpack",
+    name: "Webpack",
+    homepage: "https://webpack.js.org/",
+    logo: "devicon-webpack-plain",
   },
   {
     key: "babel",
@@ -59,10 +95,24 @@ const moreStacks: TechStack[] = [
     logo: "devicon-babel-plain",
   },
   {
-    key: "jest",
-    name: "Jest",
-    homepage: "https://jestjs.io/",
-    logo: "devicon-jest-plain",
+    key: "rollup",
+    name: "Rollup",
+    homepage: "https://rollupjs.org/",
+    logo: "devicon-rollup-plain",
+  },
+  {
+    key: "vitejs",
+    name: "Vite",
+    homepage: "https://vitejs.dev/",
+    logo: "devicon-vitejs-plain",
+  },
+  {
+    key: "stenciljs",
+    name: "Stencil.js",
+    homepage: "https://stenciljs.com/",
+    logo: (props) => (
+      <StencilJSIcon size={iconSize} color={getMonotoneIconColor(props)} />
+    ),
   },
   {
     key: "react",
@@ -72,12 +122,16 @@ const moreStacks: TechStack[] = [
     highlight: true,
   },
   {
-    key: "stenciljs",
-    name: "Stencil.js",
-    homepage: "https://stenciljs.com/",
-    logo: (props) => (
-      <StencilJSIcon size={iconSize} color={getMonotoneIconColor(props)} />
-    ),
+    key: "react-router",
+    name: "React Router",
+    homepage: "https://reactrouter.com/",
+    logo: "devicon-reactrouter-plain",
+  },
+  {
+    key: "material-ui",
+    name: "Material-UI",
+    homepage: "https://mui.com/material-ui/",
+    logo: "devicon-materialui-plain",
   },
   {
     key: "emotion",
@@ -98,22 +152,18 @@ const moreStacks: TechStack[] = [
     ),
   },
   {
-    key: "tailwindcss",
-    name: "Tailwind CSS",
-    homepage: "https://tailwindcss.com/",
-    logo: "devicon-tailwindcss-plain",
-  },
-  {
-    key: "scss",
-    name: "SCSS",
-    homepage: "https://sass-lang.com/",
-    logo: "devicon-sass-original",
-  },
-  {
     key: "d3",
     name: "D3",
     homepage: "https://d3js.org/",
     logo: "devicon-d3js-plain",
+  },
+  {
+    key: "react-query",
+    name: "React Query",
+    homepage: "https://tanstack.com/query/latest/docs/framework/react/overview",
+    logo: (props) => (
+      <ReactQueryIcon size={iconSize} color={getMonotoneIconColor(props)} />
+    ),
   },
   {
     key: "recoil",
@@ -134,16 +184,10 @@ const moreStacks: TechStack[] = [
     logo: "devicon-redux-original",
   },
   {
-    key: "webpack",
-    name: "Webpack",
-    homepage: "https://webpack.js.org/",
-    logo: "devicon-webpack-plain",
-  },
-  {
-    key: "vitejs",
-    name: "Vite",
-    homepage: "https://vitejs.dev/",
-    logo: "devicon-vitejs-plain",
+    key: "jest",
+    name: "Jest",
+    homepage: "https://jestjs.io/",
+    logo: "devicon-jest-plain",
   },
   {
     key: "cypress",
@@ -191,6 +235,12 @@ const moreStacks: TechStack[] = [
     ),
   },
   {
+    key: "json",
+    name: "JSON",
+    homepage: "https://www.json.org/json-en.html",
+    logo: "devicon-json-plain",
+  },
+  {
     key: "graphql",
     name: "GraphQL",
     homepage: "https://graphql.org/",
@@ -214,6 +264,12 @@ const moreStacks: TechStack[] = [
     homepage: "https://www.python.org/",
     logo: "devicon-python-plain",
     highlight: true,
+  },
+  {
+    key: "pypi",
+    name: "Python Package Index",
+    homepage: "https://pypi.org/",
+    logo: "devicon-pypi-plain",
   },
   {
     key: "poetry",
@@ -253,14 +309,14 @@ const moreStacks: TechStack[] = [
   },
   {
     key: "gcp",
-    name: "GCP",
+    name: "Google Cloud Platform",
     homepage: "https://cloud.google.com/",
     logo: "devicon-googlecloud-plain",
     highlight: true,
   },
   {
     key: "aws",
-    name: "AWS",
+    name: "Amazon Web Services",
     homepage: "https://aws.amazon.com/",
     logo: "devicon-amazonwebservices-plain",
   },

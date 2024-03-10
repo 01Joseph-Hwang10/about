@@ -20,7 +20,12 @@ const TechStacks: React.FC = () => {
                 speaker={<Tooltip>{name}</Tooltip>}
               >
                 <div css={styles.iconWrapper}>
-                  <a href={homepage} target="_blank" rel="noreferrer">
+                  <a
+                    href={homepage}
+                    target="_blank"
+                    rel="noreferrer"
+                    css={styles.link}
+                  >
                     {(() => {
                       if (typeof logo === "string") {
                         return (

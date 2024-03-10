@@ -21,6 +21,12 @@ const iconWrapper = css`
   align-items: center;
 `;
 
+const link = css`
+  :hover {
+    text-decoration: none;
+  }
+`;
+
 export interface IconProps {
   isDarkMode?: boolean;
   highlight?: boolean;
@@ -63,4 +69,5 @@ export default {
   iconSize,
   container,
   iconWrapper,
+  link,
 };
