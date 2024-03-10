@@ -185,7 +185,7 @@ const config = {
     }),
 
   plugins: ["docusaurus-plugin-sass"],
-  themes: ["@docusaurus/theme-classic", "@docusaurus/theme-mermaid"],
+  themes: ["@docusaurus/theme-mermaid"],
   markdown: {
     mermaid: true,
   },
