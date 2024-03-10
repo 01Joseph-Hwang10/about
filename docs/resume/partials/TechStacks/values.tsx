@@ -1,28 +1,50 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import NxIcon from "@site/src/components/Icon/svg/NxIcon";
 import MSWIcon from "@site/src/components/Icon/svg/MSWIcon";
 import StencilJSIcon from "@site/src/components/Icon/svg/StencilJSIcon";
 import StyledComponentsIcon from "@site/src/components/Icon/svg/StyledComponentsIcon";
 import RecoilIcon from "@site/src/components/Icon/svg/RecoilIcon";
+import PayloadCMSIcon from "@site/src/components/Icon/svg/PayloadCMSIcon";
+import TypescriptIcon from "@site/src/components/Icon/svg/TypescriptIcon";
+import {
+  iconSize,
+  getDuotoneIconColors,
+  getMonotoneIconColor,
+  IconProps,
+} from "./styles";
 
 interface TechStack {
   key: string;
   name: string;
   homepage: string;
-  logo: string | ReactElement;
+  logo: string | React.FC<IconProps>;
   disable?: boolean;
+  highlight?: boolean;
 }
-
-const iconSize = 27.5;
-const iconColor = "var(--ifm-color-primary-contrast-foreground)";
-const iconColorSecondary = "var(--ifm-color-secondary-contrast-foreground)";
 
 const moreStacks: TechStack[] = [
   {
-    key: "webpack",
-    name: "Webpack",
-    homepage: "https://webpack.js.org/",
-    logo: "devicon-webpack-plain",
+    key: "typescript",
+    name: "TypeScript",
+    homepage: "https://www.typescriptlang.org/",
+    logo: (props) => (
+      <TypescriptIcon size={iconSize} colors={getDuotoneIconColors(props)} />
+    ),
+    highlight: true,
+  },
+  {
+    key: "pnpm",
+    name: "Pnpm",
+    homepage: "https://pnpm.io/",
+    logo: "devicon-pnpm-plain",
+  },
+  {
+    key: "nx",
+    name: "Nx",
+    homepage: "https://nx.dev/",
+    logo: (props) => (
+      <NxIcon size={iconSize} color={getMonotoneIconColor(props)} />
+    ),
   },
   {
     key: "rollup",
@@ -31,22 +53,10 @@ const moreStacks: TechStack[] = [
     logo: "devicon-rollup-plain",
   },
   {
-    key: "vitejs",
-    name: "Vite",
-    homepage: "https://vitejs.dev/",
-    logo: "devicon-vitejs-plain",
-  },
-  {
     key: "babel",
     name: "Babel",
     homepage: "https://babeljs.io/",
     logo: "devicon-babel-plain",
-  },
-  {
-    key: "nx",
-    name: "Nx",
-    homepage: "https://nx.dev/",
-    logo: <NxIcon size={iconSize} color={iconColor} />,
   },
   {
     key: "jest",
@@ -55,119 +65,37 @@ const moreStacks: TechStack[] = [
     logo: "devicon-jest-plain",
   },
   {
-    key: "cypress",
-    name: "Cypress",
-    homepage: "https://www.cypress.io/",
-    logo: "devicon-cypressio-plain",
-  },
-  {
-    key: "msw",
-    name: "MSW",
-    homepage: "https://mswjs.io/",
-    logo: <MSWIcon size={iconSize} colors={[iconColor, iconColorSecondary]} />,
-  },
-  {
-    key: "storybook",
-    name: "Storybook",
-    homepage: "https://storybook.js.org/",
-    logo: "devicon-storybook-plain",
-  },
-  {
-    key: "pytest",
-    name: "Pytest",
-    homepage: "https://pytest.org/",
-    logo: "devicon-pytest-plain",
-  },
-  {
-    key: "github-actions",
-    name: "Github Actions",
-    homepage: "https://docs.github.com/ko/actions",
-    logo: "devicon-githubactions-plain",
-  },
-  {
-    key: "docker",
-    name: "Docker",
-    homepage: "https://www.docker.com/",
-    logo: "devicon-docker-plain",
-  },
-  {
-    key: "terraform",
-    name: "Terraform",
-    homepage: "https://www.terraform.io/",
-    logo: "devicon-terraform-plain",
-  },
-  {
-    key: "gcp",
-    name: "GCP",
-    homepage: "https://cloud.google.com/",
-    logo: "devicon-googlecloud-plain",
-  },
-  {
-    key: "aws",
-    name: "AWS",
-    homepage: "https://aws.amazon.com/",
-    logo: "devicon-amazonwebservices-plain",
-  },
-  {
-    key: "linux",
-    name: "Linux",
-    homepage: "https://www.linux.org/",
-    logo: "devicon-linux-plain",
-  },
-  {
-    key: "postgresql",
-    name: "PostgreSQL",
-    homepage: "https://www.postgresql.org/",
-    logo: "devicon-postgresql-plain",
-  },
-  {
-    key: "mongodb",
-    name: "MongoDB",
-    homepage: "https://www.mongodb.com/",
-    logo: "devicon-mongodb-plain",
-  },
-  {
-    key: "graphql",
-    name: "GraphQL",
-    homepage: "https://graphql.org/",
-    logo: "devicon-graphql-plain",
-  },
-  {
-    key: "numpy",
-    name: "NumPy",
-    homepage: "https://numpy.org/",
-    logo: "devicon-numpy-plain",
-  },
-  {
-    key: "pandas",
-    name: "Pandas",
-    homepage: "https://pandas.pydata.org/",
-    logo: "devicon-pandas-plain",
-  },
-  {
-    key: "scikit-learn",
-    name: "Scikit-learn",
-    homepage: "https://scikit-learn.org/",
-    logo: "devicon-scikitlearn-plain",
+    key: "react",
+    name: "React",
+    homepage: "https://react.dev/",
+    logo: "devicon-react-original",
+    highlight: true,
   },
   {
     key: "stenciljs",
     name: "Stencil.js",
     homepage: "https://stenciljs.com/",
-    logo: <StencilJSIcon size={iconSize} color={iconColor} />,
+    logo: (props) => (
+      <StencilJSIcon size={iconSize} color={getMonotoneIconColor(props)} />
+    ),
   },
   {
     key: "emotion",
     name: "Emotion",
     homepage: "https://emotion.sh/",
-    logo: <></>,
+    logo: () => <></>,
     disable: true,
   },
   {
     key: "styled-components",
     name: "Styled Components",
     homepage: "https://styled-components.com/",
-    logo: <StyledComponentsIcon size={iconSize} color={iconColor} />,
+    logo: (props) => (
+      <StyledComponentsIcon
+        size={iconSize}
+        color={getMonotoneIconColor(props)}
+      />
+    ),
   },
   {
     key: "tailwindcss",
@@ -191,7 +119,13 @@ const moreStacks: TechStack[] = [
     key: "recoil",
     name: "Recoil",
     homepage: "https://recoiljs.org/",
-    logo: <RecoilIcon size={iconSize} color={iconColor} />,
+    logo: (props) => (
+      <RecoilIcon
+        size={iconSize}
+        sizeBase="height"
+        color={getMonotoneIconColor(props)}
+      />
+    ),
   },
   {
     key: "redux",
@@ -200,10 +134,43 @@ const moreStacks: TechStack[] = [
     logo: "devicon-redux-original",
   },
   {
-    key: "fastapi",
-    name: "FastAPI",
-    homepage: "https://fastapi.tiangolo.com/",
-    logo: "devicon-fastapi-plain",
+    key: "webpack",
+    name: "Webpack",
+    homepage: "https://webpack.js.org/",
+    logo: "devicon-webpack-plain",
+  },
+  {
+    key: "vitejs",
+    name: "Vite",
+    homepage: "https://vitejs.dev/",
+    logo: "devicon-vitejs-plain",
+  },
+  {
+    key: "cypress",
+    name: "Cypress",
+    homepage: "https://www.cypress.io/",
+    logo: "devicon-cypressio-plain",
+  },
+  {
+    key: "msw",
+    name: "MSW",
+    homepage: "https://mswjs.io/",
+    logo: (props) => (
+      <MSWIcon size={iconSize} colors={getDuotoneIconColors(props)} />
+    ),
+  },
+  {
+    key: "storybook",
+    name: "Storybook",
+    homepage: "https://storybook.js.org/",
+    logo: "devicon-storybook-plain",
+  },
+  {
+    key: "nodejs",
+    name: "Node.js",
+    homepage: "https://nodejs.org/",
+    logo: "devicon-nodejs-plain",
+    highlight: true,
   },
   {
     key: "nestjs",
@@ -215,7 +182,38 @@ const moreStacks: TechStack[] = [
     key: "payloadcms",
     name: "PayloadCMS",
     homepage: "https://payloadcms.com/",
-    logo: <></>,
+    logo: (props) => (
+      <PayloadCMSIcon
+        size={iconSize}
+        sizeBase="height"
+        color={getMonotoneIconColor(props)}
+      />
+    ),
+  },
+  {
+    key: "graphql",
+    name: "GraphQL",
+    homepage: "https://graphql.org/",
+    logo: "devicon-graphql-plain",
+  },
+  {
+    key: "mongodb",
+    name: "MongoDB",
+    homepage: "https://www.mongodb.com/",
+    logo: "devicon-mongodb-plain",
+  },
+  {
+    key: "postgresql",
+    name: "PostgreSQL",
+    homepage: "https://www.postgresql.org/",
+    logo: "devicon-postgresql-plain",
+  },
+  {
+    key: "python",
+    name: "Python",
+    homepage: "https://www.python.org/",
+    logo: "devicon-python-plain",
+    highlight: true,
   },
   {
     key: "poetry",
@@ -224,10 +222,71 @@ const moreStacks: TechStack[] = [
     logo: "devicon-poetry-plain",
   },
   {
-    key: "pnpm",
-    name: "Pnpm",
-    homepage: "https://pnpm.io/",
-    logo: "devicon-pnpm-plain",
+    key: "pytest",
+    name: "Pytest",
+    homepage: "https://pytest.org/",
+    logo: "devicon-pytest-plain",
+  },
+  {
+    key: "fastapi",
+    name: "FastAPI",
+    homepage: "https://fastapi.tiangolo.com/",
+    logo: "devicon-fastapi-plain",
+  },
+  {
+    key: "numpy",
+    name: "NumPy",
+    homepage: "https://numpy.org/",
+    logo: "devicon-numpy-plain",
+  },
+  {
+    key: "pandas",
+    name: "Pandas",
+    homepage: "https://pandas.pydata.org/",
+    logo: "devicon-pandas-plain",
+  },
+  {
+    key: "scikit-learn",
+    name: "Scikit-learn",
+    homepage: "https://scikit-learn.org/",
+    logo: "devicon-scikitlearn-plain",
+  },
+  {
+    key: "gcp",
+    name: "GCP",
+    homepage: "https://cloud.google.com/",
+    logo: "devicon-googlecloud-plain",
+    highlight: true,
+  },
+  {
+    key: "aws",
+    name: "AWS",
+    homepage: "https://aws.amazon.com/",
+    logo: "devicon-amazonwebservices-plain",
+  },
+  {
+    key: "github-actions",
+    name: "Github Actions",
+    homepage: "https://docs.github.com/ko/actions",
+    logo: "devicon-githubactions-plain",
+  },
+  {
+    key: "linux",
+    name: "Linux",
+    homepage: "https://www.linux.org/",
+    logo: "devicon-linux-plain",
+  },
+  {
+    key: "docker",
+    name: "Docker",
+    homepage: "https://www.docker.com/",
+    logo: "devicon-docker-plain",
+  },
+  {
+    key: "terraform",
+    name: "Terraform",
+    homepage: "https://www.terraform.io/",
+    logo: "devicon-terraform-plain",
   },
 ];
 
@@ -236,76 +295,3 @@ export { moreStacks };
 export default {
   moreStacks,
 };
-
-/*
-
-Bundlers:
-- Webpack
-- Rollup
-- Vite
-
-Transpilers:
-- Babel
-
-Monorepos:
-- Nx
-
-Testing:
-- Jest
-- Cypress
-- MSW
-- Storybook
-- Pytest
-
-CI/CD:
-- Github Actions
-
-Containerization:
-- Docker
-
-IaC:
-- Terraform
-
-Cloud:
-- GCP
-- AWS
-
-Compute:
-- Linux
-
-Databases:
-- PostgreSQL
-- MongoDB
-
-APIs:
-- REST
-- GraphQL
-
-Data:
-- NumPy
-- Pandas
-- Scikit-learn
-
-Frontend:
-- Stencil.js
-
-Frontend - UI:
-- Emotion
-- Tailwind CSS
-- SCSS
-- D3
-
-Frontend - State Management:
-- Recoil
-- Redux
-
-Backend - Frameworks:
-- FastAPI
-- NestJS
-- PayloadCMS
-
-Package Managers:
-- Poetry
-- Pnpm
-
-*/

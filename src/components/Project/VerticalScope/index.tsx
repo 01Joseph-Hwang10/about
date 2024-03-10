@@ -54,7 +54,7 @@ const VerticalScope: React.FC<Props> = ({
           <span css={styles.titleAttachment}>
             {"/ "}
             {titleAttachment.split("&").map((attachment, index) => (
-              <>
+              <React.Fragment key={`vertical-scope--${title}--${index}`}>
                 {index > 0 && (
                   <>
                     <br />
@@ -62,7 +62,7 @@ const VerticalScope: React.FC<Props> = ({
                   </>
                 )}
                 {attachment}
-              </>
+              </React.Fragment>
             ))}
           </span>
         )}

@@ -1,4 +1,3 @@
-import "rsuite/dist/rsuite-no-reset.min.css";
 import "./style.scss";
 import useIsMobile from "@site/src/hooks/useIsMobile";
 import React from "react";

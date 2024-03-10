@@ -53,6 +53,9 @@ dependencies:
   clsx:
     specifier: ^1.2.1
     version: 1.2.1
+  devicon:
+    specifier: ^2.16.0
+    version: 2.16.0
   docusaurus-plugin-sass:
     specifier: ^0.2.5
     version: 0.2.5(@docusaurus/core@3.1.1)(sass@1.71.1)(webpack@5.90.3)
@@ -5819,6 +5822,10 @@ packages:
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /devicon@2.16.0:
+    resolution: {integrity: sha512-PE5a2HBNeN4av+Iu975OiiWEwS8LJPw5HAvlv0JUHb62jZTdYxTpz4ga+cQyvdtb3x1side2P9Sr1mmOmUkO/g==}
     dev: false
 
   /devlop@1.1.0:
