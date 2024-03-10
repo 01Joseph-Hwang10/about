@@ -119,7 +119,7 @@ section.introduction p {
 }
 """
 
-npx docs-to-pdf \
+pnpm dlx docs-to-pdf \
   --initialDocURLs="$_initialDocURLs" \
   --contentSelector="$_contentSelector" \
   --excludeSelectors="$_excludeSelectors" \
