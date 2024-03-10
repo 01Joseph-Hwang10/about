@@ -9,7 +9,7 @@ const container = css`
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
-  padding: 1rem 2.5rem 0 2.5rem;
+  padding: 1rem 0 0.5rem 0;
 `;
 
 const iconWrapper = css`
