@@ -4,9 +4,9 @@ import { translate } from "@docusaurus/Translate";
 import values from "./values";
 import WordCloudProvider from "./WordCloud/Provider";
 import WordCloud from "./WordCloud";
-import styles from "./styles";
-import StackItem from "./StackItem";
 import useIsMobile from "@site/src/hooks/useIsMobile";
+import StackList from "./StackList";
+import styles from "./styles";
 
 const TechStacks: React.FC = () => {
   const isMobile = useIsMobile();
@@ -26,16 +26,10 @@ const TechStacks: React.FC = () => {
         containerSpacing={isMobile ? "2rem 0 6rem 0" : "6rem 0 12rem 0"}
       >
         <div className="stack-container" css={styles.stackContainer}>
-          {values.featuredStacks
-            .filter((stack) => !stack.disabled)
-            .map((stack, index) => (
-              <StackItem
-                key={`featured-stack--${index}`}
-                stack={stack}
-                focusedStack={focusedStack}
-                onMouseOver={() => setFocusedStack(stack.key)}
-              />
-            ))}
+          <StackList
+            focusedStack={focusedStack}
+            setFocusedStack={setFocusedStack}
+          />
         </div>
       </SectionLayout>
     </WordCloudProvider>

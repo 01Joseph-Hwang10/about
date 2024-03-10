@@ -1,7 +1,5 @@
 import React from "react";
-// @ts-ignore
 import Whisper from "rsuite/Whisper";
-// @ts-ignore
 import Tooltip from "rsuite/Tooltip";
 import { DisplayableTopic } from "../values";
 import styles from "./styles";

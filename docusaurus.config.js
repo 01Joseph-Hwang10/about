@@ -161,6 +161,16 @@ const config = {
     ],
   ],
 
+  headTags: [
+    {
+      tagName: "meta",
+      attributes: {
+        name: "about:version",
+        content: require("./package.json").version,
+      },
+    },
+  ],
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
@@ -172,13 +182,10 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
-      metadata: [
-        { name: "about:version", content: require("./package.json").version },
-      ],
     }),
 
   plugins: ["docusaurus-plugin-sass"],
-  themes: ["@docusaurus/theme-mermaid"],
+  themes: ["@docusaurus/theme-classic", "@docusaurus/theme-mermaid"],
   markdown: {
     mermaid: true,
   },

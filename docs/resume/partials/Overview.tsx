@@ -1,5 +1,4 @@
 import React from "react";
-import { Helmet } from "react-helmet";
 
 interface Props {
   email?: boolean;
@@ -18,13 +17,6 @@ const Overview: React.FC<Props> = ({
 }) => {
   return (
     <div className="info-entry">
-      <Helmet>
-        {/* Google Icons */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-        />
-      </Helmet>
       {email && <span>이메일: joseph95501@gmail.com</span>}
       {phone && <span>휴대폰: 010-9048-9550</span>}
       {portfolio && (

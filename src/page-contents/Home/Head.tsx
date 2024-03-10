@@ -24,10 +24,17 @@ const HomepageHead: React.FC = () => {
       <meta property="og:image" content={pageImage} />
       <meta name="twitter:image" content={pageImage} />
 
-      {/* Google Icons */}
-      <link
+      {/* Google Icons: Currently unused */}
+      {/* <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      /> */}
+
+      {/* Devicons */}
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
       />
     </Head>
   );

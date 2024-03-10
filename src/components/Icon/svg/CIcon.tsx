@@ -47,7 +47,6 @@ class CIcon extends MultitoneSVGIcon {
           clipRule="evenodd"
           id="path8"
         />
-        <script />
       </svg>
     );
   }

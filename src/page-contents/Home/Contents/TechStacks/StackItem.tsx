@@ -9,12 +9,14 @@ interface StackItemProps {
   focusedStack?: string;
   onMouseOver?: () => void;
   stack: FeaturedStack;
+  iconSize?: string;
 }
 
 const StackItem: React.FC<StackItemProps> = ({
   onMouseOver,
   stack,
   focusedStack,
+  iconSize,
 }) => {
   const isMobile = useIsMobile();
   const isDarkMode = useIsDarkMode();
@@ -27,7 +29,7 @@ const StackItem: React.FC<StackItemProps> = ({
       <ImageIcon
         src={values.icons[stack.key]}
         alt={stack.key}
-        size={isMobile ? "4rem" : "6rem"}
+        size={iconSize ?? (isMobile ? "4rem" : "6rem")}
       />
       <StackName
         className="stack-name"

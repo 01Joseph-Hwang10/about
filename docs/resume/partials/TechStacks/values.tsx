@@ -1,187 +1,311 @@
 import React, { ReactElement } from "react";
-import TypescriptIcon from "@site/src/components/Icon/svg/TypescriptIcon";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faNodeJs,
-  faPython,
-  faReact,
-} from "@fortawesome/free-brands-svg-icons";
-import useIsDarkMode from "@site/src/hooks/useIsDarkMode";
 import NxIcon from "@site/src/components/Icon/svg/NxIcon";
-import VerdaccioIcon from "@site/src/components/Icon/svg/VerdaccioIcon";
-import PytestIcon from "@site/src/components/Icon/svg/PytestIcon";
-import NumpyIcon from "@site/src/components/Icon/svg/NumpyIcon";
-import ViteIcon from "@site/src/components/Icon/svg/ViteIcon";
-import PandasIcon from "@site/src/components/Icon/svg/PandasIcon";
-import ScikitLearnIcon from "@site/src/components/Icon/svg/ScikitLearnIcon";
-import FastAPIIcon from "@site/src/components/Icon/svg/FastAPIIcon";
-import NestJSIcon from "@site/src/components/Icon/svg/NestJSIcon";
+import MSWIcon from "@site/src/components/Icon/svg/MSWIcon";
+import StencilJSIcon from "@site/src/components/Icon/svg/StencilJSIcon";
+import StyledComponentsIcon from "@site/src/components/Icon/svg/StyledComponentsIcon";
+import RecoilIcon from "@site/src/components/Icon/svg/RecoilIcon";
 
 interface TechStack {
   key: string;
   name: string;
   homepage: string;
+  logo: string | ReactElement;
   disable?: boolean;
-  logo: () => ReactElement;
 }
 
+const iconSize = 27.5;
 const iconColor = "var(--ifm-color-primary-contrast-foreground)";
-const iconColorSecondary = "var(--ifm-color-info-contrast-background)";
-const iconColorContrast = "var(--ifm-color-primary-contrast-background)";
+const iconColorSecondary = "var(--ifm-color-secondary-contrast-foreground)";
 
-const svgIconSize = 24;
-
-const useFaIconColor = () => {
-  const isDarkMode = useIsDarkMode();
-  return isDarkMode
-    ? "var(--ifm-font-color-base)"
-    : "var(--ifm-color-primary-contrast-foreground)";
-};
-
-const stacks: TechStack[] = [
+const moreStacks: TechStack[] = [
   {
-    key: "typescript",
-    name: "TypeScript",
-    homepage: "https://www.typescriptlang.org/",
-    logo: () => (
-      <TypescriptIcon
-        size={svgIconSize}
-        colors={[iconColor, iconColorContrast]}
-      />
-    ),
+    key: "webpack",
+    name: "Webpack",
+    homepage: "https://webpack.js.org/",
+    logo: "devicon-webpack-plain",
+  },
+  {
+    key: "rollup",
+    name: "Rollup",
+    homepage: "https://rollupjs.org/",
+    logo: "devicon-rollup-plain",
+  },
+  {
+    key: "vitejs",
+    name: "Vite",
+    homepage: "https://vitejs.dev/",
+    logo: "devicon-vitejs-plain",
+  },
+  {
+    key: "babel",
+    name: "Babel",
+    homepage: "https://babeljs.io/",
+    logo: "devicon-babel-plain",
   },
   {
     key: "nx",
     name: "Nx",
     homepage: "https://nx.dev/",
-    logo: () => <NxIcon size={svgIconSize} color={iconColor} />,
+    logo: <NxIcon size={iconSize} color={iconColor} />,
   },
   {
-    key: "verdaccio",
-    name: "Verdaccio",
-    homepage: "https://verdaccio.org/",
-    disable: true,
-    logo: () => <VerdaccioIcon size={svgIconSize} color={iconColor} />,
+    key: "jest",
+    name: "Jest",
+    homepage: "https://jestjs.io/",
+    logo: "devicon-jest-plain",
   },
   {
-    key: "react",
-    name: "React",
-    homepage: "https://reactjs.org/",
-    logo: () => (
-      <FontAwesomeIcon size="xl" color={useFaIconColor()} icon={faReact} />
-    ),
+    key: "cypress",
+    name: "Cypress",
+    homepage: "https://www.cypress.io/",
+    logo: "devicon-cypressio-plain",
   },
   {
-    key: "vite",
-    name: "Vite",
-    homepage: "https://vitejs.dev/",
-    logo: () => (
-      <ViteIcon size={svgIconSize} colors={[iconColor, iconColorSecondary]} />
-    ),
+    key: "msw",
+    name: "MSW",
+    homepage: "https://mswjs.io/",
+    logo: <MSWIcon size={iconSize} colors={[iconColor, iconColorSecondary]} />,
   },
   {
-    key: "nodejs",
-    name: "Node.js",
-    homepage: "https://nodejs.org/",
-    logo: () => (
-      <FontAwesomeIcon size="xl" color={useFaIconColor()} icon={faNodeJs} />
-    ),
+    key: "storybook",
+    name: "Storybook",
+    homepage: "https://storybook.js.org/",
+    logo: "devicon-storybook-plain",
   },
   {
-    key: "nestjs",
-    name: "NestJS",
-    homepage: "https://nestjs.com/",
-    logo: () => <NestJSIcon size={svgIconSize} color={iconColor} />,
+    key: "pytest",
+    name: "Pytest",
+    homepage: "https://pytest.org/",
+    logo: "devicon-pytest-plain",
   },
   {
-    key: "python",
-    name: "Python",
-    homepage: "https://www.python.org/",
-    logo: () => (
-      <FontAwesomeIcon size="xl" color={useFaIconColor()} icon={faPython} />
-    ),
+    key: "github-actions",
+    name: "Github Actions",
+    homepage: "https://docs.github.com/ko/actions",
+    logo: "devicon-githubactions-plain",
+  },
+  {
+    key: "docker",
+    name: "Docker",
+    homepage: "https://www.docker.com/",
+    logo: "devicon-docker-plain",
+  },
+  {
+    key: "terraform",
+    name: "Terraform",
+    homepage: "https://www.terraform.io/",
+    logo: "devicon-terraform-plain",
+  },
+  {
+    key: "gcp",
+    name: "GCP",
+    homepage: "https://cloud.google.com/",
+    logo: "devicon-googlecloud-plain",
+  },
+  {
+    key: "aws",
+    name: "AWS",
+    homepage: "https://aws.amazon.com/",
+    logo: "devicon-amazonwebservices-plain",
+  },
+  {
+    key: "linux",
+    name: "Linux",
+    homepage: "https://www.linux.org/",
+    logo: "devicon-linux-plain",
+  },
+  {
+    key: "postgresql",
+    name: "PostgreSQL",
+    homepage: "https://www.postgresql.org/",
+    logo: "devicon-postgresql-plain",
+  },
+  {
+    key: "mongodb",
+    name: "MongoDB",
+    homepage: "https://www.mongodb.com/",
+    logo: "devicon-mongodb-plain",
+  },
+  {
+    key: "graphql",
+    name: "GraphQL",
+    homepage: "https://graphql.org/",
+    logo: "devicon-graphql-plain",
   },
   {
     key: "numpy",
-    name: "Numpy",
+    name: "NumPy",
     homepage: "https://numpy.org/",
-    logo: () => <NumpyIcon size={svgIconSize} color={iconColor} />,
+    logo: "devicon-numpy-plain",
   },
   {
     key: "pandas",
     name: "Pandas",
     homepage: "https://pandas.pydata.org/",
-    logo: () => <PandasIcon size={svgIconSize} color={iconColor} />,
+    logo: "devicon-pandas-plain",
   },
   {
     key: "scikit-learn",
-    name: "Scikit Learn",
+    name: "Scikit-learn",
     homepage: "https://scikit-learn.org/",
-    logo: () => (
-      <ScikitLearnIcon
-        size={svgIconSize}
-        colors={[iconColor, iconColorSecondary]}
-      />
-    ),
+    logo: "devicon-scikitlearn-plain",
+  },
+  {
+    key: "stenciljs",
+    name: "Stencil.js",
+    homepage: "https://stenciljs.com/",
+    logo: <StencilJSIcon size={iconSize} color={iconColor} />,
+  },
+  {
+    key: "emotion",
+    name: "Emotion",
+    homepage: "https://emotion.sh/",
+    logo: <></>,
+    disable: true,
+  },
+  {
+    key: "styled-components",
+    name: "Styled Components",
+    homepage: "https://styled-components.com/",
+    logo: <StyledComponentsIcon size={iconSize} color={iconColor} />,
+  },
+  {
+    key: "tailwindcss",
+    name: "Tailwind CSS",
+    homepage: "https://tailwindcss.com/",
+    logo: "devicon-tailwindcss-plain",
+  },
+  {
+    key: "scss",
+    name: "SCSS",
+    homepage: "https://sass-lang.com/",
+    logo: "devicon-sass-original",
+  },
+  {
+    key: "d3",
+    name: "D3",
+    homepage: "https://d3js.org/",
+    logo: "devicon-d3js-plain",
+  },
+  {
+    key: "recoil",
+    name: "Recoil",
+    homepage: "https://recoiljs.org/",
+    logo: <RecoilIcon size={iconSize} color={iconColor} />,
+  },
+  {
+    key: "redux",
+    name: "Redux",
+    homepage: "https://redux.js.org/",
+    logo: "devicon-redux-original",
   },
   {
     key: "fastapi",
     name: "FastAPI",
     homepage: "https://fastapi.tiangolo.com/",
-    logo: () => <FastAPIIcon size={svgIconSize} color={iconColor} />,
+    logo: "devicon-fastapi-plain",
   },
   {
-    key: "pytest",
-    name: "Pytest",
-    homepage: "https://docs.pytest.org/en/stable/",
-    logo: () => <PytestIcon size={svgIconSize} color={iconColor} />,
+    key: "nestjs",
+    name: "NestJS",
+    homepage: "https://nestjs.com/",
+    logo: "devicon-nestjs-original",
+  },
+  {
+    key: "payloadcms",
+    name: "PayloadCMS",
+    homepage: "https://payloadcms.com/",
+    logo: <></>,
+  },
+  {
+    key: "poetry",
+    name: "Poetry",
+    homepage: "https://python-poetry.org/",
+    logo: "devicon-poetry-plain",
+  },
+  {
+    key: "pnpm",
+    name: "Pnpm",
+    homepage: "https://pnpm.io/",
+    logo: "devicon-pnpm-plain",
   },
 ];
 
-export { stacks };
+export { moreStacks };
 
 export default {
-  stacks,
+  moreStacks,
 };
 
 /*
-- Typescript
-  - Nx
-  // - Verdaccio
-  - Python
-  // - Pytest
-  // - FastAPI
-  - Numpy
-  - Pandas
-  - Scikit-learn
-- React
-  // - D3
-  // - Cypress
-  // - Webpack
-  - Rollup
-  // - Babel
-  - Emotion
-  - Vite
-  - StencilJS
-  - Storybook
-  // - Figma
-  - Puppeteer
-  // - TailwindCSS 
-  // - Sass
-  - Redux
-  - Recoil
-- Node.js
-  - Jest
-  - GraphQL
-  - MSW
-  - PayloadCMS
-  - NestJS
-- Google Cloud Platform
-  - MongoDB
-  - Docker
-  - Terraform
-  - Github Actions
-  - Linux
-- Slack
-- Notion
- */
+
+Bundlers:
+- Webpack
+- Rollup
+- Vite
+
+Transpilers:
+- Babel
+
+Monorepos:
+- Nx
+
+Testing:
+- Jest
+- Cypress
+- MSW
+- Storybook
+- Pytest
+
+CI/CD:
+- Github Actions
+
+Containerization:
+- Docker
+
+IaC:
+- Terraform
+
+Cloud:
+- GCP
+- AWS
+
+Compute:
+- Linux
+
+Databases:
+- PostgreSQL
+- MongoDB
+
+APIs:
+- REST
+- GraphQL
+
+Data:
+- NumPy
+- Pandas
+- Scikit-learn
+
+Frontend:
+- Stencil.js
+
+Frontend - UI:
+- Emotion
+- Tailwind CSS
+- SCSS
+- D3
+
+Frontend - State Management:
+- Recoil
+- Redux
+
+Backend - Frameworks:
+- FastAPI
+- NestJS
+- PayloadCMS
+
+Package Managers:
+- Poetry
+- Pnpm
+
+*/
