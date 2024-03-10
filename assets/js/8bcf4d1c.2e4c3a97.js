@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkabout=self.webpackChunkabout||[]).push([[4054],{6077:s=>{s.exports=JSON.parse('{"label":"FLUX","permalink":"/posts/tags/flux","allTagsPath":"/posts/tags","count":1,"unlisted":false}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkabout=self.webpackChunkabout||[]).push([[1511],{62108:s=>{s.exports=JSON.parse('{"label":"Design System","permalink":"/posts/tags/design-system","allTagsPath":"/posts/tags","count":1,"unlisted":false}')}}]);

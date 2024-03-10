@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkabout=self.webpackChunkabout||[]).push([[9304],{93652:s=>{s.exports=JSON.parse('{"permalink":"/posts/tags/stencil-js","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkabout=self.webpackChunkabout||[]).push([[9707],{80891:a=>{a.exports=JSON.parse('{"label":"Project Management","permalink":"/posts/tags/project-management","allTagsPath":"/posts/tags","count":1,"unlisted":false}')}}]);

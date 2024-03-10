@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkabout=self.webpackChunkabout||[]).push([[6992],{43779:e=>{e.exports=JSON.parse('{"title":"\uc774\ub825\uc11c","slug":"/category/\uc774\ub825\uc11c","permalink":"/docs/category/\uc774\ub825\uc11c","navigation":{"next":{"title":"\uc774\ub825\uc11c","permalink":"/docs/resume/default"}}}')}}]);

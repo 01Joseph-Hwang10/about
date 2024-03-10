@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkabout=self.webpackChunkabout||[]).push([[7500],{67282:e=>{e.exports=JSON.parse('{"permalink":"/posts/tags/redux","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

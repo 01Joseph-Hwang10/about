@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkabout=self.webpackChunkabout||[]).push([[5370],{19850:s=>{s.exports=JSON.parse('{"label":"Decorator","permalink":"/posts/tags/decorator","allTagsPath":"/posts/tags","count":1,"unlisted":false}')}}]);

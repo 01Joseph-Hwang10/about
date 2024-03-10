@@ -60,8 +60,8 @@ _contentSelector="article"
 _excludeSelectors=".margin-vert--xl a,[class^='tocCollapsible'],.breadcrumbs,.theme-edit-this-page,.slick-slider"
 _outputPDFFilename="docs-to-pdf-$RESUME_TYPE.pdf"
 _paginationSelector="h1" # Just a dummy selector to disable pagination
-_paperFormat="A4"
-_pdfMargin="100,50,100,50"
+_paperFormat="Legal"
+_pdfMargin="50,50,50,50"
 
 _cssStyle="""
 .markdown h4 {
@@ -115,7 +115,7 @@ section.introduction p {
 
 #hr-on-career { /* Manual extension for that header for proper paging */
   width: 100%;
-  height: 0;
+  height: 3rem;
 }
 """
 

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkabout=self.webpackChunkabout||[]).push([[5765],{16596:t=>{t.exports=JSON.parse('{"permalink":"/posts/tags/01-joseph-hwang-10-github-io","page":1,"postsPerPage":10,"totalPages":1,"totalCount":2,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);
